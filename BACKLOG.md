@@ -5,6 +5,7 @@
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
+- [ ] (Tomorrow) Hỏi Nhật: account HPS xong chưa? Nếu xong thì gửi mail account cho anh Vinh
 - [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
 
