@@ -5,6 +5,7 @@
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
+- [ ] Tìm hiểu phương án lắp màn/mền/mùng cho giường ngủ (yêu cầu: gọn, dễ vệ sinh, chống muỗi)
 - [ ] (Today 08:45) Vào TCInvest đặt lệnh mua: FPT + MBB (theo plan)
   - FPT (ưu tiên giải ngân ~20M, 2 nấc):
     - LO mua 100 cp @ 98,500 (~9.85M)
