@@ -28,6 +28,7 @@ __pycache__/
 *$py.class
 .venv/
 venv/
+automation/venv/
 env/
 ENV/
 *.egg-info/
