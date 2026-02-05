@@ -126,9 +126,8 @@ Format backlog entry (auto):
    python3 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
-   pip install -r requirements-webhook.txt
 
-   export WEBHOOK_SECRET='...'
+   export WEBHOOK_SECRET='nqcdan1908'
    uvicorn forgejo_webhook_service:app --host 0.0.0.0 --port 9009
    ```
 

@@ -25,7 +25,7 @@
   <key>EnvironmentVariables</key>
   <dict>
     <key>WEBHOOK_SECRET</key>
-    <string>__SET_ME__</string>
+    <string>nqcdan1908</string>
     <key>GIT_REMOTE</key>
     <string>origin</string>
     <key>GIT_BRANCH</key>
