@@ -37,12 +37,15 @@ from typing import Dict, Iterable, List, Optional
 import requests
 
 
-def _maybe_load_dotenv() -> None:
-    """Load .env if python-dotenv is installed. No-op otherwise."""
+def _maybe_load_dotenv(dotenv_path: Path) -> None:
+    """Load .env (best-effort) if python-dotenv is installed.
+
+    We explicitly point to the script-local .env so it works no matter where you run the script from.
+    """
     try:
         from dotenv import load_dotenv  # type: ignore
 
-        load_dotenv()
+        load_dotenv(dotenv_path=dotenv_path, override=False)
     except Exception:
         return
 
@@ -233,9 +236,8 @@ class MarkdownGenerator:
 
 
 def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
-    _maybe_load_dotenv()
-
     script_dir = Path(__file__).resolve().parent
+    _maybe_load_dotenv(script_dir / ".env")
 
     parser = argparse.ArgumentParser(description="Forgejo PR Collector")
     parser.add_argument("--url", default=os.getenv("FORGEJO_URL"), help="Forgejo base URL")
