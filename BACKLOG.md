@@ -5,7 +5,16 @@
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
-- [ ] (Tomorrow) Hỏi Nhật: account HPS xong chưa? Nếu xong thì gửi mail account cho anh Vinh
+- [ ] (Today 08:45) Vào TCInvest đặt lệnh mua: FPT + MBB (theo plan)
+  - FPT (ưu tiên giải ngân ~20M, 2 nấc):
+    - LO mua 100 cp @ 98,500 (~9.85M)
+    - LO mua 100 cp @ 97,000 (~9.70M)
+    - Logic: đặt thấp hơn giá hiện tại để tránh mua đúng nhịp rơi; nếu hồi luôn thì chờ setup momentum (breakout/pullback MA20)
+  - MBB (giải ngân nhỏ hơn ~8–10M, 2 nấc):
+    - LO mua 200 cp @ 26,850 (~5.37M)
+    - LO mua 100 cp @ 26,550 (~2.655M)
+    - Tổng ~8.03M (đang overweight MBB)
+- [ ] (Today) Hỏi Nhật: account HPS xong chưa? Nếu xong thì gửi mail account cho anh Vinh
 - [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
 
