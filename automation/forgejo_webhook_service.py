@@ -42,9 +42,19 @@ from forgejo_pr_collector import _update_backlog  # type: ignore
 app = FastAPI(title="Forgejo Webhook Service", version="1.0")
 
 
-def _repo_root() -> Path:
-    # automation/forgejo_webhook_service.py -> repo root is parent of automation
-    return Path(__file__).resolve().parent.parent
+def _git_root_for(path: Path) -> Path:
+    """Return git repo root that contains given path."""
+    # Important: BACKLOG.md may live inside a different repo (e.g. via symlinked work/).
+    proc = subprocess.run(
+        ["git", "-C", str(path.parent), "rev-parse", "--show-toplevel"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"Cannot determine git root for {path}:\n{proc.stdout}")
+    return Path(proc.stdout.strip()).resolve()
 
 
 def _verify_webhook(raw_body: bytes, headers: dict) -> None:
@@ -93,10 +103,10 @@ def _should_process(event: str, payload: dict) -> bool:
     }
 
 
-def _git(*args: str, cwd: Optional[Path] = None) -> str:
+def _git(*args: str, cwd: Path) -> str:
     proc = subprocess.run(
         ["git", *args],
-        cwd=str(cwd or _repo_root()),
+        cwd=str(cwd),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
@@ -108,12 +118,11 @@ def _git(*args: str, cwd: Optional[Path] = None) -> str:
 
 
 def _git_commit_and_push(backlog_file: Path) -> None:
-    root = _repo_root()
+    root = _git_root_for(backlog_file)
     rel_path = os.path.relpath(str(backlog_file), str(root))
 
     status = _git("status", "--porcelain", cwd=root)
     if rel_path not in status:
-        # Nothing changed in backlog
         return
 
     _git("add", rel_path, cwd=root)
