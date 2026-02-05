@@ -69,7 +69,6 @@ class CollectorConfig:
     repos: List[str]
     state: str
     days_back: Optional[int]
-    output_file: Path
     backlog_file: Path
 
 
@@ -301,11 +300,6 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
         help="Only include PRs updated within N days (omit for all)",
     )
     parser.add_argument(
-        "--output",
-        default=os.getenv("OUTPUT_FILE") or str(script_dir / "team_prs_summary.md"),
-        help="Output team-summary markdown file path",
-    )
-    parser.add_argument(
         "--backlog-file",
         default=os.getenv("BACKLOG_FILE") or str((script_dir.parent / "work" / "OF1_Crm" / "BACKLOG.md")),
         help="Backlog markdown file to update (writes between AUTO markers)",
@@ -337,7 +331,6 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
         repos=repos,
         state=str(args.state),
         days_back=days_back,
-        output_file=Path(args.output).expanduser().resolve(),
         backlog_file=Path(args.backlog_file).expanduser().resolve(),
     )
 
@@ -388,10 +381,7 @@ def main() -> None:
         all_prs[repo] = prs
         print(f"   ✓ Found {len(prs)} PRs")
 
-    # 1) Team summary report
-    MarkdownGenerator.generate_team_summary(all_prs, cfg.output_file, days_back=cfg.days_back)
-
-    # 2) Update backlog (default: first repo)
+    # Update backlog (default: first repo)
     first_repo = cfg.repos[0]
     _update_backlog(cfg.backlog_file, all_prs.get(first_repo, []))
 

@@ -80,8 +80,7 @@ Sau đó, check labels, projects, descriptions, assignee
    ```
 
 **Output:**
-- File `automation/team_prs_summary.md`: report tổng hợp (statistics + summary theo author + list PRs)
-- File backlog (mặc định): `work/OF1_Crm/BACKLOG.md` sẽ được update *giữa 2 marker*:
+- Chỉ update file backlog (mặc định): `work/OF1_Crm/BACKLOG.md` sẽ được update *giữa 2 marker*:
   - `<!-- AUTO:FORGEJO_PRS_START -->`
   - `<!-- AUTO:FORGEJO_PRS_END -->`
 
