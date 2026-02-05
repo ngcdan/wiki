@@ -70,6 +70,7 @@ class CollectorConfig:
     state: str
     days_back: Optional[int]
     output_file: Path
+    backlog_file: Path
 
 
 class ForgejoCollector:
@@ -116,7 +117,8 @@ class ForgejoCollector:
 
 class MarkdownGenerator:
     @staticmethod
-    def generate(all_prs: Dict[str, List[Dict]], output_file: Path, *, days_back: Optional[int]) -> None:
+    def generate_team_summary(all_prs: Dict[str, List[Dict]], output_file: Path, *, days_back: Optional[int]) -> None:
+        """Generate standalone markdown report (team summary)."""
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
         now = datetime.now()
@@ -182,6 +184,45 @@ class MarkdownGenerator:
 
         print(f"✅ Summary saved to: {output_file}")
 
+    @staticmethod
+    def render_backlog_entries(prs: List[Dict]) -> str:
+        """Render PRs into backlog format, sorted by created_at (newest first)."""
+        prs_sorted = sorted(
+            prs,
+            key=lambda pr: _parse_iso_z(pr["created_at"]) if pr.get("created_at") else datetime.min,
+            reverse=True,
+        )
+
+        lines: List[str] = []
+        import re
+
+        for pr in prs_sorted:
+            number = pr.get("number")
+            title = pr.get("title") or "(no title)"
+            # Avoid duplicated numbers like "#289 ..." when PR number is already rendered.
+            title = re.sub(r"^\s*#\d+\s*[-:]*\s*", "", title).strip()
+            author = pr.get("user", {}).get("login") or "unknown"
+            url = pr.get("html_url") or ""
+
+            body = (pr.get("body") or "").strip()
+            # Take first non-empty line as summary
+            summary = ""
+            for ln in body.splitlines():
+                if ln.strip():
+                    summary = ln.strip()
+                    break
+            if not summary:
+                summary = "(no description)"
+
+            lines.append(f"#### #{number} {title}")
+            lines.append(f"> {summary}")
+            lines.append("")
+            if url:
+                lines.append(f"- **Link:** {url}")
+            lines.append(f"- **Author:** @{author}")
+            lines.append("")
+
+        return "\n".join(lines).rstrip() + "\n"
     @staticmethod
     def _is_merged(pr: Dict) -> bool:
         # Depending on Forgejo version, fields may differ.
@@ -262,7 +303,12 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
     parser.add_argument(
         "--output",
         default=os.getenv("OUTPUT_FILE") or str(script_dir / "team_prs_summary.md"),
-        help="Output markdown file path",
+        help="Output team-summary markdown file path",
+    )
+    parser.add_argument(
+        "--backlog-file",
+        default=os.getenv("BACKLOG_FILE") or str((script_dir.parent / "work" / "OF1_Crm" / "BACKLOG.md")),
+        help="Backlog markdown file to update (writes between AUTO markers)",
     )
 
     args = parser.parse_args(argv)
@@ -292,7 +338,31 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
         state=str(args.state),
         days_back=days_back,
         output_file=Path(args.output).expanduser().resolve(),
+        backlog_file=Path(args.backlog_file).expanduser().resolve(),
     )
+
+
+def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
+    """Update backlog file between AUTO markers."""
+    start_marker = "<!-- AUTO:FORGEJO_PRS_START -->"
+    end_marker = "<!-- AUTO:FORGEJO_PRS_END -->"
+
+    if not backlog_file.exists():
+        raise SystemExit(f"❌ Backlog file not found: {backlog_file}")
+
+    text = backlog_file.read_text(encoding="utf-8")
+    if start_marker not in text or end_marker not in text:
+        raise SystemExit(
+            "❌ Backlog markers not found. Please add markers:\n"
+            f"{start_marker}\n...\n{end_marker}\n"
+        )
+
+    before, rest = text.split(start_marker, 1)
+    _, after = rest.split(end_marker, 1)
+
+    new_block = start_marker + "\n" + MarkdownGenerator.render_backlog_entries(prs) + end_marker
+    backlog_file.write_text(before + new_block + after, encoding="utf-8")
+    print(f"✅ Backlog updated: {backlog_file}")
 
 
 def main() -> None:
@@ -318,7 +388,13 @@ def main() -> None:
         all_prs[repo] = prs
         print(f"   ✓ Found {len(prs)} PRs")
 
-    MarkdownGenerator.generate(all_prs, cfg.output_file, days_back=cfg.days_back)
+    # 1) Team summary report
+    MarkdownGenerator.generate_team_summary(all_prs, cfg.output_file, days_back=cfg.days_back)
+
+    # 2) Update backlog (default: first repo)
+    first_repo = cfg.repos[0]
+    _update_backlog(cfg.backlog_file, all_prs.get(first_repo, []))
+
     print("✨ Done!")
 
 

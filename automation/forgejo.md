@@ -5,6 +5,14 @@ Tôi là leader team dev, tôi muốn quản lý các công việc của team th
 
 Tôi muốn có tool, hook để thu thập và tự động tổng hợp thông tin title, description pull request của họ về file markdown ở local hoặc tương tự vậy.
 
+Tool sẽ tự động gọi hook khi nhận được event tạo pull request.
+
+Sau đó review title, để đảm bảo có prefix bắt đầu dạng
+Closes #123 / Fixes #123 / Resolves #123 / Refs #123
+
+Sau đó, check labels, projects, descriptions, assignee
+
+
 ---
 
 ## Giải pháp
@@ -72,8 +80,19 @@ Tôi muốn có tool, hook để thu thập và tự động tổng hợp thông
    ```
 
 **Output:**
-- File `team_prs_summary.md` sẽ chứa tổng hợp tất cả PRs
-- Bao gồm: title, description, author, status, labels, links
+- File `automation/team_prs_summary.md`: report tổng hợp (statistics + summary theo author + list PRs)
+- File backlog (mặc định): `work/OF1_Crm/BACKLOG.md` sẽ được update *giữa 2 marker*:
+  - `<!-- AUTO:FORGEJO_PRS_START -->`
+  - `<!-- AUTO:FORGEJO_PRS_END -->`
+
+Format backlog entry (auto):
+```md
+#### #284 [Enhancement] ...
+> 1 dòng mô tả ngắn từ PR description
+
+- **Link:** ...
+- **Author:** @...
+```
 
 ---
 
@@ -176,24 +195,4 @@ Tôi muốn có tool, hook để thu thập và tự động tổng hợp thông
 - [x] Test chạy thủ công thành công
 - [ ] Setup cron job nếu muốn tự động hóa
 
-### 2. Áp dụng Conventions cho Team:
-1. **Đọc và review conventions:**
-   - Mở file [PR_CONVENTIONS.md](PR_CONVENTIONS.md)
-   - Review format và examples
-   - Điều chỉnh nếu cần
-
-2. **Truyền thông với team:**
-   - Share file `PR_CONVENTIONS.md` với team
-   - Tổ chức meeting giải thích conventions
-   - Trả lời questions từ dev
-
-3. **Bắt đầu áp dụng:**
-   - PRs mới phải follow conventions
-   - Review PRs cũ và suggest improvements
-   - Update dần theo format mới
-
-4. **Track features lớn:**
-   - Copy `FEATURE_TRACKING_TEMPLATE.md` cho mỗi feature
-   - Assign Feature IDs (CRM-001, CRM-002, ...)
-   - Update progress thường xuyên
 
