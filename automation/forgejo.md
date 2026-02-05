@@ -95,7 +95,7 @@ Format backlog entry (auto):
 
 ---
 
-### Phương án 2: Webhook Real-time
+### Phương án 2: Webhook Real-time ⭐ (đang dùng)
 
 **Ưu điểm:**
 - Cập nhật ngay lập tức khi có PR mới
@@ -107,44 +107,51 @@ Format backlog entry (auto):
 
 **Cách triển khai:**
 
-1. **Tạo webhook server đơn giản:**
-   ```python
-   # webhook_server.py
-   from flask import Flask, request
-   import json
-   from datetime import datetime
+1. **Webhook service (FastAPI) đã có sẵn trong repo:**
 
-   app = Flask(__name__)
+   - File: `automation/forgejo_webhook_service.py`
+   - Endpoint: `POST /webhook/forgejo`
+   - Healthcheck: `GET /health`
 
-   @app.route('/webhook', methods=['POST'])
-   def webhook():
-       data = request.json
+2. **Cấu hình webhook trên Forgejo (repo `of1-crm/of1-crm`):**
+   - Settings → Webhooks → Add Webhook
+   - URL: `http://<macmini-ip>:9009/webhook/forgejo` (hoặc Tailscale IP)
+   - Trigger events: **Pull Requests**
+   - Content type: `application/json`
+   - Secret: đặt giống `WEBHOOK_SECRET`
 
-       if 'pull_request' in data:
-           pr = data['pull_request']
-           action = data['action']
+3. **Chạy local test:**
+   ```bash
+   cd automation
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   pip install -r requirements-webhook.txt
 
-           # Append to markdown file
-           with open('team_prs_live.md', 'a', encoding='utf-8') as f:
-               f.write(f"\n## [{action.upper()}] PR #{pr['number']}: {pr['title']}\n")
-               f.write(f"- **Author:** @{pr['user']['login']}\n")
-               f.write(f"- **Time:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-               f.write(f"- **Link:** {pr['html_url']}\n")
-               if pr.get('body'):
-                   f.write(f"- **Description:** {pr['body'][:200]}...\n")
-               f.write("\n")
-
-       return {'status': 'ok'}
-
-   if __name__ == '__main__':
-       app.run(host='0.0.0.0', port=5000)
+   export WEBHOOK_SECRET='...'
+   uvicorn forgejo_webhook_service:app --host 0.0.0.0 --port 9009
    ```
 
-2. **Cấu hình webhook trên Forgejo:**
-   - Vào Settings → Webhooks → Add Webhook
-   - URL: `http://your-server:5000/webhook`
-   - Trigger events: Pull Requests
-   - Content type: `application/json`
+4. **Chạy 24/7 bằng launchd (macOS):**
+
+   - Template plist: `automation/com.tommy.forgejo-webhook.plist`
+   - Copy vào LaunchAgents và sửa `WEBHOOK_SECRET`:
+
+   ```bash
+   cp automation/com.tommy.forgejo-webhook.plist ~/Library/LaunchAgents/
+   nano ~/Library/LaunchAgents/com.tommy.forgejo-webhook.plist
+
+   launchctl unload ~/Library/LaunchAgents/com.tommy.forgejo-webhook.plist 2>/dev/null || true
+   launchctl load ~/Library/LaunchAgents/com.tommy.forgejo-webhook.plist
+
+   # logs
+   tail -f /Users/nqcdan/dev/wiki/automation/forgejo-webhook.log
+   tail -f /Users/nqcdan/dev/wiki/automation/forgejo-webhook.err
+   ```
+
+**Behavior:** mỗi event PR sẽ trigger sync và:
+- update `work/OF1_Crm/BACKLOG.md` (giữa AUTO markers)
+- auto `git commit` + `git push origin main`
 
 ---
 
