@@ -66,7 +66,7 @@ Dù request đến từ đâu (Zalo/Outlook/call), **kết quả cuối phải �
 ---
 
 ## 3) Quy trình xử lý request/bug (2 lần mỗi ngày)
-> Thực hiện theo 2 batch: **~11:00** và **~16:00**
+> Thực hiện theo 2 batch: **~11:00** và **~16:00** (anh sẽ duy trì hằng ngày)
 
 ### Bước A — Intake (gom yêu cầu/lỗi)
 Lướt Zalo/Outlook 1 lượt, với mỗi request ghi nhanh:
