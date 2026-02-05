@@ -32,18 +32,33 @@ Tôi muốn có tool, hook để thu thập và tự động tổng hợp thông
    ./setup_pr_collector.sh
    ```
 
-3. **Cấu hình:**
-   - Mở file `forgejo_pr_collector.py`
-   - Cập nhật các biến:
-     - `FORGEJO_URL`: URL Forgejo của bạn
-     - `ACCESS_TOKEN`: Token vừa tạo
-     - `OWNER`: Tên organization/user
-     - `REPOS`: Danh sách repos cần theo dõi
+3. **Cấu hình (không hardcode token trong code):**
+
+   Tạo file `.env` cạnh script (hoặc export env vars):
+
+   ```bash
+   # automation/.env (KHÔNG commit)
+   FORGEJO_URL=http://forgejo.of1-apps.svc.cluster.local
+   FORGEJO_TOKEN=xxx
+   FORGEJO_OWNER=of1-crm
+   FORGEJO_REPOS=of1-crm
+   PR_STATE=all
+   DAYS_BACK=30
+   # OUTPUT_FILE=/path/to/team_prs_summary.md (optional)
+   ```
 
 4. **Chạy thủ công:**
    ```bash
-   source venv/bin/activate
-   python forgejo_pr_collector.py
+   cd automation
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+
+   # chạy bằng env/.env
+   python3 forgejo_pr_collector.py
+
+   # hoặc override bằng CLI
+   python3 forgejo_pr_collector.py --owner of1-crm --repos of1-crm --days-back 30
    ```
 
 5. **Tự động hóa với cron (tùy chọn):**
