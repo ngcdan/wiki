@@ -7,46 +7,39 @@ Tương tự với vé máy bay và dịch vụ khác.
 
 theo dõi cashflow, đưa ra các kinh nghiệm đầu tư tiền một cách hợp lý và có hệ thống.
 
----
+Bạn phải sinh tồn để chiến thắng, tôi đảm bảo rằng tôi có thể tồn tại đủ lâu để những rủi đó mang lại lợi nhuận cho tôi.
 
-Anh đang hướng tới một “hệ thống trợ lý tài chính cá nhân” chạy theo quy trình khép kín:
+fogejo: viết hook để tự động merge pull request
+check theo convention trước khi merge.
+Tạm thời có thể setup zalo page Hải Phòng để chat và group dev.
+idea: tổng hợp toàn bộ change của a Tuấn, Đạt, và tôi trên từng dự án, trên từng file từ đó review các style code, các task liên quan và học hỏi từ đó.
 
-1. **Thu thập dữ liệu tự động**
+Viết luôn script để tạo pull request tự động cho tôi.
 
-- Anh gửi **ảnh bill / ảnh chuyển khoản / file sao kê / lịch sử giao dịch** cho bot.
-- Bot **OCR + bóc tách dữ liệu** (ngày, số tiền, merchant, nội dung, tài khoản, loại giao dịch) → chuẩn hoá thành **Transactions**.
-- Có cơ chế **xác nhận nhanh** khi OCR/categorize không chắc (1–2 tap).
+Cái mà thấy có thể tự cá nhân: mọi người làm việc, nhận yêu cầu mô tả yêu cầu trên từng task
+Để có thể sử dụng lại, cần mọi người note kỹ, theo các quy ước
 
-2. **Phân loại & theo dõi chi tiêu – cashflow**
+Bảo mọi người tạo issue, pull request trước khi làm, thay vì code trước rồi commit tạo merge sau như hiện tại.
+Và chủ động tự tạo các issue trên các project.
 
-- Tự **gán nhóm chi tiêu** (ăn uống, di chuyển, nhà ở, giải trí, sức khoẻ, học tập, v.v.).
-- Theo dõi **cashflow**: thu nhập, chi phí cố định, chi phí biến đổi, dòng tiền ròng; xu hướng theo ngày/tuần/tháng.
+Hãy tách, delegate các công việc, quản trị, không y/c sáng tạo và lặp đi lặp lại cho người khác.
+Tập trung làm các việc quan trọng
 
-3. **Budget & chỉ số điều hành hằng ngày**
+Đầu mỗi sáng khoảng 7 8h, hãy tổng hợp toàn bộ công việc, summary công việc của cá nhân và team thành một bản report để đọc qua để nắm và tiếp tục follow up.
 
-- Tạo **budget theo nhóm** + cảnh báo khi vượt ngưỡng.
-- Mỗi ngày bot đưa ra “**hạn mức chi
+Tạp script cho việc sync beta, sync crm là tự động,
+Cũng tạo các script để việc cập nhật server là tự động.
 
-tiêu còn lại hôm nay**” dựa trên ngân sách tháng, tốc độ tiêu hiện tại, và các khoản sắp tới.
+Tạo script để việc cập nhật mobile là tự động.
 
-- Dashboard ngắn gọn: tổng chi hôm nay, top nhóm, dự báo cuối tháng, “điểm bất thường” (spike).
+Vấn đề: Việc nhận requests bug từ zalo và delegate cho từng dev.
+Tự động trả lời với từng người, loại tin nhắn nhất định.
 
-4. **Danh sách mua sắm + săn deal tự động**
+Với openclaw: hãy tạo workflow và trigger bằng các comment từ chat.
 
-- Anh thêm “**món muốn mua**” (tên, link, giá mục tiêu, deadline).
-- Bot **check website hằng ngày**, theo dõi lịch sử giá, phát hiện **giảm giá/flash sale/coupon** → báo khi chạm điều kiện “deal hời”.
+Luyện tập tiếng anh, gõ phím, cách nói chuyện (nói chuyện trước gương) về các chủ đề khác nhau hàng ngày, chú ý biểu cảm, cử chỉ, …
+Ngoài ra, luyện tập viết…
 
-5. **Theo dõi giá dịch vụ (vé máy bay, booking, gói dịch vụ khác)**
+Hàng ngày, hãy gửi một đoạn văn tiếng anh và gợi ý để tôi dịch từ đó, tìm các thông tin liên quan đến tôi và phải sát với cuộc sống của tôi để có cảm giác liên quan, dễ hình dung, và có cảm hứng học từ đó.
 
-- Lưu hành trình/nhu cầu (chặng bay, ngày, hãng/giờ bay ưu tiên, ngân sách).
-- Bot theo dõi giá định kỳ, báo biến động, gợi ý thời điểm mua tốt hơn.
-
-6. **Kỷ luật tài chính & gợi ý đầu tư có hệ thống**
-
-- Từ cashflow và mục tiêu: đề xuất **quỹ dự phòng**, phân bổ “tiền tiêu/tiền tiết kiệm/tiền đầu
-
-tư”.
-
-- Đưa ra **nguyên tắc & checklist** (DCA, phân bổ rủi ro, tái cân bằng, tránh overtrade), kèm nhắc nhở định kỳ—mang tính “hệ thống”, không phải tips ngẫu hứng.
-
-Nếu anh muốn, em có thể chốt lại thành 1 bản “PRD mini” 1 trang gồm: mục tiêu, luồng dữ liệu, tính năng MVP (1–2 tháng), và giai đoạn mở rộng. Anh muốn ưu tiên làm phần **OCR giao dịch + budget hằng ngày** trước hay **săn deal** trước?
+Hàng tuần, tôi sẽ cần tập trung các skill khác và tôi muốn có hệ thống để tự động tổng hợp kiến thức thành từng paper và tôi sẽ đọc chúng.
