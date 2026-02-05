@@ -12,7 +12,14 @@
 
 # Logs
 *.log
+*.err
 logs/
+
+# Automation (explicit)
+automation/.venv/
+automation/.env
+automation/*.log
+automation/*.err
 
 # Node.js
 node_modules/
