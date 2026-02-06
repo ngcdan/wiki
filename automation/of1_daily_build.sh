@@ -4,7 +4,7 @@ set -euo pipefail
 # OF1 - Daily CRM fetch+merge + clean build
 #
 # Usage (run anywhere):
-#   /Users/nqcdan/dev/wiki/automation/of1_daily_crm_build.sh
+#   /Users/nqcdan/dev/wiki/automation/of1_daily_build.sh
 #
 # Notes:
 # - Expects of1-build repo at: /Users/nqcdan/OF1/forgejo/of1-platform/of1-build
