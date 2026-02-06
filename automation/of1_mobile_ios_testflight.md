@@ -4,50 +4,27 @@
 - Mobile app root: `/Users/nqcdan/OF1/forgejo/of1-platform/of1-mobile/apps/mobile`
 - iOS dir: `ios/`
 
-## One-time: Create App Store Connect API Key
-1. App Store Connect → Users and Access → **Keys**
-2. Create a key (role: App Manager/Developer as needed)
-3. Download the `.p8` file (only downloadable once)
+## Auth: fastlane session (chosen)
+This avoids needing an App Store Connect API key, but sessions can expire.
 
-You will get:
-- **Key ID** (e.g. `ABC123DEFG`)
-- **Issuer ID** (UUID)
-- `.p8` file: `AuthKey_<KEYID>.p8`
-
-## Store secrets (don’t commit)
-Recommended location:
-
+### Generate session
 ```bash
-mkdir -p ~/secrets/appstore
-mv ~/Downloads/AuthKey_*.p8 ~/secrets/appstore/
-chmod 600 ~/secrets/appstore/AuthKey_*.p8
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-mobile/apps/mobile/ios
+bundle install
+bundle exec fastlane spaceauth
 ```
 
-## Configure env vars
-### Option A (recommended): JSON file
-Create `~/secrets/appstore/asc_api_key.json`:
+Fastlane will output a `FASTLANE_SESSION` string.
 
-```json
-{
-  "key_id": "YOUR_KEY_ID",
-  "issuer_id": "YOUR_ISSUER_ID",
-  "key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----",
-  "in_house": false
-}
-```
-
-Export:
-
+### Store secrets (don’t commit)
 ```bash
-export ASC_API_KEY_JSON="$HOME/secrets/appstore/asc_api_key.json"
-```
+cat > ~/.fastlane_session <<'EOF'
+export FASTLANE_USER="nqcdan1908@gmail.com"
+export FASTLANE_SESSION="PASTE_THE_LONG_STRING_HERE"
+EOF
 
-### Option B: separate vars (p8 file)
-
-```bash
-export ASC_API_KEY_ID="YOUR_KEY_ID"
-export ASC_API_ISSUER_ID="YOUR_ISSUER_ID"
-export ASC_API_KEY_PATH="$HOME/secrets/appstore/AuthKey_YOUR_KEY_ID.p8"
+chmod 600 ~/.fastlane_session
+source ~/.fastlane_session
 ```
 
 ## Run (anywhere)
@@ -67,9 +44,9 @@ Direct:
 - `flutter clean` + `flutter pub get`
 - `pod install`
 - `flutter build ipa --release`
-- `fastlane pilot upload` using ASC API key
+- `fastlane pilot upload` using FASTLANE_SESSION
 
 ## Troubleshooting
 - `flutter not found`: ensure Flutter is installed and in PATH
+- `Missing FASTLANE_SESSION`: run `bundle exec fastlane spaceauth` again
 - Signing errors: open `ios/Runner.xcworkspace` in Xcode once, set Team/signing, build once.
-- 2FA/session issues: API key should avoid this; re-check env vars + key permissions.

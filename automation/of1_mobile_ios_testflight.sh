@@ -12,13 +12,9 @@ set -euo pipefail
 # - Xcode installed + signed in
 # - CocoaPods installed (pod)
 # - Flutter available in PATH
-# - fastlane auth (App Store Connect API Key):
-#     Set ONE of:
-#       1) ASC_API_KEY_JSON=/absolute/path/to/asc_api_key.json
-#          (recommended; easiest)
-#       2) ASC_API_KEY_ID=XXXXXX
-#          ASC_API_ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-#          ASC_API_KEY_PATH=/absolute/path/to/AuthKey_XXXXXX.p8
+# - fastlane auth (SESSION):
+#     export FASTLANE_USER="nqcdan1908@gmail.com"
+#     export FASTLANE_SESSION="..."   # generated via: bundle exec fastlane spaceauth
 #
 # Repo paths:
 MOBILE_DIR="/Users/nqcdan/OF1/forgejo/of1-platform/of1-mobile/apps/mobile"
@@ -36,12 +32,9 @@ command -v pod >/dev/null 2>&1 || die "pod (CocoaPods) not found"
 command -v ruby >/dev/null 2>&1 || die "ruby not found"
 command -v bundle >/dev/null 2>&1 || die "bundle (Bundler) not found"
 
-# Require ASC API key env
-if [[ -z "${ASC_API_KEY_JSON:-}" ]]; then
-  if [[ -z "${ASC_API_KEY_ID:-}" || -z "${ASC_API_ISSUER_ID:-}" || -z "${ASC_API_KEY_PATH:-}" ]]; then
-    die "Missing ASC API key env. Set ASC_API_KEY_JSON or (ASC_API_KEY_ID, ASC_API_ISSUER_ID, ASC_API_KEY_PATH)"
-  fi
-fi
+# Require fastlane session env
+: "${FASTLANE_USER:=nqcdan1908@gmail.com}"
+[[ -n "${FASTLANE_SESSION:-}" ]] || die "Missing FASTLANE_SESSION. Generate via: (cd ios && bundle exec fastlane spaceauth)"
 
 log "=== OF1 MOBILE iOS TestFlight: start ==="
 
