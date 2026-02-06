@@ -57,3 +57,12 @@ Backup nghề nghiệp, tập trung vào việc phát triển.
 
 
 
+---
+
+## Sending daily briefings
+Sử dụng cron jobs
+
+---
+## Sending weekly insight reports
+
+
