@@ -60,13 +60,13 @@ Mục tiêu: dán note thô → ra bản rõ ràng + action items.
 ```md
 # Raw note
 Context:
-- 
+-
 Goal:
-- 
+-
 Constraints:
-- 
+-
 Raw bullets:
-- 
+-
 ```
 
 **AI output yêu cầu:**

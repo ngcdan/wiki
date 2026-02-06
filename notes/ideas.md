@@ -1,3 +1,4 @@
+# Ideas / Quick Notes
 Chụp các bill, chuyển khoản, data lịch sử giao dịch cho bot để tự ocr add vào transactions
 
 Từ đó theo dõi chi tiêu, tạo ra các budget cho các nhóm và đưa ra các chỉ số hằng ngày để chi tiêu cho hợp lý.
