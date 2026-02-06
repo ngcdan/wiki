@@ -44,3 +44,16 @@ Ngoài ra, luyện tập viết…
 Hàng ngày, hãy gửi một đoạn văn tiếng anh và gợi ý để tôi dịch từ đó, tìm các thông tin liên quan đến tôi và phải sát với cuộc sống của tôi để có cảm giác liên quan, dễ hình dung, và có cảm hứng học từ đó.
 
 Hàng tuần, tôi sẽ cần tập trung các skill khác và tôi muốn có hệ thống để tự động tổng hợp kiến thức thành từng paper và tôi sẽ đọc chúng.
+
+---
+
+Hệ thống thông tin và hỗ trợ đưa ra các quyết định thông minh, tác động vào các hệ thống sẵn có của mình.
+
+Mục tiêu là giảm các việc lặp đi lặp lại, theo quy trình, không yêu cầu suy nghĩ sâu, sáng tạo.
+Giảm các tin tức nhiễu, có một workspace tập trung.
+
+Backup nghề nghiệp, tập trung vào việc phát triển.
+
+
+
+
