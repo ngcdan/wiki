@@ -47,6 +47,7 @@ import requests
 
 @dataclass(frozen=True)
 class CollectorConfig:
+    """CollectorConfig: helper class. See top docstring for overall flow."""
     base_url: str
     token: str
     owner: str
@@ -75,12 +76,14 @@ class ConfigBuilder:
 
     @staticmethod
     def _csv(values: Optional[str]) -> List[str]:
+        """Internal helper: _csv."""
         if not values:
             return []
         return [v.strip() for v in values.split(",") if v.strip()]
 
     @staticmethod
     def build(argv: Optional[List[str]] = None) -> CollectorConfig:
+        """build: function helper. See module docstring for behavior."""
         script_dir = Path(__file__).resolve().parent
         ConfigBuilder.maybe_load_dotenv(script_dir / ".env")
 
@@ -208,10 +211,12 @@ class Pr:
 
     @staticmethod
     def parse_iso_z(dt: str) -> datetime:
+        """parse_iso_z: function helper. See module docstring for behavior."""
         return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ")
 
     @staticmethod
     def iso_date(iso_z: str) -> str:
+        """iso_date: function helper. See module docstring for behavior."""
         try:
             return Pr.parse_iso_z(str(iso_z)).strftime("%Y-%m-%d")
         except Exception:
@@ -219,25 +224,30 @@ class Pr:
 
     @staticmethod
     def id(pr: Dict) -> Optional[int]:
+        """id: function helper. See module docstring for behavior."""
         n = pr.get("number")
         return int(n) if isinstance(n, int) else None
 
     @staticmethod
     def is_merged(pr: Dict) -> bool:
+        """is_merged: function helper. See module docstring for behavior."""
         return pr.get("merged") is True or bool(pr.get("merged_at"))
 
     @staticmethod
     def has_description(pr: Dict) -> bool:
+        """has_description: function helper. See module docstring for behavior."""
         body = pr.get("body")
         return isinstance(body, str) and body.strip() != ""
 
     @staticmethod
     def should_include(pr: Dict) -> bool:
+        """should_include: function helper. See module docstring for behavior."""
         # Keep: open + merged. Drop: closed-but-not-merged.
         return pr.get("state") == "open" or Pr.is_merged(pr)
 
     @staticmethod
     def labels(pr: Dict) -> List[str]:
+        """labels: function helper. See module docstring for behavior."""
         labels = pr.get("labels")
         if not isinstance(labels, list):
             return []
@@ -249,7 +259,9 @@ class Pr:
 
     @staticmethod
     def assignees(pr: Dict) -> str:
+        """assignees: function helper. See module docstring for behavior."""
         def fmt_user(u: Dict) -> str:
+            """fmt_user: function helper. See module docstring for behavior."""
             login = u.get("login") or "unknown"
             name = u.get("full_name") or u.get("name") or ""
             return f"@{login}" + (f" ({name})" if name and name != login else "")
@@ -266,6 +278,7 @@ class Pr:
 
     @staticmethod
     def first_line_desc(pr: Dict) -> str:
+        """first_line_desc: function helper. See module docstring for behavior."""
         body = (pr.get("body") or "").strip()
         for ln in body.splitlines():
             if ln.strip():
@@ -307,6 +320,7 @@ class PersonalBacklogRenderer:
     """Render one PR block for personal wiki BACKLOG - Team."""
 
     def render(self, pr: Dict) -> str:
+        """render: function helper. See module docstring for behavior."""
         pid = Pr.id(pr)
         title = pr.get("title") or "(no title)"
         title = re.sub(r"^\s*#\d+\s*[-:]*\s*", "", title).strip()
@@ -343,6 +357,7 @@ class CrmBacklogRenderer:
     """Render a PR block template for OF1_Crm backlog (numbering applied later)."""
 
     def render_template(self, pr: Dict) -> str:
+        """render_template: function helper. See module docstring for behavior."""
         merged_at = pr.get("merged_at")
         tag = Pr.iso_date(str(merged_at)) if merged_at else "In Progress"
 
@@ -365,19 +380,23 @@ class CrmBacklogRenderer:
 
 
 class MarkdownFile:
+    """MarkdownFile: helper class. See top docstring for overall flow."""
     def __init__(self, path: Path):
         self._path = path
 
     def read(self) -> str:
+        """read: function helper. See module docstring for behavior."""
         if not self._path.exists():
             raise SystemExit(f"❌ File not found: {self._path}")
         return self._path.read_text(encoding="utf-8")
 
     def write(self, text: str) -> None:
+        """write: function helper. See module docstring for behavior."""
         self._path.write_text(text, encoding="utf-8")
 
     @property
     def path(self) -> Path:
+        """path: function helper. See module docstring for behavior."""
         return self._path
 
 
@@ -396,6 +415,7 @@ class PersonalBacklogUpdater:
         self._renderer = renderer
 
     def sync(self, prs: List[Dict]) -> None:
+        """sync: function helper. See module docstring for behavior."""
         text = self._file.read()
 
         idx = text.find(self.SECTION_HEADER)
@@ -491,6 +511,7 @@ class CrmBacklogUpdater:
         self._renderer = renderer
 
     def sync(self, prs: List[Dict]) -> None:
+        """sync: function helper. See module docstring for behavior."""
         text = self._file.read()
 
         text = self._ensure_section(text, self.SECTION_FEATURES)
@@ -515,12 +536,14 @@ class CrmBacklogUpdater:
         print(f"✅ CRM backlog updated: {self._file.path}")
 
     def _bucket(self, pr: Dict) -> str:
+        """Internal helper: _bucket."""
         names = [n.lower() for n in Pr.labels(pr)]
         if any("feature" in n for n in names):
             return self.SECTION_FEATURES
         return self.SECTION_BEM
 
     def _ensure_section(self, text: str, header: str) -> str:
+        """Internal helper: _ensure_section."""
         if header in text:
             return text
 
@@ -547,6 +570,7 @@ class CrmBacklogUpdater:
         return out
 
     def _build_section_body(self, full_text: str, header: str, prs: List[Dict]) -> str:
+        """Internal helper: _build_section_body."""
         section_body = self._get_section_body(full_text, header)
         by_id = self._extract_blocks_by_id(section_body)
 
@@ -575,6 +599,7 @@ class CrmBacklogUpdater:
 
     @staticmethod
     def _crm_sort_key(item: Tuple[int, str]) -> Tuple[str, int]:
+        """Internal helper: _crm_sort_key."""
         pid, blk = item
         m = re.search(r"\[(\d{4}-\d{2}-\d{2}|In Progress)\]", blk)
         tag = m.group(1) if m else "In Progress"
@@ -585,6 +610,7 @@ class CrmBacklogUpdater:
 
     @staticmethod
     def _get_section_body(text: str, header: str) -> str:
+        """Internal helper: _get_section_body."""
         start = text.find(header)
         if start == -1:
             return ""
@@ -599,6 +625,7 @@ class CrmBacklogUpdater:
 
     @staticmethod
     def _replace_section_body(text: str, header: str, new_body: str) -> str:
+        """Internal helper: _replace_section_body."""
         start = text.find(header)
         if start == -1:
             return text
@@ -627,6 +654,7 @@ class CrmBacklogUpdater:
 
 
 class App:
+    """App: helper class. See top docstring for overall flow."""
     def __init__(self, cfg: CollectorConfig):
         self._cfg = cfg
         self._client = ForgejoClient(cfg.base_url, cfg.token)
@@ -640,6 +668,7 @@ class App:
             self._crm_updater = CrmBacklogUpdater(MarkdownFile(cfg.crm_backlog_file), CrmBacklogRenderer())
 
     def run(self) -> None:
+        """run: function helper. See module docstring for behavior."""
         print("🚀 Forgejo PR Collector")
         print("=" * 50)
 
@@ -674,6 +703,7 @@ class App:
 
 
 def main() -> None:
+    """main: function helper. See module docstring for behavior."""
     cfg = ConfigBuilder.build()
     App(cfg).run()
 
