@@ -70,6 +70,7 @@ class CollectorConfig:
     state: str
     days_back: Optional[int]
     backlog_file: Path
+    crm_backlog_file: Optional[Path]
 
 
 class ForgejoCollector:
@@ -344,7 +345,13 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
     parser.add_argument(
         "--backlog-file",
         default=os.getenv("BACKLOG_FILE") or str((script_dir.parent / "BACKLOG.md")),
-        help="Backlog markdown file to update (writes between AUTO markers)",
+        help="Personal wiki backlog markdown file to update (Team section)",
+    )
+
+    parser.add_argument(
+        "--crm-backlog-file",
+        default=os.getenv("CRM_BACKLOG_FILE") or str((script_dir.parent / "work" / "OF1_Crm" / "BACKLOG.md")),
+        help="OF1_Crm backlog markdown file to update (Features + Bugs/Enhancements/Maintenance sections)",
     )
 
     args = parser.parse_args(argv)
@@ -366,6 +373,10 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
     else:
         days_back = int(args.days_back)
 
+    crm_backlog_file: Optional[Path] = None
+    if args.crm_backlog_file not in (None, "", "None"):
+        crm_backlog_file = Path(args.crm_backlog_file).expanduser().resolve()
+
     return CollectorConfig(
         base_url=str(args.url),
         token=str(args.token),
@@ -374,6 +385,7 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
         state=str(args.state),
         days_back=days_back,
         backlog_file=Path(args.backlog_file).expanduser().resolve(),
+        crm_backlog_file=crm_backlog_file,
     )
 
 
@@ -503,6 +515,223 @@ def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         print(f"✅ Backlog unchanged: {backlog_file}")
 
 
+def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
+    """Update OF1_Crm backlog with two buckets based on PR labels.
+
+    Sections:
+    - ## Features
+    - ## Bugs / Enhancements / Maintenance
+
+    Only includes PRs that:
+    - have non-empty description (body)
+    - are open or merged (drops closed-not-merged)
+
+    Dedup/replacement:
+    - Detect by PR id from Link (/pulls/<id>)
+    - If exists, replace that PR block; else append.
+
+    Output format per PR:
+    #### <n>. [<merged_date|OPEN>] - <title_clean>
+        > <first line of description>
+
+       **Link:** <url>
+       **Assignee:** <assignees>
+    """
+
+    if not backlog_file.exists():
+        raise SystemExit(f"❌ CRM backlog file not found: {backlog_file}")
+
+    text = backlog_file.read_text(encoding="utf-8")
+
+    def ensure_section(header: str) -> None:
+        nonlocal text
+        if header not in text:
+            # Insert near top after first H1 if possible, else append.
+            m = re.search(r"^#\s+.*$", text, flags=re.M)
+            insert_at = m.end(0) + 1 if m else len(text)
+            text = text[:insert_at] + f"\n\n{header}\n\n" + text[insert_at:]
+
+    import re
+
+    ensure_section("## Features")
+    ensure_section("## Bugs / Enhancements / Maintenance")
+
+    def _has_description(pr: Dict) -> bool:
+        body = pr.get("body")
+        return isinstance(body, str) and body.strip() != ""
+
+    def _is_merged(pr: Dict) -> bool:
+        return pr.get("merged") is True or bool(pr.get("merged_at"))
+
+    def _should_include(pr: Dict) -> bool:
+        state = pr.get("state")
+        return state == "open" or _is_merged(pr)
+
+    def _merged_date(pr: Dict) -> str:
+        merged_at = pr.get("merged_at")
+        if merged_at:
+            return str(merged_at)[:10]
+        return "OPEN"
+
+    def _clean_title(title: str) -> str:
+        t = (title or "").strip()
+        # Remove any [Tag] anywhere (e.g. [Enhancement])
+        t = re.sub(r"\[[^\]]+\]", "", t)
+        # Remove leading verbs like Fixes/Closes/Refs/Issues with or without separators
+        t = re.sub(
+            r"^(Closes|Fixes|Resolves|Refs?|Issues?)\s+(#\d+)(\s*[+,/]\s*#\d+)*\s*[-:]*\s*",
+            "",
+            t,
+            flags=re.I,
+        )
+        # Remove any remaining issue references like '#123' (keep it title-only)
+        t = re.sub(r"#\d+", "", t)
+        # Remove leftover punctuation/double spaces
+        t = re.sub(r"\s+", " ", t).strip()
+        t = t.strip("-:–— ").rstrip(".")
+        return t
+
+    def fmt_user(u: Dict) -> str:
+        login = u.get("login") or "unknown"
+        name = u.get("full_name") or u.get("name") or ""
+        return f"@{login}" + (f" ({name})" if name and name != login else "")
+
+    def assignees_str(pr: Dict) -> str:
+        assignees = pr.get("assignees")
+        if isinstance(assignees, list) and assignees:
+            return ", ".join(fmt_user(a or {}) for a in assignees)
+        assignee = pr.get("assignee")
+        if isinstance(assignee, dict) and assignee:
+            return fmt_user(assignee)
+        return "(unassigned)"
+
+    def first_line_desc(pr: Dict) -> str:
+        body = (pr.get("body") or "").strip()
+        for ln in body.splitlines():
+            if ln.strip():
+                return ln.strip()
+        return ""
+
+    def labels_of(pr: Dict) -> List[str]:
+        labels = pr.get("labels")
+        if not isinstance(labels, list):
+            return []
+        out = []
+        for lb in labels:
+            if isinstance(lb, dict) and lb.get("name"):
+                out.append(str(lb["name"]))
+        return out
+
+    def bucket_for(pr: Dict) -> str:
+        names = [n.lower() for n in labels_of(pr)]
+        if any("feature" in n for n in names):
+            return "## Features"
+        # default bucket
+        return "## Bugs / Enhancements / Maintenance"
+
+    def render_pr(pr: Dict) -> str:
+        num = pr.get("number")
+        title = _clean_title(pr.get("title") or "(no title)")
+        merged = _merged_date(pr)
+        desc = first_line_desc(pr)
+        url = pr.get("html_url") or ""
+        ass = assignees_str(pr)
+
+        return (
+            f"#### {{n}}. [{merged}] - {title}\n"
+            f"    > {desc}\n\n"
+            f"   **Link:** {url}\n"
+            f"   **Assignee:** {ass}\n"
+        )
+
+    def update_section(section_header: str, prs_for_section: List[Dict]) -> None:
+        nonlocal text
+        # Isolate section body
+        start = text.find(section_header)
+        if start == -1:
+            return
+        start_line_end = text.find("\n", start)
+        body_start = start_line_end + 1 if start_line_end != -1 else len(text)
+
+        m_next = re.search(r"^##\s+", text[body_start:], flags=re.M)
+        body_end = body_start + m_next.start(0) if m_next else len(text)
+
+        before = text[:body_start]
+        body = text[body_start:body_end]
+        after = text[body_end:]
+
+        # Parse existing blocks by PR id (from Link)
+        # Block pattern starts with #### <n>. [ ...
+        block_re = re.compile(r"(?ms)^####\s+\d+\.\s+\[[^\]]+\]\s+-\s+.*?(?=^####\s+\d+\.\s+\[|^##\s+|\Z)")
+
+        blocks = []
+        for m in block_re.finditer(body):
+            blk = m.group(0)
+            m_id = re.search(r"/pulls/(\d+)\b", blk)
+            pr_id = int(m_id.group(1)) if m_id else None
+            blocks.append((m.start(), m.end(), pr_id, blk))
+
+        by_id: Dict[int, str] = {pid: blk for _, _, pid, blk in blocks if isinstance(pid, int)}
+
+        # Remove PRs that no longer qualify
+        for pr in prs_for_section:
+            if not isinstance(pr.get("number"), int):
+                continue
+            pid = pr["number"]
+            if (not _has_description(pr)) or (not _should_include(pr)):
+                by_id.pop(pid, None)
+
+        updated = 0
+        appended = 0
+        for pr in prs_for_section:
+            if not isinstance(pr.get("number"), int):
+                continue
+            if (not _has_description(pr)) or (not _should_include(pr)):
+                continue
+            pid = pr["number"]
+            new_blk = render_pr(pr)
+            if pid in by_id:
+                # replace
+                if by_id[pid].strip() != new_blk.format(n=1).strip():
+                    by_id[pid] = new_blk
+                    updated += 1
+            else:
+                by_id[pid] = new_blk
+                appended += 1
+
+        # Rebuild sorted by merged date desc then id desc
+        def sort_key(item):
+            pid, blk = item
+            m = re.search(r"\[(\d{4}-\d{2}-\d{2}|OPEN)\]", blk)
+            d = m.group(1) if m else "OPEN"
+            # OPEN last
+            dkey = d if d != "OPEN" else "0000-00-00"
+            return (dkey, pid)
+
+        items = sorted(by_id.items(), key=sort_key, reverse=True)
+
+        rebuilt = []
+        for i, (pid, tmpl) in enumerate(items, start=1):
+            rebuilt.append(tmpl.format(n=i).rstrip())
+
+        new_body = "\n\n".join(rebuilt).rstrip() + "\n"
+
+        text = before + ("\n" if before and not before.endswith("\n") else "") + new_body + after
+
+    # Bucket PRs
+    features = []
+    bem = []
+    for pr in prs:
+        bucket = bucket_for(pr)
+        (features if bucket == "## Features" else bem).append(pr)
+
+    update_section("## Features", features)
+    update_section("## Bugs / Enhancements / Maintenance", bem)
+
+    backlog_file.write_text(text, encoding="utf-8")
+    print(f"✅ CRM backlog updated: {backlog_file}")
+
+
 def main() -> None:
     print("🚀 Forgejo PR Collector")
     print("=" * 50)
@@ -526,9 +755,15 @@ def main() -> None:
         all_prs[repo] = prs
         print(f"   ✓ Found {len(prs)} PRs")
 
-    # Update backlog (default: first repo)
     first_repo = cfg.repos[0]
-    _update_backlog(cfg.backlog_file, all_prs.get(first_repo, []))
+    repo_prs = all_prs.get(first_repo, [])
+
+    # Update personal wiki backlog Team section
+    _update_backlog(cfg.backlog_file, repo_prs)
+
+    # Update OF1_Crm backlog if configured
+    if cfg.crm_backlog_file:
+        _update_of1_crm_backlog(cfg.crm_backlog_file, repo_prs)
 
     print("✨ Done!")
 
