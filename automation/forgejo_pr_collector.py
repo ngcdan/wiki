@@ -571,7 +571,7 @@ def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         merged_at = pr.get("merged_at")
         if merged_at:
             return str(merged_at)[:10]
-        return "OPEN"
+        return "In Progress"
 
     def _clean_title(title: str) -> str:
         t = (title or "").strip()
@@ -667,6 +667,8 @@ def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         blocks = []
         for m in block_re.finditer(body):
             blk = m.group(0)
+            # Normalize numbering so we can replace/reorder deterministically.
+            blk = re.sub(r"^####\s+\d+\.", "#### {n}.", blk, flags=re.M)
             m_id = re.search(r"/pulls/(\d+)\b", blk)
             pr_id = int(m_id.group(1)) if m_id else None
             blocks.append((m.start(), m.end(), pr_id, blk))
@@ -691,8 +693,8 @@ def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
             pid = pr["number"]
             new_blk = render_pr(pr)
             if pid in by_id:
-                # replace
-                if by_id[pid].strip() != new_blk.format(n=1).strip():
+                # replace (compare templates, numbering is applied in rebuild phase)
+                if by_id[pid].strip() != new_blk.strip():
                     by_id[pid] = new_blk
                     updated += 1
             else:
@@ -702,10 +704,10 @@ def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         # Rebuild sorted by merged date desc then id desc
         def sort_key(item):
             pid, blk = item
-            m = re.search(r"\[(\d{4}-\d{2}-\d{2}|OPEN)\]", blk)
-            d = m.group(1) if m else "OPEN"
-            # OPEN last
-            dkey = d if d != "OPEN" else "0000-00-00"
+            m = re.search(r"\[(\d{4}-\d{2}-\d{2}|In Progress)\]", blk)
+            d = m.group(1) if m else "In Progress"
+            # In Progress first
+            dkey = "9999-99-99" if d == "In Progress" else d
             return (dkey, pid)
 
         items = sorted(by_id.items(), key=sort_key, reverse=True)
