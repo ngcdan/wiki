@@ -13,6 +13,7 @@
 
 ## Planning, Ideas
 
+- [ ] (OpenClaw) Cân nhắc setup **multiple agents** (triage/coding/ops) trong **1 Gateway** để tách vai trò + tool policy + chạy song song bằng sub-agent sessions; đồng thời tách session theo channel (Telegram vs Web UI) đã làm xong, còn phần agents sẽ review/triển khai sau nếu cần.
 
 ---
 ## BACKLOG - Team
