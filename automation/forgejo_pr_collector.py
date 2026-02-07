@@ -717,6 +717,9 @@ def _update_of1_crm_backlog(backlog_file: Path, prs: List[Dict]) -> None:
             rebuilt.append(tmpl.format(n=i).rstrip())
 
         new_body = "\n\n".join(rebuilt).rstrip() + "\n"
+        # Ensure there's an empty line between section header and the first PR entry.
+        if new_body.strip():
+            new_body = "\n" + new_body
 
         text = before + ("\n" if before and not before.endswith("\n") else "") + new_body + after
 
