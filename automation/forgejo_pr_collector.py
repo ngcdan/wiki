@@ -296,7 +296,7 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
     )
     parser.add_argument(
         "--days-back",
-        default=os.getenv("DAYS_BACK"),
+        default=os.getenv("DAYS_BACK", "3"),
         help="Only include PRs updated within N days (omit for all)",
     )
     parser.add_argument(
