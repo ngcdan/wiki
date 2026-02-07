@@ -336,7 +336,15 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
 
 
 def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
-    """Update backlog file between AUTO markers."""
+    """Append-only update to backlog file between AUTO markers.
+
+    Behavior:
+    - Never deletes/overwrites existing entries inside the AUTO block.
+    - Detects already-recorded PRs by PR number and only inserts new ones.
+
+    Trade-off: entries won't reflect later edits (title/desc/labels/state changes).
+    """
+
     start_marker = "<!-- AUTO:FORGEJO_PRS_START -->"
     end_marker = "<!-- AUTO:FORGEJO_PRS_END -->"
 
@@ -351,11 +359,26 @@ def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         )
 
     before, rest = text.split(start_marker, 1)
-    _, after = rest.split(end_marker, 1)
+    block, after = rest.split(end_marker, 1)
 
-    new_block = start_marker + "\n" + MarkdownGenerator.render_backlog_entries(prs) + end_marker
+    # Extract existing PR numbers from current block.
+    import re
+
+    existing_nums = set(int(m.group(1)) for m in re.finditer(r"^####\s+#(\d+)\b", block, flags=re.M))
+
+    new_prs = [pr for pr in prs if isinstance(pr.get("number"), int) and pr["number"] not in existing_nums]
+    if not new_prs:
+        print(f"✅ Backlog unchanged (no new PRs): {backlog_file}")
+        return
+
+    # Insert new entries right after the start marker (prepend within AUTO block)
+    # so newest additions are visible at top, while still preserving existing text.
+    insert = "\n" + MarkdownGenerator.render_backlog_entries(new_prs).rstrip() + "\n"
+
+    # Keep original block content intact.
+    new_block = start_marker + insert + block.lstrip("\n") + end_marker
     backlog_file.write_text(before + new_block + after, encoding="utf-8")
-    print(f"✅ Backlog updated: {backlog_file}")
+    print(f"✅ Backlog appended: {backlog_file} (+{len(new_prs)} PRs)")
 
 
 def main() -> None:
