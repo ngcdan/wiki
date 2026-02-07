@@ -250,6 +250,13 @@ class MarkdownGenerator:
             lines.append("")
             if url:
                 lines.append(f"- **Link:** {url}")
+
+            labels = pr.get("labels")
+            if isinstance(labels, list) and labels:
+                label_names = [lb.get("name") for lb in labels if isinstance(lb, dict) and lb.get("name")]
+                if label_names:
+                    lines.append(f"- **Labels:** {', '.join(label_names)}")
+
             lines.append(f"- **Assignee:** {assignee_str}")
             lines.append(f"- **Status:** {status}")
             if merged_at:

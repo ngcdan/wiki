@@ -20,6 +20,7 @@
 > Clean code Partner + Inquiry Request
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/301
+- **Labels:** Enhancement
 - **Assignee:** @qngnhat
 - **Status:** merged
 - **Merged at:** 2026-02-06
@@ -28,6 +29,7 @@
 > Refactor code, clean code
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/288
+- **Labels:** Enhancement
 - **Assignee:** @jesse.vnhph (Lê Ngọc Đàn)
 - **Status:** open
 
@@ -35,6 +37,7 @@
 > Cập nhật logic syncLegacySystem để sử dụng continent.
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/285
+- **Labels:** Enhancement
 - **Assignee:** @ntduc2810, @qngnhat
 - **Status:** merged
 - **Merged at:** 2026-02-06
@@ -51,6 +54,7 @@
 > Add 'pricing branch' field to inquiry request list. Fix popup showing twice issue.
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/283
+- **Labels:** Enhancement
 - **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-04
@@ -59,6 +63,7 @@
 > ![image](/attachments/b5ca9409-021e-4cc9-93a1-26f193e6f9a0)
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/281
+- **Labels:** Bug
 - **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-03
