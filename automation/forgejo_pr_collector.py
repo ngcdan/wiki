@@ -192,6 +192,15 @@ class MarkdownGenerator:
             reverse=True,
         )
 
+        def fmt_dt(iso_z: str) -> str:
+            # Keep it simple: show local-ish timestamp without timezone conversion.
+            # Example input: 2026-02-05T09:04:24Z
+            try:
+                dt = _parse_iso_z(iso_z)
+                return dt.strftime("%Y-%m-%d %H:%M:%S") + "Z"
+            except Exception:
+                return iso_z
+
         lines: List[str] = []
         import re
 
@@ -200,8 +209,19 @@ class MarkdownGenerator:
             title = pr.get("title") or "(no title)"
             # Avoid duplicated numbers like "#289 ..." when PR number is already rendered.
             title = re.sub(r"^\s*#\d+\s*[-:]*\s*", "", title).strip()
-            author = pr.get("user", {}).get("login") or "unknown"
+
+            user = pr.get("user") or {}
+            author_login = user.get("login") or "unknown"
+            author_name = user.get("full_name") or user.get("name") or ""
+            author = f"@{author_login}" + (f" ({author_name})" if author_name and author_name != author_login else "")
+
             url = pr.get("html_url") or ""
+
+            # Status / merged
+            state = pr.get("state") or "unknown"
+            merged_at = pr.get("merged_at")
+            merged_flag = pr.get("merged") is True or bool(merged_at)
+            status = "merged" if merged_flag else state
 
             body = (pr.get("body") or "").strip()
             # Take first non-empty line as summary
@@ -218,7 +238,10 @@ class MarkdownGenerator:
             lines.append("")
             if url:
                 lines.append(f"- **Link:** {url}")
-            lines.append(f"- **Author:** @{author}")
+            lines.append(f"- **Author:** {author}")
+            lines.append(f"- **Status:** {status}")
+            if merged_at:
+                lines.append(f"- **Merged at:** {fmt_dt(str(merged_at))}")
             lines.append("")
 
         return "\n".join(lines).rstrip() + "\n"
