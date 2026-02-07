@@ -9,6 +9,18 @@
 - [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
 
+---
+## BACKLOG - Team
+
+<!-- AUTO:FORGEJO_PRS_START -->
+#### #288 [CRM-0001] Refactor code
+> Refactor code, clean code
+
+- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/288
+- **Author:** @vutuongan2003
+<!-- AUTO:FORGEJO_PRS_END -->
+
+
 ## Automation (trigger thủ công)
 
 ### Google APIs (OAuth) — Calendar + Drive/Docs/Sheets
@@ -17,11 +29,6 @@
   - Add scopes + regenerate `token.json` (refresh token)
   - Viết CLI chung (send mail / create event / upload drive / create doc / edit sheet)
   - Rule: default “send luôn” theo lệnh rõ ràng; log + summary mỗi lần chạy
-
-### A) Daily pull + build (mỗi sáng)
-**Mục tiêu:** mỗi sáng tự pull code từ remote về và build sẵn bằng lệnh (log rõ ràng).
-- [ ] Anh Đàn note theo checklist: repo path + branch + build command + giờ chạy + cách báo OK/FAIL
-- [ ] Tommy viết script CLI + log + summary (copy/paste) và setup job chạy theo giờ
 
 ### B) Ops: update prod + sync beta/dev
 **Mục tiêu:** tự động hoá các tác vụ vận hành bằng lệnh, anh Đàn là người trigger thủ công.

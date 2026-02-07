@@ -301,7 +301,7 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
     )
     parser.add_argument(
         "--backlog-file",
-        default=os.getenv("BACKLOG_FILE") or str((script_dir.parent / "work" / "OF1_Crm" / "BACKLOG.md")),
+        default=os.getenv("BACKLOG_FILE") or str((script_dir.parent / "BACKLOG.md")),
         help="Backlog markdown file to update (writes between AUTO markers)",
     )
 
