@@ -4,6 +4,24 @@
 - Chạy moltbot (Clawdbot) 24/7 trên Mac mini, tách biệt hoàn toàn với các user khác.
 - Đảm bảo chỉ bạn có quyền điều khiển, không lộ API key, hạn chế tối đa rủi ro bảo mật.
 
+#### Node cho OpenClaw daemon (khuyến nghị)
+NÊN: cài Node LTS bằng Homebrew
+KHÔNG NÊN: dùng Node qua nvm / fnm / asdf cho daemon
+Vì sao dùng brew node?
+LaunchAgent (daemon macOS) không load .zshrc → không thấy nvm
+Node trong nvm nằm ở ~/.nvm/... → dễ gãy khi upgrade / xoá version
+Brew node nằm ở đường dẫn cố định (/opt/homebrew/bin/node)
+OpenClaw daemon chạy ổn định 24/7
+
+```
+openclaw gateway install
+openclaw gateway start
+openclaw gateway status
+openclaw gateway restart
+openclaw gateway stop
+```
+
+
 ## 2. Cơ chế isolate & bảo mật
 ### 2.1. Isolate môi trường
 - **Tạo user riêng biệt** (ví dụ: `clawdbot`) chỉ dùng để chạy moltbot, không cấp quyền admin, không dùng chung với các tác vụ khác.
