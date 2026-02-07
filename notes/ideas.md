@@ -65,4 +65,8 @@ Sử dụng cron jobs
 ---
 ## Sending weekly insight reports
 
+---
+
+Không gắn chặt bản thân vào 1 phần mềm nào đó, vì cuối cùng đó vẫn là sản phẩm chung, sản phẩm của công ty và công ty cũng lấy lại. Hãy nhìn trường hợp của anh Quý làm gương, tham khảo. Hãy cân nhắc lợi ích, tâm huyết, sức lực đóng góp vào một dự án nào đó, đừng để cảm xúc hoặc việc gắn chặt sản phẩm như một tài sản cá nhân.
+
 
