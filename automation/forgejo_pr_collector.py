@@ -1,6 +1,40 @@
 #!/usr/bin/env python3
 """Forgejo PR Collector (Backlog Sync)
 
+Quick run
+
+1) Ensure venv is ready (one-time):
+
+    cd /Users/nqcdan/dev/wiki/automation
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+
+2) Configure env (do NOT commit):
+
+    # file: /Users/nqcdan/dev/wiki/automation/.env
+    FORGEJO_URL=http://forgejo.of1-apps.svc.cluster.local
+    FORGEJO_TOKEN=***
+    FORGEJO_OWNER=of1-crm
+    FORGEJO_REPOS=of1-crm
+    PR_STATE=all
+    DAYS_BACK=3
+
+3) Run (common):
+
+    cd /Users/nqcdan/dev/wiki/automation
+    source .venv/bin/activate
+    set -a && source .env && set +a
+
+    # update both backlogs (default paths)
+    python forgejo_pr_collector.py --state all --days-back 7
+
+    # update only personal backlog
+    python forgejo_pr_collector.py --crm-backlog-file None
+
+    # update only OF1_Crm backlog
+    python forgejo_pr_collector.py --backlog-file /dev/null --crm-backlog-file /Users/nqcdan/dev/wiki/work/OF1_Crm/BACKLOG.md
+
 Purpose
 - Fetch pull requests from Forgejo (Gitea-compatible API) using a token.
 - Sync summaries into markdown backlogs.
