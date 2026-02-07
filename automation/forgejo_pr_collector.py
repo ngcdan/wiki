@@ -193,13 +193,14 @@ class MarkdownGenerator:
         )
 
         def fmt_dt(iso_z: str) -> str:
-            # Keep it simple: show local-ish timestamp without timezone conversion.
-            # Example input: 2026-02-05T09:04:24Z
+            # Keep it simple: show date only (UTC Z timestamps from Forgejo).
+            # Example input: 2026-02-05T09:04:24Z -> 2026-02-05
             try:
                 dt = _parse_iso_z(iso_z)
-                return dt.strftime("%Y-%m-%d %H:%M:%S") + "Z"
+                return dt.strftime("%Y-%m-%d")
             except Exception:
-                return iso_z
+                # fallback: best-effort take date prefix
+                return str(iso_z)[:10]
 
         lines: List[str] = []
         import re
@@ -221,7 +222,7 @@ class MarkdownGenerator:
             state = pr.get("state") or "unknown"
             merged_at = pr.get("merged_at")
             merged_flag = pr.get("merged") is True or bool(merged_at)
-            status = "merged" if merged_flag else state
+            status = "merged" if merged_flag else ("open" if state == "open" else state)
 
             body = (pr.get("body") or "").strip()
             # Take first non-empty line as summary
@@ -407,6 +408,14 @@ def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
         body = pr.get("body")
         return isinstance(body, str) and body.strip() != ""
 
+    def _is_merged(pr: Dict) -> bool:
+        return pr.get("merged") is True or bool(pr.get("merged_at"))
+
+    def _should_include(pr: Dict) -> bool:
+        # Keep: open PRs + merged PRs. Drop: closed-but-not-merged.
+        state = pr.get("state")
+        return state == "open" or _is_merged(pr)
+
     def _render_one(pr: Dict) -> str:
         return MarkdownGenerator.render_backlog_entries([pr]).rstrip() + "\n"
 
@@ -441,8 +450,8 @@ def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
             continue
         num = pr["number"]
 
-        if not _has_description(pr):
-            # If it exists but has no description, ensure it's not present.
+        if (not _has_description(pr)) or (not _should_include(pr)):
+            # If it exists but shouldn't be shown, ensure it's not present.
             if num in blocks_by_num:
                 del blocks_by_num[num]
                 removed += 1
