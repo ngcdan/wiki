@@ -211,10 +211,21 @@ class MarkdownGenerator:
             # Avoid duplicated numbers like "#289 ..." when PR number is already rendered.
             title = re.sub(r"^\s*#\d+\s*[-:]*\s*", "", title).strip()
 
-            user = pr.get("user") or {}
-            author_login = user.get("login") or "unknown"
-            author_name = user.get("full_name") or user.get("name") or ""
-            author = f"@{author_login}" + (f" ({author_name})" if author_name and author_name != author_login else "")
+            def fmt_user(u: Dict) -> str:
+                login = u.get("login") or "unknown"
+                name = u.get("full_name") or u.get("name") or ""
+                return f"@{login}" + (f" ({name})" if name and name != login else "")
+
+            # Prefer assignee(s) over author (requested)
+            assignees = pr.get("assignees")
+            if isinstance(assignees, list) and assignees:
+                assignee_str = ", ".join(fmt_user(a or {}) for a in assignees)
+            else:
+                assignee = pr.get("assignee")
+                if isinstance(assignee, dict) and assignee:
+                    assignee_str = fmt_user(assignee)
+                else:
+                    assignee_str = "(unassigned)"
 
             url = pr.get("html_url") or ""
 
@@ -239,7 +250,7 @@ class MarkdownGenerator:
             lines.append("")
             if url:
                 lines.append(f"- **Link:** {url}")
-            lines.append(f"- **Author:** {author}")
+            lines.append(f"- **Assignee:** {assignee_str}")
             lines.append(f"- **Status:** {status}")
             if merged_at:
                 lines.append(f"- **Merged at:** {fmt_dt(str(merged_at))}")

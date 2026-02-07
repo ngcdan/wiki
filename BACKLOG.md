@@ -20,7 +20,7 @@
 > Clean code Partner + Inquiry Request
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/301
-- **Author:** @qngnhat
+- **Assignee:** @qngnhat
 - **Status:** merged
 - **Merged at:** 2026-02-06
 
@@ -28,14 +28,14 @@
 > Refactor code, clean code
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/288
-- **Author:** @vutuongan2003
+- **Assignee:** @jesse.vnhph (Lê Ngọc Đàn)
 - **Status:** open
 
 #### #285 Resolves #290 + #286 Update Partner continent, Inquiry Request Air Volume
 > Cập nhật logic syncLegacySystem để sử dụng continent.
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/285
-- **Author:** @qngnhat
+- **Assignee:** @ntduc2810, @qngnhat
 - **Status:** merged
 - **Merged at:** 2026-02-06
 
@@ -43,7 +43,7 @@
 > Thêm target pricing company branch vào subject khi gửi mail để Pricing có thể reject khi sale request nhầm company
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/284
-- **Author:** @qngnhat
+- **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-05
 
@@ -51,7 +51,7 @@
 > Add 'pricing branch' field to inquiry request list. Fix popup showing twice issue.
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/283
-- **Author:** @qngnhat
+- **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-04
 
@@ -59,7 +59,7 @@
 > ![image](/attachments/b5ca9409-021e-4cc9-93a1-26f193e6f9a0)
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/281
-- **Author:** @qngnhat
+- **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-03
 ## Automation (trigger thủ công)
