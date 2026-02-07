@@ -366,7 +366,17 @@ def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
 
     existing_nums = set(int(m.group(1)) for m in re.finditer(r"^####\s+#(\d+)\b", block, flags=re.M))
 
-    new_prs = [pr for pr in prs if isinstance(pr.get("number"), int) and pr["number"] not in existing_nums]
+    def _has_description(pr: Dict) -> bool:
+        body = pr.get("body")
+        return isinstance(body, str) and body.strip() != ""
+
+    new_prs = [
+        pr
+        for pr in prs
+        if isinstance(pr.get("number"), int)
+        and pr["number"] not in existing_nums
+        and _has_description(pr)
+    ]
     if not new_prs:
         print(f"✅ Backlog unchanged (no new PRs): {backlog_file}")
         return
