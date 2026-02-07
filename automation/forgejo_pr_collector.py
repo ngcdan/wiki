@@ -336,59 +336,121 @@ def build_config(argv: Optional[List[str]] = None) -> CollectorConfig:
 
 
 def _update_backlog(backlog_file: Path, prs: List[Dict]) -> None:
-    """Append-only update to backlog file between AUTO markers.
+    """Update `## BACKLOG - Team` section in-place.
 
-    Behavior:
-    - Never deletes/overwrites existing entries inside the AUTO block.
-    - Detects already-recorded PRs by PR number and only inserts new ones.
+    Requirements (as requested):
+    - No AUTO markers.
+    - Detect existing entries by PR number (`#### #<id> ...`).
+    - If PR already exists in section → replace its block with latest rendered content.
+    - If PR not exists → append into the section.
+    - Only include PRs that have a non-empty description/body.
 
-    Trade-off: entries won't reflect later edits (title/desc/labels/state changes).
+    Notes:
+    - This updates only the `## BACKLOG - Team` section and won't touch other sections.
     """
-
-    start_marker = "<!-- AUTO:FORGEJO_PRS_START -->"
-    end_marker = "<!-- AUTO:FORGEJO_PRS_END -->"
 
     if not backlog_file.exists():
         raise SystemExit(f"❌ Backlog file not found: {backlog_file}")
 
     text = backlog_file.read_text(encoding="utf-8")
-    if start_marker not in text or end_marker not in text:
-        raise SystemExit(
-            "❌ Backlog markers not found. Please add markers:\n"
-            f"{start_marker}\n...\n{end_marker}\n"
-        )
 
-    before, rest = text.split(start_marker, 1)
-    block, after = rest.split(end_marker, 1)
+    section_header = "## BACKLOG - Team"
+    idx = text.find(section_header)
+    if idx == -1:
+        raise SystemExit(f"❌ Missing section header: {section_header}")
 
-    # Extract existing PR numbers from current block.
+    # Section start = after the header line
+    line_end = text.find("\n", idx)
+    if line_end == -1:
+        line_end = len(text)
+
+    section_start = line_end + 1
+
+    # Section end = next H2 (## ...) after section_start, or EOF
     import re
 
-    existing_nums = set(int(m.group(1)) for m in re.finditer(r"^####\s+#(\d+)\b", block, flags=re.M))
+    m_next = re.search(r"^##\s+", text[section_start:], flags=re.M)
+    section_end = section_start + m_next.start(0) if m_next else len(text)
+
+    before = text[:section_start]
+    section = text[section_start:section_end]
+    after = text[section_end:]
+
+    # Remove any legacy AUTO markers if present (from old versions)
+    section = re.sub(r"^<!--\s*AUTO:FORGEJO_PRS_START\s*-->\s*\n?", "", section, flags=re.M)
+    section = re.sub(r"^<!--\s*AUTO:FORGEJO_PRS_END\s*-->\s*\n?", "", section, flags=re.M)
 
     def _has_description(pr: Dict) -> bool:
         body = pr.get("body")
         return isinstance(body, str) and body.strip() != ""
 
-    new_prs = [
-        pr
-        for pr in prs
-        if isinstance(pr.get("number"), int)
-        and pr["number"] not in existing_nums
-        and _has_description(pr)
-    ]
-    if not new_prs:
-        print(f"✅ Backlog unchanged (no new PRs): {backlog_file}")
-        return
+    def _render_one(pr: Dict) -> str:
+        return MarkdownGenerator.render_backlog_entries([pr]).rstrip() + "\n"
 
-    # Insert new entries right after the start marker (prepend within AUTO block)
-    # so newest additions are visible at top, while still preserving existing text.
-    insert = "\n" + MarkdownGenerator.render_backlog_entries(new_prs).rstrip() + "\n"
+    # Parse existing PR blocks within section.
+    # Block format:
+    # #### #<id> ...
+    # ...
+    # (blank line(s))
+    pr_block_re = re.compile(r"(?ms)^####\s+#(?P<num>\d+)\b.*?(?=^####\s+#\d+\b|\Z)")
 
-    # Keep original block content intact.
-    new_block = start_marker + insert + block.lstrip("\n") + end_marker
-    backlog_file.write_text(before + new_block + after, encoding="utf-8")
-    print(f"✅ Backlog appended: {backlog_file} (+{len(new_prs)} PRs)")
+    existing_blocks = []  # list of (start, end, num, block)
+    for m in pr_block_re.finditer(section):
+        num = int(m.group("num"))
+        existing_blocks.append((m.start(), m.end(), num, m.group(0)))
+
+    existing_nums = {num for _, _, num, _ in existing_blocks}
+
+    # Keep non-PR text (anything before first PR block); everything else is managed blocks.
+    prefix = section
+    if existing_blocks:
+        prefix = section[: existing_blocks[0][0]]
+
+    blocks_by_num = {num: blk for _, _, num, blk in existing_blocks}
+
+    # Apply updates: replace or append
+    updated = 0
+    appended = 0
+    removed = 0
+
+    for pr in prs:
+        if not isinstance(pr.get("number"), int):
+            continue
+        num = pr["number"]
+
+        if not _has_description(pr):
+            # If it exists but has no description, ensure it's not present.
+            if num in blocks_by_num:
+                del blocks_by_num[num]
+                removed += 1
+            continue
+
+        new_block = _render_one(pr).rstrip()  # store without trailing extra
+
+        if num in blocks_by_num:
+            if blocks_by_num[num].rstrip() != new_block:
+                blocks_by_num[num] = new_block
+                updated += 1
+        else:
+            blocks_by_num[num] = new_block
+            appended += 1
+
+    # Sort blocks by PR number desc (simple + stable)
+    nums_sorted = sorted(blocks_by_num.keys(), reverse=True)
+    rebuilt_blocks = "\n\n".join(blocks_by_num[n].rstrip() for n in nums_sorted).rstrip()
+
+    new_section = prefix.rstrip() + ("\n\n" if prefix.strip() and rebuilt_blocks else "\n" if prefix.strip() else "")
+    new_section += rebuilt_blocks
+    new_section = new_section.rstrip() + "\n"
+
+    backlog_file.write_text(before + new_section + after, encoding="utf-8")
+
+    if updated or appended or removed:
+        print(
+            f"✅ Backlog updated: {backlog_file} (updated={updated}, appended={appended}, removed={removed})"
+        )
+    else:
+        print(f"✅ Backlog unchanged: {backlog_file}")
 
 
 def main() -> None:

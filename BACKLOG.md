@@ -11,31 +11,23 @@
 
 ---
 ## BACKLOG - Team
-
-<!-- AUTO:FORGEJO_PRS_START -->
 #### #301 Refs #286 #290 Clean code
 > Clean code Partner + Inquiry Request
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/301
 - **Author:** @qngnhat
 
-#### #300 Issues #298 - Add requirements for pricing branch
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/300
-- **Author:** @ntduc2810
-
-#### #299 Issues #298 - Add required for pricing branch
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/299
-- **Author:** @ntduc2810
-
 #### #295 Update sync legacy system, convert partner logic
 > Cập nhật logic syncLegacySystem để sử dụng continent.
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/295
 - **Author:** @ntduc2810
+
+#### #288 [CRM-0001] Refactor code
+> Refactor code, clean code
+
+- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/288
+- **Author:** @vutuongan2003
 
 #### #285 Resolves #290 + #286 Update Partner continent, Inquiry Request Air Volume
 > Cập nhật logic syncLegacySystem để sử dụng continent.
@@ -55,12 +47,6 @@
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/283
 - **Author:** @qngnhat
 
-#### #282 refactor-code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/282
-- **Author:** @vutuongan2003
-
 #### #281 [BUG] Could not send approve/reject mail for partner request when request has multi approver
 > ![image](/attachments/b5ca9409-021e-4cc9-93a1-26f193e6f9a0)
 
@@ -78,68 +64,6 @@
 
 - **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/279
 - **Author:** @jesse.vnhph
-
-#### #278 refactor-code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/278
-- **Author:** @vutuongan2003
-
-#### #277 refactor code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/277
-- **Author:** @ntduc2810
-
-#### #276 refactor crm-user-roles
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/276
-- **Author:** @ntduc2810
-
-#### #275 tms
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/275
-- **Author:** @jesse.vnhph
-
-#### #274 check diff
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/274
-- **Author:** @jesse.vnhph
-
-#### #273 refactor-code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/273
-- **Author:** @vutuongan2003
-
-#### #272 clean code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/272
-- **Author:** @qngnhat
-
-#### #271 refactor-code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/271
-- **Author:** @vutuongan2003
-
-#### #270 clean code
-> (no description)
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/270
-- **Author:** @qngnhat
-#### #288 [CRM-0001] Refactor code
-> Refactor code, clean code
-
-- **Link:** http://forgejo.of1-apps.svc.cluster.local/of1-crm/of1-crm/pulls/288
-- **Author:** @vutuongan2003
-<!-- AUTO:FORGEJO_PRS_END -->
-
-
 ## Automation (trigger thủ công)
 
 ### Google APIs (OAuth) — Calendar + Drive/Docs/Sheets
