@@ -643,11 +643,13 @@ class App:
         print("🚀 Forgejo PR Collector")
         print("=" * 50)
 
+        # Cutoff is based on PR.updated_at (not created_at).
         cutoff: Optional[datetime] = None
         if self._cfg.days_back is not None:
             cutoff = datetime.now() - timedelta(days=self._cfg.days_back)
 
-        # Fetch PRs for each repo (we currently apply outputs using the first repo only)
+        # Fetch PRs for each repo.
+        # Note: we currently *sync outputs using the first repo only* (cfg.repos[0]).
         all_prs: Dict[str, List[Dict]] = {}
         for repo in self._cfg.repos:
             print(f"📥 Fetching PRs from {repo}...")
@@ -661,7 +663,9 @@ class App:
 
         repo_prs = all_prs.get(self._cfg.repos[0], [])
 
-        # Sync outputs
+        # Sync outputs:
+        # - Personal wiki BACKLOG.md (section "BACKLOG - Team")
+        # - OF1_Crm backlog (Features + Bugs/Enhancements/Maintenance)
         self._personal_updater.sync(repo_prs)
         if self._crm_updater:
             self._crm_updater.sync(repo_prs)
