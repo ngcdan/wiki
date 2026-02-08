@@ -3,10 +3,13 @@
 ## Current focus
 
 - [ ] (Daily) 07:30 routine: Anki + typing (giảm ma sát tối đa, có confirm + delay)
+- [ ] (Daily) Sáng dậy tập thể dục nhiều để giảm cân, cân đối
+- [ ] (Daily) Pha cà phê bằng **phin to** (xem công thức nếu cần)
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
 - [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
+- [ ] (Team) Quản lý thay đổi **DB schema** chặt hơn: bắt buộc changelog schema/entity (create/rename/delete + why), có upgrade guide khi chạy migration/run:update, nâng cấp theo **2 bước** (backward-compatible trước, drop sau). Release cuối tuần: anh Tuấn làm.
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
 
 ---
