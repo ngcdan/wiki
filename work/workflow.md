@@ -1,6 +1,6 @@
 # Workflow: Dan (Dev Lead) — Quy trình làm việc hằng ngày (VN)
 
-Updated: 2026-02-06
+Updated: 2026-02-08
 
 ## 0) Mục tiêu
 - **Tối ưu thời gian**: giảm context switching, giảm bị kéo bởi inbox.
@@ -127,6 +127,19 @@ Sau mỗi batch, gửi report ngắn gọn dựa trên backlog:
 - Có test steps
 - Không phá flow hiện tại (hoặc ghi rõ breaking change)
 - Update docs/runbook nếu có thay đổi vận hành
+
+### 4.3. Quản lý thay đổi DB schema (theo yêu cầu của anh Tuấn)
+- **Changelog bắt buộc cho schema/entity:** ghi đầy đủ mọi thay đổi kiểu:
+  - tạo table/field
+  - tạo entity mới
+  - xoá / rename field trong entity
+  - lý do thay đổi (why)
+  - Ai làm thay đổi phải ghi lại; **Chiến + Đàn review**, anh Tuấn sẽ review lại khi release.
+- **Upgrade guide rõ ràng:** nếu có chạy **migration script** hoặc **run:update** (auto tạo table/field mới) thì **tóm tắt lại** các thay đổi chính ảnh hưởng tới DB schema.
+- **Chiến lược nâng cấp 2 bước (đặc biệt khi module đã đưa vào sử dụng):**
+  1) Thiết kế & release schema theo kiểu **backward-compatible** để code cũ vẫn chạy.
+  2) Sau đó mới thay đổi logic và **drop** các field/table cũ (nếu có), làm ở pha sau.
+- **Release cuối tuần:** hiện tại **anh Tuấn sẽ là người làm release** (Chiến + Đàn chịu trách nhiệm chuẩn bị/đảm bảo các mục trên).
 
 ---
 
