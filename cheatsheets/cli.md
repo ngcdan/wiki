@@ -11,8 +11,7 @@ code_ws ~/OF1/ws/mobile.code-workspace
 code_ws ~/OF1/ws/crm.code-workspace
 code_ws ~/OF1/ws/datatp-python.code-workspace
 
-### Quick Edit
-vi ~/dev/tools/cheatsheets/cli.md                 # Edit cheatsheet
+vi ~/dev/wiki/cheatsheets/cli.md                 # Edit cheatsheet
 
 ### Build code
 ./tools.sh build -clean -code -ui
@@ -34,10 +33,12 @@ kns-ctl of1-dev-crm get services,pods
 ./k-ctl.sh admin deploy
 <!-- Vào máy chủ/ máy pod bằng command: pod name: python-msa, su - datatp: switch to datatp user -->
 kns-ctl of1-prod-platform exec -it python-msa -- su - datatp
+kns-ctl of1-prod-platform exec -it server -- su - datatp
 kns-ctl of1-dev-crm exec -it server -- su - datatp
 
-<!-- access nginx server-->
-ssh of1@nginx-waf.of1-apps.svc.cluster.local
+ssh of1@nginx-waf.of1-apps.svc.cluster.local  # nginx server (prod)
+<!-- access prod platform server (datatp user) -->
+ssh datatp@server.of1-prod-platform.svc.cluster.local # pass server@prod
 
 ### Git
 git config user.name "nqcdan" && git config user.email "linuss1908@gmail.com"                   # github mail config
@@ -46,7 +47,7 @@ git config -g user.name "jesse.vnhph" && git config -g user.email "jesse.vnhph@o
 ./git.sh working:set crm            # switch branch crm
 ./git.sh working:set develop        # switch branch develop
 ./git.sh working:merge crm          # merge crm to current branch
-./git.sh status && ./git.sh working:commit "update code" && ./git.sh working:push
+./git.sh status && ./git.sh working:commit "update code" && ./git.sh working:push              # git commit
 
 git config --global pull.ff only
 git config --global core.autocrlf input    # Line ending (multi OS)
@@ -59,12 +60,9 @@ flutter build appbundle --release   # mobile android bundle
 flutter build ios --release         # mobile ios release
 
 ### Cách clone database trên cloud.
-<!-- 1. Vào máy postgres trên cloud bằng command **kns-ctl**
-    *of1-dev-crm*: thay tên config tương ứng với từng cụm máy (beta, dev, crm, tms, …)
- -->
+<!-- 1. Vào máy postgres trên cloud bằng command **kns-ctl** *of1-dev-crm*: thay tên config tương ứng với từng cụm máy (beta, dev, crm, tms, …) -->
 kns-ctl of1-dev-crm exec -it postgres -- su - datatp
-<!-- 2. Vào server postgres bằng command **psql**.
-    Note: có thể chạy lệnh \list hoặc \l trước và sau để kiểm tra.  -->
+<!-- 2. Vào server postgres bằng command **psql**.  Note: có thể chạy lệnh \list hoặc \l trước và sau để kiểm tra.  -->
 psql -U datatp-crm datatp_crm_db;
 CREATE DATABASE new_datatp_crm_db TEMPLATE datatp_crm_db;
 
@@ -79,4 +77,14 @@ SELECT count(*) FROM pg_replication_slots WHERE slot_name = 'debezium_slot';
 SELECT pg_create_logical_replication_slot('debezium_slot', 'pgoutput');
 
 kns-ctl of1-dev-crm exec -it postgres -- su - datatp
+
+### tmux
+# Show current tmux session name (run inside tmux)
+tmux display-message -p '#S'
+
+# Show full info: session/window/pane (run inside tmux)
+tmux display-message -p 'session=#S window=#I:#W pane=#P'
+
+# List all tmux sessions
+tmux ls
 
