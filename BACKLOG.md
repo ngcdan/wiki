@@ -37,7 +37,6 @@
   - Start server eGov / UI
   - Bật lại nginx vào cổng `localhost:8080`
 - [ ] Branching + libs sync:
-  - DB platform là beta
   - Code eGov của các dự án công ty (trừ eGov) luôn update theo nhánh `dev`?
     - Nếu đúng: nhánh `egov` em có được merge/update từ `dev` về không?
   - Flow làm việc: checkout `egov-local-server` -> làm -> tạo PR -> submit merge vào `egov`
