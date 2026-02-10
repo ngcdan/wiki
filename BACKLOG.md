@@ -30,6 +30,25 @@
 - [ ] IT in ecus-thaison: kafka with testcontainer, create template for publishing message → kafka → consume message → expected value: how? by which design?
 
 #### 2. Đọc concept về **Liquibase**, tự tìm hiểu cách dùng Liquibase trong code
+
+#### 3. Discuss với a Hiếu: flow run eGov + branching/libs + DB info
+- [ ] Flow run server eGov:
+  - Start server platform / UI phoenix
+  - Start server eGov / UI
+  - Bật lại nginx vào cổng `localhost:8080`
+- [ ] Branching + libs sync:
+  - DB platform là beta
+  - Code eGov của các dự án công ty (trừ eGov) luôn update theo nhánh `dev`?
+    - Nếu đúng: nhánh `egov` có được merge/update từ `dev` về không?
+  - Flow làm việc: checkout `egov-local-server` -> làm -> tạo PR -> submit merge vào `egov`
+  - Lib Java + UI của platform publish lên Nexus có update đồng bộ với release của `dev` không?
+- [ ] DB endpoints/info:
+  - `of1@egov-dev`: `postgres.of1-dev-egov.svc.cluster.local:5432/egov`
+  - `of1@egov-prod`: `egov-server.of1-prod-platform.svc.cluster.local:5432/egov`
+  - `of1@platform-egov`: DB beta
+  - `of1@ecus-prod`: `win-server-16-ecus-hp.beehp-prod-logs.svc.cluster.local:1433;database=ECUS5VNACCS`
+  - `of1@ecus-snapshot`: `win-server-16-ecus-hp.of1-dev-egov.svc.cluster.local:1433;database=ECUS5VNACCS`
+  - `of1@ecus-dev`: ???
 ---
 
 ## Planning, Ideas
