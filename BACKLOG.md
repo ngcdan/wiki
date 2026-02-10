@@ -2,9 +2,8 @@
 
 ## Current focus
 
-- [ ] (Daily) 07:30 routine: Anki + typing (giảm ma sát tối đa, có confirm + delay)
 - [ ] (Daily) Sáng dậy tập thể dục nhiều để giảm cân, cân đối
-- [ ] (Daily) Pha cà phê bằng **phin to** (xem công thức nếu cần)
+- [ ] (Daily) 07:30 routine: Anki + typing (giảm ma sát tối đa, có confirm + delay)
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
@@ -12,6 +11,25 @@
 - [ ] (Team) Quản lý thay đổi **DB schema** chặt hơn: bắt buộc changelog schema/entity (create/rename/delete + why), có upgrade guide khi chạy migration/run:update, nâng cấp theo **2 bước** (backward-compatible trước, drop sau). Release cuối tuần: anh Tuấn làm.
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
 
+### Tasks (Hiếu)
+
+#### 1. UT/IT Templates: eCustoms + ecus-thaison
+
+**Goal:** tạo template UT/IT (main points + skeleton), implement chi tiết sau.
+
+**Main points (IT):**
+- [ ] Test the schema file with postgres in testcontainer
+- [ ] Test the flow of kafka for each main flow (by creating template, implement detail later) with kafka in testcontainer
+  - [ ] Make sure the kafka with all current configurations work correctly: Can publish, Can consume
+- [ ] Test the mapping but end to end, read from ecus db, mapping (test method, save to egov db), get and assert
+
+**Checklist (Integration Test):**
+- [ ] integration test with spring boot test: in ecustoms and ecus-thaison
+- [ ] IT in ecustoms with testcontainer, be able to test the liquibase (load from main schema)
+- [ ] IT in ecus-thaison: create TEMPLATE for each entity (domain) to map from expected ecus entity to expected egov entities. Need to save to DB and assert after getting.
+- [ ] IT in ecus-thaison: kafka with testcontainer, create template for publishing message → kafka → consume message → expected value: how? by which design?
+
+#### 2. Đọc concept về **Liquibase**, tự tìm hiểu cách dùng Liquibase trong code
 ---
 
 ## Planning, Ideas

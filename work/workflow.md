@@ -1,4 +1,4 @@
-# Workflow: Dan (Dev Lead) — Quy trình làm việc hằng ngày (VN)
+# Workflow: Dev Lead — Quy trình làm việc hằng ngày
 
 Updated: 2026-02-08
 
@@ -154,3 +154,26 @@ Sau mỗi batch, gửi report ngắn gọn dựa trên backlog:
 - Mỗi ngày 30p: Anki + 30p: luyện gõ phím.
 - Giữ nhịp “2 batch inbox” để đầu óc rảnh cho việc quan trọng.
 - Ưu tiên ghi chép nhanh (raw) rồi dùng AI/tool clean-up thành note chuẩn.
+
+---
+
+## 7) Runbook (skim) — Sync **dev/crm** từ beta/prod (K8s)
+> **Rule:** bước nào lỗi/không đúng kỳ vọng → **dừng ngay**.
+
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-cloud/of1-cloud-dev/namespaces/of1/dev/crm
+
+./k-ctl.sh ns status
+# kỳ vọng: thấy postgres + server + virt-launcher...
+
+./k-ctl.sh admin undeploy
+./k-ctl.sh ns status
+# kỳ vọng: chỉ còn virt-launcher... (postgres/server đã tắt)
+
+./k-ctl.sh admin sync-pv
+# sync PV bằng rbd rm + rbd cp (beta/prod → dev) cho postgres-pv & server-pv
+
+./k-ctl.sh admin deploy
+./k-ctl.sh ns status
+# kỳ vọng: 3 pods running lại (postgres, server, virt-launcher...)
+```
