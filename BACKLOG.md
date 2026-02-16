@@ -7,6 +7,9 @@
 - [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
 - [ ] (30p) Luyện gõ phím — mỗi ngày
 - [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
+- [ ] Build & submit lại **bản build CRM** (ưu tiên) — fix errors, bump versionCode/CFBundleVersion nếu cần
+- [ ] Chuẩn bị kế hoạch **bảo mật data** cho dự án **S3, OCR** → gửi anh Henry
+- [ ] Trình bày nhu cầu tuyển dụng nhân sự với anh Tuấn; tổng hợp và gửi kế hoạch cho anh Henry
 - [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
 - [ ] (Team) Quản lý thay đổi **DB schema** chặt hơn: bắt buộc changelog schema/entity (create/rename/delete + why), có upgrade guide khi chạy migration/run:update, nâng cấp theo **2 bước** (backward-compatible trước, drop sau). Release cuối tuần: anh Tuấn làm.
 - [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
@@ -47,15 +50,32 @@
   - `of1@platform-egov`: DB beta
   - `of1@ecus-prod`: `win-server-16-ecus-hp.beehp-prod-logs.svc.cluster.local:1433;database=ECUS5VNACCS`
   - `of1@ecus-snapshot`: `win-server-16-ecus-hp.of1-dev-egov.svc.cluster.local:1433;database=ECUS5VNACCS`
-  - `of1@ecus-dev`: ???
+  - `of1@ecus-dev`: `win-server-16-ecus-hp.of1-dev-egov.svc.cluster.local:1433;database=ECUS5VNACCS`
 ---
 
 ## Planning, Ideas
 
 - [ ] (OpenClaw) Cân nhắc setup **multiple agents** (triage/coding/ops) trong **1 Gateway** để tách vai trò + tool policy + chạy song song bằng sub-agent sessions; đồng thời tách session theo channel (Telegram vs Web UI) đã làm xong, còn phần agents sẽ review/triển khai sau nếu cần.
 
+- [ ] (Idea) **AI “Inbox OS”**: thu thập *mọi* luồng vào (Gmail, chat/message, Zalo, notifications) → **triage + lọc nhiễu cực mạnh** → tổng hợp cho anh theo dạng digest
+  - Inputs/connectors: Gmail API, chat APIs (Telegram/Signal/Zalo bridge), webhooks
+  - Pipeline: normalize → classify (work/personal/urgent/spam) → dedupe/thread → extract tasks/people/dates → summarize
+  - Noise filter: allowlist người/keyword + threshold “importance”, auto-archive phần rác; chỉ ping khi có trigger (deadline gần, mention anh, khách/leader)
+  - Output: daily digest 1 trang + “action list” (Top 3), kèm link nguồn; có chế độ *deep dive* khi anh hỏi lại
+  - Memory: map người/đơn vị/dự án; học theo feedback (anh mark “quan trọng/không quan trọng”) để tune dần
+  - Safety: local-first nếu được; encrypt at rest; log/audit “vì sao hệ thống đánh dấu quan trọng”
+
 ---
 ## BACKLOG - Team
+#### #325 Refs #320, Fixes #326 Implement Logic sync legacy Partner + Fix bugs Pricing Company Branch
+> ### Description
+
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/pulls/325
+- **Labels:** Enhancement
+- **Assignee:** @qngnhat
+- **Status:** merged
+- **Merged at:** 2026-02-11
+
 #### #301 Refs #286 #290 Clean code
 > Clean code Partner + Inquiry Request
 
@@ -107,5 +127,9 @@
 - **Assignee:** (unassigned)
 - **Status:** merged
 - **Merged at:** 2026-02-03
+## BACKLOG - Issues
+
+- (none)
+
 ## Automation (trigger thủ công)
 

@@ -40,6 +40,17 @@ ssh of1@nginx-waf.of1-apps.svc.cluster.local  # nginx server (prod)
 <!-- access prod platform server (datatp user) -->
 ssh datatp@server.of1-prod-platform.svc.cluster.local # pass server@prod
 
+<!-- Copy server.tar lên prod platform server (scp/rsync) -->
+scp /Users/nqcdan/OF1/forgejo/of1-platform/working/release-platform/server.tar \
+  datatp@server.of1-prod-platform.svc.cluster.local:/home/datatp/release-platform/
+
+rsync -avh --progress \
+  /Users/nqcdan/OF1/forgejo/of1-platform/working/release-platform/server.tar \
+  datatp@server.of1-prod-platform.svc.cluster.local:/home/datatp/release-platform/
+
+# Check file trên server
+ssh datatp@server.of1-prod-platform.svc.cluster.local "ls -lh /home/datatp/release-platform/server.tar"
+
 ### Git
 git config user.name "nqcdan" && git config user.email "linuss1908@gmail.com"                   # github mail config
 git config -g user.name "jesse.vnhph" && git config -g user.email "jesse.vnhph@openfreightone"  # config forgejo
