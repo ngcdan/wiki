@@ -1,3 +1,10 @@
+---
+title: "Self Review"
+type: note
+tags: [work]
+created: 2026-01-17
+updated: 2026-01-17
+---
 ## Self-Review & Career Narrative
 
 ### 1. Bối cảnh chung

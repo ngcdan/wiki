@@ -1,3 +1,10 @@
+---
+title: "Muscle shortcuts — VS Code + IntelliJ + Vim (macOS)"
+type: note
+tags: [setup, work, automation]
+created: 2026-02-09
+updated: 2026-02-09
+---
 # Muscle shortcuts — VS Code + IntelliJ + Vim (macOS)
 Mục tiêu: **1 bộ muscle memory** dùng được cả VS Code và IntelliJ, ưu tiên **Vim**.
 

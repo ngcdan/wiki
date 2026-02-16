@@ -1,3 +1,10 @@
+---
+title: "Ideas / Quick Notes"
+type: note
+tags: [notes, work, automation, setup]
+created: 2026-01-26
+updated: 2026-02-07
+---
 # Ideas / Quick Notes
 Chụp các bill, chuyển khoản, data lịch sử giao dịch cho bot để tự ocr add vào transactions
 

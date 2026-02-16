@@ -1,3 +1,10 @@
+---
+title: "Workflow: Dev Lead — Quy trình làm việc hằng ngày"
+type: process
+tags: [work, automation, documentation]
+created: 2026-02-06
+updated: 2026-02-09
+---
 # Workflow: Dev Lead — Quy trình làm việc hằng ngày
 
 Updated: 2026-02-08

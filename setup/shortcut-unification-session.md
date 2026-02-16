@@ -1,3 +1,10 @@
+---
+title: "Shortcut unification session (VS Code + IntelliJ) — 2026-02-09"
+type: note
+tags: [setup]
+created: 2026-02-09
+updated: 2026-02-09
+---
 # Shortcut unification session (VS Code + IntelliJ) — 2026-02-09
 
 Mục tiêu: 1 bộ muscle memory shortcuts dùng được cho VS Code + IntelliJ, ưu tiên Vim.

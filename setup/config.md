@@ -1,3 +1,10 @@
+---
+title: "Config"
+type: configuration
+tags: [setup]
+created: 2026-02-07
+updated: 2026-02-07
+---
 # Config
 
 ## Git: identity theo thư mục (GitHub vs Forgejo)

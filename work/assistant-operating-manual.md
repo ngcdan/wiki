@@ -1,3 +1,14 @@
+---
+title: "Assistant Operating Manual (Tommy ↔ Dan)"
+type: process
+tags: [work, automation, setup, planning, documentation]
+created: 2026-02-07
+updated: 2026-02-07
+related:
+  - MEMORY.md
+  - TOOLS.md
+  - BACKLOG.md
+---
 # Assistant Operating Manual (Tommy ↔ Dan)
 
 Updated: 2026-02-07

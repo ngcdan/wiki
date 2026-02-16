@@ -49,6 +49,14 @@ from typing import Dict, Iterable, List, Optional, Tuple
 
 import requests
 
+try:
+    from ai_classifier import AIClassifier, ClassificationResult
+    AI_AVAILABLE = True
+except ImportError:
+    AI_AVAILABLE = False
+    AIClassifier = None
+    ClassificationResult = None
+
 
 # -----------------------------------------------------------------------------
 # Config
@@ -721,6 +729,17 @@ class App:
     def __init__(self, cfg: CollectorConfig):
         self._cfg = cfg
         self._client = ForgejoClient(cfg.base_url, cfg.token)
+
+        # Initialize AI classifier if available
+        self._classifier: Optional[AIClassifier] = None
+        if AI_AVAILABLE:
+            try:
+                provider = os.getenv("AI_PROVIDER", "ollama")
+                self._classifier = AIClassifier(provider=provider)
+                print(f"✨ AI Classifier initialized (provider: {provider})")
+            except Exception as e:
+                print(f"⚠️  AI Classifier unavailable: {e}")
+                print("   Falling back to rule-based classification")
 
     def _cutoff(self) -> Optional[datetime]:
         if self._cfg.days_back is None:

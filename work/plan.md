@@ -1,3 +1,10 @@
+---
+title: "Plan"
+type: planning
+tags: [work, automation]
+created: 2026-01-17
+updated: 2026-01-17
+---
 ### Nhận Định Các Vấn Đề Khi Phát Triển Phần Mềm.
 
 - Phát triển phần mềm là tốn kém về tiền bạc và thời gian. Một đội phần mềm đủ cần các BA, UI&UX Graphic Designer, QA, Developer , architect, project manager, dev ops…

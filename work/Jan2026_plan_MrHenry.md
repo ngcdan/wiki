@@ -1,3 +1,10 @@
+---
+title: "Jan2026_Plan_Mrhenry"
+type: planning
+tags: [work, automation]
+created: 2026-01-31
+updated: 2026-01-31
+---
 Henry,
 
 Kế hoạch tổng thể thì như tôi nói, bên tôi bám theo các kế hoạch đã trình lên bộ Khoa học công nghệ bao gồm:

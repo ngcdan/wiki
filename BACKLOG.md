@@ -1,3 +1,10 @@
+---
+title: "BACKLOG (Personal)"
+type: backlog
+tags: [work, automation, setup, planning, documentation]
+created: 2026-02-07
+updated: 2026-02-16
+---
 # BACKLOG (Personal)
 
 ## Current focus

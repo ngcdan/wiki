@@ -1,3 +1,12 @@
+---
+title: "Hướng dẫn Setup & Bảo mật moltbot (Clawdbot) 24/7 trên Mac mini"
+type: note
+tags: [setup, automation]
+created: 2026-01-30
+updated: 2026-02-07
+related:
+  - remote-macmini.md
+---
 # Hướng dẫn Setup & Bảo mật moltbot (Clawdbot) 24/7 trên Mac mini
 
 ## 1. Mục tiêu

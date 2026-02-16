@@ -1,3 +1,10 @@
+---
+title: "Remote Mac mini Setup Guide (Tailscale + Screen Sharing + VS Code)"
+type: note
+tags: [setup, documentation]
+created: 2026-01-27
+updated: 2026-01-30
+---
 # Remote Mac mini Setup Guide (Tailscale + Screen Sharing + VS Code)
 
 Hướng dẫn thiết lập môi trường Remote Development từ MacBook M1 về Mac mini M4 đặt tại công ty.

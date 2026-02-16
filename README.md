@@ -1,3 +1,12 @@
+---
+title: "DOCS"
+type: documentation
+tags: [work]
+created: 2026-01-26
+updated: 2026-01-26
+related:
+  - 2026-01-26_ten-chu-de.md
+---
 # DOCS
 
 Kho lưu trữ ghi chú cá nhân liên quan đến công việc, phục vụ công việc và việc tra cứu lại sau này.

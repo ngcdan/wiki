@@ -1,3 +1,10 @@
+---
+title: "Skill Practice — 7h/tuần (cam kết)"
+type: note
+tags: [work]
+created: 2026-02-08
+updated: 2026-02-08
+---
 # Skill Practice — 7h/tuần (cam kết)
 
 Mục tiêu: duy trì nhịp học/đào sâu kỹ thuật ổn định, không phụ thuộc mood.
