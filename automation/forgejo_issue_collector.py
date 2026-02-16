@@ -559,17 +559,24 @@ class CrmIssueBacklogRenderer:
 
 
 class CrmIssueBacklogUpdater:
-    """Update OF1_Crm backlog by upserting an 'Issues' section.
+    """Update OF1_Crm backlog by syncing issue blocks under `## [Unreleased]`.
 
-    Rationale: PR collector already owns the 'Features' and 'Bugs / Enhancements / Maintenance'
-    sections; to avoid clobbering PR entries, issues are synced into a dedicated section.
+    Key behavior (the original intent):
+    - Append/update issue blocks.
+    - Detect duplicates by issue id in URL (`/issues/<id>`).
+
+    IMPORTANT FIX:
+    - When we run with a cutoff window (DAYS_BACK != None), the API result is partial.
+      In that mode we must NOT prune existing blocks that fall outside the window,
+      otherwise we can wipe the whole section when "0 issues" are fetched.
     """
 
     SECTION_ISSUES = "## [Unreleased]"
 
-    def __init__(self, path: Path, renderer: CrmIssueBacklogRenderer):
+    def __init__(self, path: Path, renderer: CrmIssueBacklogRenderer, *, prune_stale: bool):
         self._path = path
         self._renderer = renderer
+        self._prune_stale = prune_stale
 
     def sync(self, by_repo: Dict[str, List[Dict]]) -> None:
         text = self._path.read_text(encoding="utf-8")
@@ -676,10 +683,12 @@ class CrmIssueBacklogUpdater:
             if by_id.get(iid, "").strip() != tmpl:
                 by_id[iid] = tmpl
 
-        # Remove stale entries (including newly-ignored titles)
-        for existing_id in list(by_id.keys()):
-            if existing_id not in fetched_ids:
-                by_id.pop(existing_id, None)
+        # Remove stale entries only when we believe we have a full view.
+        # If we're running with a cutoff window (partial fetch), keep existing blocks.
+        if self._prune_stale:
+            for existing_id in list(by_id.keys()):
+                if existing_id not in fetched_ids:
+                    by_id.pop(existing_id, None)
 
         # Sort: In Progress first, then date desc, then id desc
         sorted_items = sorted(by_id.items(), key=self._crm_sort_key, reverse=True)
@@ -762,7 +771,13 @@ class App:
         print(f"✅ Backlog updated: {self._cfg.personal_backlog_file}")
 
         if self._cfg.crm_backlog_file:
-            CrmIssueBacklogUpdater(self._cfg.crm_backlog_file, CrmIssueBacklogRenderer()).sync(by_repo)
+            # If DAYS_BACK is set, we only fetched a partial window → do not prune older entries.
+            prune_stale = self._cfg.days_back is None
+            CrmIssueBacklogUpdater(
+                self._cfg.crm_backlog_file,
+                CrmIssueBacklogRenderer(),
+                prune_stale=prune_stale,
+            ).sync(by_repo)
 
         print("✨ Done!")
 
