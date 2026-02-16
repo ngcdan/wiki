@@ -20,6 +20,7 @@ automation/.venv/
 automation/.env
 automation/*.log
 automation/*.err
+automation/test_telegram.py
 
 # Node.js
 node_modules/
