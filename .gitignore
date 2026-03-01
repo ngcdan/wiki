@@ -18,8 +18,10 @@ logs/
 # Automation (explicit)
 automation/.venv/
 automation/.env
-automation/*.log
-automation/*.err
+automation/logs/*
+!automation/logs/.gitkeep
+automation/data/*
+!automation/data/.gitkeep
 automation/test_telegram.py
 
 # Node.js
@@ -68,3 +70,6 @@ htmlcov/
 # Local tools
 .tmp/
 .tmp-*/
+
+# Independent sub-repos
+dev-kit/

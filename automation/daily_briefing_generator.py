@@ -83,8 +83,8 @@ class DailyBriefingGenerator:
         return {"total": pr_count, "content": content[:500]}
 
     def _get_issues_summary(self) -> Dict:
-        """Get issues summary from team_issues_summary.md."""
-        issue_file = self.automation_dir / "team_issues_summary.md"
+        """Get issues summary from data/team_issues_summary.md."""
+        issue_file = self.automation_dir / "data" / "team_issues_summary.md"
         if not issue_file.exists():
             return {"total": 0, "items": []}
         

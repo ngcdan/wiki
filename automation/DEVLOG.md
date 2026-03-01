@@ -82,6 +82,7 @@ tail -f daily_briefing.log   # Briefing generation details
 | **11:00** | Issue Sync | Quét mới để update backlog trưa |
 | **16:00** | Issue Sync | Quét mới để chốt công việc cuối ngày |
 | **Realtime** | Error Alerts | Báo lỗi hệ thống ngay lập tức |
+| **Every 5m** | Heartbeat | Ping `💓 Heartbeat: HH:MM:SS` để check alive |
 
 ---
 
@@ -119,6 +120,8 @@ Run install script:
 ### File Structure
 ```
 automation/
+├── logs/                      # Log files (.log, .err)
+├── data/                      # Data files (summaries, pid)
 ├── daemon.py                  # Process supervisor & scheduler
 ├── ai_classifier.py           # AI logic (OpenAI/Ollama)
 ├── forgejo_issue_collector.py # Issue fetching & processing

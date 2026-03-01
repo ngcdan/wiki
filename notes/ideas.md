@@ -3,9 +3,15 @@ title: "Ideas / Quick Notes"
 type: note
 tags: [notes, work, automation, setup]
 created: 2026-01-26
-updated: 2026-02-07
+updated: 2026-02-19
 ---
 # Ideas / Quick Notes
+
+- [2026-02-19] **Forgejo Actions (CI/CD)**: Dùng Forgejo Actions để chạy các script automation (như issue collector, report generator) thay vì chạy cơm hoặc cron local. 
+  - Trigger: schedule (định kỳ) hoặc event (issue closed, push).
+  - Runner: cần check xem DevOps đã enable runner chưa.
+  - Secret: config `FORGEJO_TOKEN` trong repo settings.
+
 Chụp các bill, chuyển khoản, data lịch sử giao dịch cho bot để tự ocr add vào transactions
 
 Từ đó theo dõi chi tiêu, tạo ra các budget cho các nhóm và đưa ra các chỉ số hằng ngày để chi tiêu cho hợp lý.
@@ -75,5 +81,3 @@ Sử dụng cron jobs
 ---
 
 Không gắn chặt bản thân vào 1 phần mềm nào đó, vì cuối cùng đó vẫn là sản phẩm chung, sản phẩm của công ty và công ty cũng lấy lại. Hãy nhìn trường hợp của anh Quý làm gương, tham khảo. Hãy cân nhắc lợi ích, tâm huyết, sức lực đóng góp vào một dự án nào đó, đừng để cảm xúc hoặc việc gắn chặt sản phẩm như một tài sản cá nhân.
-
-

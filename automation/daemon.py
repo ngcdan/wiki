@@ -40,7 +40,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('/Users/nqcdan/dev/wiki/automation/daemon.log'),
+        logging.FileHandler('/Users/nqcdan/dev/wiki/automation/logs/daemon.log'),
         logging.StreamHandler()
     ]
 )
@@ -97,7 +97,14 @@ class WikiAutomationDaemon:
     def __init__(self):
         self.wiki_root = Path("/Users/nqcdan/dev/wiki")
         self.automation_dir = self.wiki_root / "automation"
-        self.pid_file = self.automation_dir / "daemon.pid"
+        self.logs_dir = self.automation_dir / "logs"
+        self.data_dir = self.automation_dir / "data"
+        
+        # Ensure dirs exist
+        self.logs_dir.mkdir(exist_ok=True)
+        self.data_dir.mkdir(exist_ok=True)
+        
+        self.pid_file = self.data_dir / "daemon.pid"
         self.running = False
 
         # Load config
@@ -210,6 +217,12 @@ class WikiAutomationDaemon:
                     await self._run_task(task_name)
                     last_run[task_name] = now
 
+            # Heartbeat check (every 5 minutes)
+            last_heartbeat = last_run.get("heartbeat")
+            if not last_heartbeat or (now - last_heartbeat).total_seconds() >= 300:
+                await self._run_heartbeat()
+                last_run["heartbeat"] = now
+
             # Sleep for 30 seconds before next check
             await asyncio.sleep(30)
 
@@ -287,6 +300,13 @@ class WikiAutomationDaemon:
             )
 
         logger.info("Issue collector completed")
+
+    async def _run_heartbeat(self):
+        """Send heartbeat message."""
+        try:
+            self.telegram.send_message(f"💓 Heartbeat: {datetime.now().strftime('%H:%M:%S')}")
+        except Exception as e:
+            logger.error(f"Heartbeat failed: {e}")
 
 
 

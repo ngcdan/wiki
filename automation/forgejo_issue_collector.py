@@ -121,7 +121,7 @@ class ConfigBuilder:
         )
         parser.add_argument(
             "--output-file",
-            default=os.getenv("OUTPUT_ISSUES_FILE") or str(script_dir / "team_issues_summary.md"),
+            default=os.getenv("OUTPUT_ISSUES_FILE") or str(script_dir / "data" / "team_issues_summary.md"),
             help="Markdown file to write summary to",
         )
         parser.add_argument(

@@ -3,23 +3,72 @@ title: "BACKLOG (Personal)"
 type: backlog
 tags: [work, automation, setup, planning, documentation]
 created: 2026-02-07
-updated: 2026-02-16
+updated: 2026-02-19
 ---
 # BACKLOG (Personal)
 
-## Current focus
+## Daily template
 
-- [ ] (Daily) Sáng dậy tập thể dục nhiều để giảm cân, cân đối
-- [ ] (Daily) 07:30 routine: Anki + typing (giảm ma sát tối đa, có confirm + delay)
-- [ ] (30p) Học từ mới tiếng Anh (Anki) — mỗi ngày
-- [ ] (30p) Luyện gõ phím — mỗi ngày
-- [ ] Review phần Mobile (note lại: issue / điểm nghẽn / next actions)
-- [ ] Build & submit lại **bản build CRM** (ưu tiên) — fix errors, bump versionCode/CFBundleVersion nếu cần
-- [ ] Chuẩn bị kế hoạch **bảo mật data** cho dự án **S3, OCR** → gửi anh Henry
-- [ ] Trình bày nhu cầu tuyển dụng nhân sự với anh Tuấn; tổng hợp và gửi kế hoạch cho anh Henry
-- [ ] Chuẩn hoá luồng làm việc: batch inbox user **2 lần/ngày** (gần 11h, gần 16h) → gom về 1 chỗ → tạo issue/backlog → gán ưu tiên → giao dev → report (anh sẽ duy trì hằng ngày)
-- [ ] (Team) Quản lý thay đổi **DB schema** chặt hơn: bắt buộc changelog schema/entity (create/rename/delete + why), có upgrade guide khi chạy migration/run:update, nâng cấp theo **2 bước** (backward-compatible trước, drop sau). Release cuối tuần: anh Tuấn làm.
-- [ ] Pending: plan onboard anh Hiếu (freelancer ~15h/tuần) theo hướng task rõ ràng + PR convention + update tiến độ 3 dòng
+```md
+### 🧠 Current Focus (Week / Month)
+
+### 📊 Yesterday
+- [Win] 
+- [Not Done] 
+- [Stuck] 
+
+### 🔥 Top 3 Today (Must Win)
+1.
+2.
+3.
+
+### 🧱 One Hard Thing (Do early)
+
+### 🧩 My Tasks — Work
+
+### 🧩 My Tasks — Personal
+
+### ⚡ Quick Decisions
+- None
+```
+
+## Daily — 2026-02-19
+
+### 🧠 Current Focus (Week / Month)
+
+### 📊 Yesterday
+- [Win] 
+- [Not Done] 
+- [Stuck] 
+
+### 🔥 Top 3 Today (Must Win)
+1. Build & submit lại bản build CRM (ưu tiên)
+2. Chuẩn bị kế hoạch bảo mật data (S3, OCR) → gửi anh Henry
+3. Chuẩn hoá workflow: batch inbox 2 lần/ngày → issue/backlog → ưu tiên → giao dev → report
+
+### 🧱 One Hard Thing (Do early)
+- Build & submit lại bản build CRM (fix errors + bump version)
+
+### 🧩 My Tasks — Work
+- [ ] Optimize Wiki/Docs: setup Forgejo Actions CI/CD to auto-sync issues
+- [ ] Review Mobile (issue/điểm nghẽn/next actions)
+- [ ] Build & submit lại bản build CRM
+- [ ] Plan bảo mật data S3/OCR → gửi anh Henry
+- [ ] Kế hoạch tuyển dụng: trao đổi anh Tuấn → tổng hợp → gửi anh Henry
+- [ ] Siết quản lý DB schema (changelog + upgrade guide + 2-step rollout)
+- [ ] Plan onboard anh Hiếu (task + PR convention + update 3 dòng)
+
+### 🧩 My Tasks — Personal
+- [ ] Tập thể dục (sáng)
+- [ ] 07:30 routine: Anki + typing
+- [ ] Học từ mới tiếng Anh (Anki) ~30p
+- [ ] Luyện gõ phím ~30p
+- [ ] Setup camera (OpenClaw / node)
+- [ ] Chuẩn hoá workflow batch inbox (11h/16h)
+
+### ⚡ Quick Decisions
+- None
+
 
 ### Tasks (Hiếu)
 
@@ -41,30 +90,13 @@ updated: 2026-02-16
 
 #### 2. Đọc concept về **Liquibase**, tự tìm hiểu cách dùng Liquibase trong code
 
-#### 3. Discuss với a Hiếu: flow run eGov + branching/libs + DB info
-- [ ] Flow run server eGov:
-  - Start server platform / UI phoenix
-  - Start server eGov / UI
-  - Bật lại nginx vào cổng `localhost:8080`
-- [ ] Branching + libs sync:
-  - Code eGov của các dự án công ty (trừ eGov) luôn update theo nhánh `dev`?
-    - Nếu đúng: nhánh `egov` em có được merge/update từ `dev` về không?
-  - Flow làm việc: checkout `egov-local-server` -> làm -> tạo PR -> submit merge vào `egov`
-  - Lib Java + UI của platform publish lên Nexus có update đồng bộ với release của `dev` không?
-- [ ] DB endpoints/info:
-  - `of1@egov-dev`: `postgres.of1-dev-egov.svc.cluster.local:5432/egov`
-  - `of1@egov-prod`: `egov-server.of1-prod-platform.svc.cluster.local:5432/egov`
-  - `of1@platform-egov`: DB beta
-  - `of1@ecus-prod`: `win-server-16-ecus-hp.beehp-prod-logs.svc.cluster.local:1433;database=ECUS5VNACCS`
-  - `of1@ecus-snapshot`: `win-server-16-ecus-hp.of1-dev-egov.svc.cluster.local:1433;database=ECUS5VNACCS`
-  - `of1@ecus-dev`: `win-server-16-ecus-hp.of1-dev-egov.svc.cluster.local:1433;database=ECUS5VNACCS`
 ---
 
 ## Planning, Ideas
 
-- [ ] (OpenClaw) Cân nhắc setup **multiple agents** (triage/coding/ops) trong **1 Gateway** để tách vai trò + tool policy + chạy song song bằng sub-agent sessions; đồng thời tách session theo channel (Telegram vs Web UI) đã làm xong, còn phần agents sẽ review/triển khai sau nếu cần.
+- (OpenClaw) Cân nhắc setup **multiple agents** (triage/coding/ops) trong **1 Gateway** để tách vai trò + tool policy + chạy song song bằng sub-agent sessions; đồng thời tách session theo channel (Telegram vs Web UI) đã làm xong, còn phần agents sẽ review/triển khai sau nếu cần.
 
-- [ ] (Idea) **AI “Inbox OS”**: thu thập *mọi* luồng vào (Gmail, chat/message, Zalo, notifications) → **triage + lọc nhiễu cực mạnh** → tổng hợp cho anh theo dạng digest
+- (Idea) **AI “Inbox OS”**: thu thập *mọi* luồng vào (Gmail, chat/message, Zalo, notifications) → **triage + lọc nhiễu cực mạnh** → tổng hợp cho anh theo dạng digest
   - Inputs/connectors: Gmail API, chat APIs (Telegram/Signal/Zalo bridge), webhooks
   - Pipeline: normalize → classify (work/personal/urgent/spam) → dedupe/thread → extract tasks/people/dates → summarize
   - Noise filter: allowlist người/keyword + threshold “importance”, auto-archive phần rác; chỉ ping khi có trigger (deadline gần, mention anh, khách/leader)
@@ -73,3 +105,7 @@ updated: 2026-02-16
   - Safety: local-first nếu được; encrypt at rest; log/audit “vì sao hệ thống đánh dấu quan trọng”
 
 ---
+## BACKLOG - Issues
+
+- (none)
+
