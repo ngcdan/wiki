@@ -72,4 +72,4 @@ htmlcov/
 .tmp-*/
 
 # Independent sub-repos
-dev-kit/
+dev-kit/scripts/
