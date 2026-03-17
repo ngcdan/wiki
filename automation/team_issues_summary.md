@@ -1,6 +1,6 @@
 # Forgejo Issues Snapshot
 
-- Generated: 2026-02-28 16:01
+- Generated: 2026-03-17 16:01
 - Owner: `of1-crm`
 - Repos: `of1-crm`
 - State: `closed`

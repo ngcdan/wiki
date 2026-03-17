@@ -76,8 +76,51 @@ SELECT pg_create_logical_replication_slot('debezium_slot', 'pgoutput');
 kns-ctl of1-dev-crm exec -it postgres -- su - datatp
 
 ### tmux
-# Show current tmux session name (run inside tmux)
-tmux display-message -p '#S'
-tmux display-message -p 'session=#S window=#I:#W pane=#P' # Show full info: session/window/pane (run inside tmux)
-tmux ls                 # List all tmux sessions
+# Manage Sessions (CLI)
+tmux new -s <name>      # Create new session (e.g. tmux new -s backend)
+tmux a -t <name>        # Attach to session (e.g. tmux a -t backend)
+tmux a -t of1           # Attach to OF1 session
+tmux a -t egov          # Attach to E-Gov session
+tmux ls                 # List running sessions
+tmux kill-session -t <name> # Kill a session
 
+# Inside Tmux (Prefix = Ctrl+a)
+# Ctrl+a d              # Detach (leave running in background)
+# Ctrl+a s              # Switch session (interactive list)
+# Ctrl+a $              # Rename session
+# Ctrl+a c              # New window (tab)
+# Ctrl+a ,              # Rename window
+# Ctrl+a | / -          # Split vertical / horizontal
+# Ctrl+a z              # Zoom pane (maximize/restore)
+
+# Show current info
+tmux display-message -p '#S'
+
+### AI Agents / Coding CLI (Context & Files)
+
+# Claude CLI - Attach Files
+claude -f file.txt "explain this"       # Single file
+claude -f a.js -f b.js "diff these"     # Multiple files
+cat file.txt | claude "explain"         # Pipe stdin
+
+# Codex CLI - Context
+codex "Refactor utils.js"               # Auto-scans named files
+cat config.json | codex "validate"      # Pipe stdin
+
+# Heredoc / Multiline (Bash)
+claude "Analyze:
+$(cat error.log)"
+
+http://k8s-prometheus-stack-grafana.monitoring.svc.cluster.local Username/pass = of1/Of1!!!
+http://filestash.of1-dev-kafka.svc.cluster.local/files/
+
+# SSH Authentication Check
+ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud # Test kết nối SSH đến Git server và in ra lời chào (kèm username) để xác nhận hệ thống đã nhận đúng key SSH.
+
+### Git Merge & Status
+- `git merge --autostash -X ours origin/crm`: Thực hiện merge từ nhánh khác vào nhánh hiện tại. Tự động cất (stash) các thay đổi đang làm dở, ưu tiên giữ code của nhánh hiện tại (`-X ours`) nếu xảy ra xung đột, sau đó tự động apply lại phần stash ban đầu.
+- `git status --short`: Xem trạng thái working tree dạng rút gọn (dễ nhìn hơn status thường).
+- `git log --oneline -1`: Xem commit gần nhất một cách ngắn gọn trên 1 dòng.
+
+### SSH Authentication Check
+- `ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud`: Test kết nối SSH đến Git server và in ra lời chào (kèm username) để xác nhận hệ thống đã nhận đúng key SSH.
