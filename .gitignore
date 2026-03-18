@@ -56,6 +56,9 @@ build/
 # Env files
 .env
 .env.*
+env.sh
+bf1/env.sh
+bf1/sandbox/.env
 
 # OS/editor temp
 *.swp

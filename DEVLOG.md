@@ -828,3 +828,9 @@ Tất cả thao tác connector đều qua REST API trên port 8083:
 - Local: `http://localhost:8083`
 - Dev: `http://debezium-connect.of1-dev-kafka.svc.cluster.local:8083`
 - Prod: `http://debezium-connect.of1-prod-kafka.svc.cluster.local:8083`
+
+---
+
+## BF1 CDC Pipeline
+
+Chi tiết sandbox setup, kết quả test, Debezium UI API, trạng thái cluster → xem `bf1/DEVLOG.md`.
