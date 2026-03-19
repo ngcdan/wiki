@@ -12,10 +12,12 @@ A personal knowledge base of Markdown notes (no application code). The primary p
 
 - `notes/00_inbox/` — raw, unprocessed notes (date-prefixed filenames)
 - `notes/daily/` — daily briefing reports (`YYYY-MM-DD_briefing.md`)
-- `notes/weekly/` — weekly logs
-- `work/` — project plans, workflows, self-reviews
+- `personal/` — personal framework: plan, workflow, self-review, skill practice
+- `projects/` — project docs (bf1/, DataTP, MrHenry, OF1_Crm, …)
+- `projects/bf1/` — BF1 project; `CDC_Architecture.md` = kiến trúc tổng thể, `DEVLOG.md` = sandbox setup
+- `assistant/` — AI assistant operating manual
 - `cheatsheets/` — reference/command-sheet style docs
-- `rulebooks/` — personal operating frameworks
+- `rulebooks/` — personal operating frameworks (bao gồm ai-integration)
 - `automation/` — Python scripts that automate issue syncing and briefing generation
 - `dev-kit/` — AI assistant configuration packs (Gemini skills, Claude guidelines for other projects)
 

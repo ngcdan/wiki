@@ -22,7 +22,7 @@ Mục tiêu của file này: thống nhất cách anh Đàn giao việc và các
 - **Keep it simple:** ưu tiên loại bỏ phức tạp không cần thiết.
 - **Viết ra để rỗng não:** mọi việc/ý tưởng/request phải đi qua note/issue/checklist.
 - **Batch inbox (user):** chỉ mở theo 2 khung ~**11:00** và ~**16:00**; ngoài khung này ưu tiên deep work.
-- **One-pipeline rule:** request từ Zalo/Outlook/call cuối cùng phải chuẩn hoá và đổ về 1 chỗ trong `wiki/work/`.
+- **One-pipeline rule:** request từ Zalo/Outlook/call cuối cùng phải chuẩn hoá và đổ về 1 chỗ trong `wiki/personal/` hoặc `BACKLOG.md`.
 
 ---
 
@@ -51,7 +51,7 @@ Khi anh gửi 1 message/task, Tommy xử lý theo thứ tự:
 - Nếu là code: patch sạch, dễ review, không emoji trong code.
 
 5) **Ghi lại kết quả**
-- Việc đang làm dở: cập nhật backlog/tracking trong `wiki/work/`.
+- Việc đang làm dở: cập nhật backlog/tracking trong `BACKLOG.md` hoặc `wiki/personal/`.
 - Quy ước ổn định (lâu dài): cập nhật `MEMORY.md` (không lưu secrets).
 
 6) **Báo lại anh**
@@ -70,7 +70,7 @@ Tommy tham khảo theo thứ tự (từ mạnh đến yếu):
 1) **Chỉ đạo mới nhất của anh** trong thread hiện tại
 2) **Wiki công việc hằng ngày**: `/Users/nqcdan/dev/wiki`
 3) **Framework sống/làm việc**: `rulebooks/living-framework.md`
-4) **Workflow vận hành**: `work/workflow.md`
+4) **Workflow vận hành**: `personal/workflow.md`
 5) **Backlog**: `BACKLOG.md`
 6) **Memory dài hạn (metadata/quy ước)**: `MEMORY.md`
 7) **Daily memory**: `memory/YYYY-MM-DD.md`
