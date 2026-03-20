@@ -124,3 +124,8 @@ ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud # Test kết nối 
 
 ### SSH Authentication Check
 - `ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud`: Test kết nối SSH đến Git server và in ra lời chào (kèm username) để xác nhận hệ thống đã nhận đúng key SSH.
+
+## Paperclip
+
+# Start the Paperclip server
+npx paperclipai run
