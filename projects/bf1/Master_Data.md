@@ -156,8 +156,7 @@
 | `group_id` | bigint | | FK → `settings_unit_group.id` |
 | `iso_code` | varchar | | Mã ISO |
 | `scale` | double | | Tỷ lệ quy đổi về đơn vị chuẩn của nhóm |
-| `localized_description` | varchar | | Mô tả tiếng Việt |
-| `localized_description_en` | varchar | | Mô tả tiếng Anh |
+| `description` | varchar | | Mô tả |
 
 ### B3. `settings_unit_alias` — Bí danh đơn vị
 
@@ -204,10 +203,8 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã phí — UNIQUE |
 | `label` | varchar | | Tên phí (e.g. THC, B/L Fee, Origin CFS) |
-| `localized_label_en` | varchar | | Tên tiếng Anh |
+| `localized_label` | varchar | | Tên bản địa |
 | `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) |
-| `is_buying` | boolean | | Áp dụng cho giá mua |
-| `is_selling` | boolean | | Áp dụng cho giá bán |
 
 ---
 
@@ -221,7 +218,6 @@
 | `code` | varchar | | Mã ngành — UNIQUE |
 | `label` | varchar | | Tên ngành nghề |
 
-
 ### E2. `settings_sale_type` — Loại kinh doanh
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
@@ -230,7 +226,6 @@
 | `code` | varchar | | Mã loại — UNIQUE |
 | `label` | varchar | | Tên (e.g. Direct, Agent, Co-loader) |
 
-
 ### E3. `settings_partner_source` — Nguồn đối tác
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
@@ -238,7 +233,6 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã nguồn — UNIQUE |
 | `label` | varchar | | Tên nguồn (e.g. Referral, Cold Call, Exhibition) |
-
 
 ---
 
