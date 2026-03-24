@@ -1,11 +1,8 @@
-# Đề xuất Bộ Master Data — BF1 Cloud System
-
-> Tài liệu đề xuất cấu trúc schema và các trường dữ liệu cho bộ master data của hệ thống BF1 Cloud.
-> Nguồn tham khảo: `Cloud_DB_Schema.md` (datatpdb) và `OF1_DB_Schema.md` (BEE_DB).
+# Master Data — BF1 Cloud System
 
 ---
 
-## Nhóm A — Quốc gia & Khu vực
+## Nhóm A — Địa lý & Tiền tệ
 
 ### A1. `settings_country` — Quốc gia
 
@@ -47,11 +44,7 @@
 | `zone_type` | varchar | | Phân loại: `global`, `local`, `custom` |
 | `is_active` | boolean | | Đang sử dụng |
 
----
-
-## Nhóm B — Địa lý Hành chính
-
-### B1. `settings_location_state` — Tỉnh / Bang
+### A5. `settings_location_state` — Tỉnh / Bang
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -63,7 +56,7 @@
 | `gov_code` | varchar | | Mã hành chính nhà nước |
 | `administrative_unit` | varchar | | Loại đơn vị (Tỉnh, Thành phố trực thuộc TW) |
 
-### B2. `settings_location_district` — Huyện / Quận
+### A6. `settings_location_district` — Huyện / Quận
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -75,7 +68,7 @@
 | `gov_code` | varchar | | Mã hành chính nhà nước |
 | `administrative_unit` | varchar | | Loại đơn vị (Huyện, Quận, Thị xã) |
 
-### B3. `settings_location_subdistrict` — Phường / Xã
+### A7. `settings_location_subdistrict` — Phường / Xã
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -90,11 +83,7 @@
 | `administrative_unit` | varchar | | Loại đơn vị (Phường, Xã, Thị trấn) |
 | `postal_code` | varchar | | Mã bưu chính |
 
----
-
-## Nhóm C — Địa điểm Logistics
-
-### C1. `settings_location` — Địa điểm (Sân bay, Cảng, KCN, ...)
+### A8. `settings_location` — Địa điểm (Sân bay, Cảng, KCN, ...)
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -116,7 +105,7 @@
 | `contact` | varchar | | Thông tin liên hệ |
 | `is_active` | boolean | | Đang hoạt động |
 
-### C2. `settings_location_reference_code` — Mã tham chiếu bổ sung
+### A9. `settings_location_reference_code` — Mã tham chiếu bổ sung
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -125,11 +114,7 @@
 | `code` | varchar | | Giá trị mã |
 | `code_type` | varchar | | Loại mã: `IATA`, `UNLOCODE`, `CAN_CODE`, `AUS_CODE`, `US_CODE`, ... |
 
----
-
-## Nhóm D — Tiền tệ & Tỷ giá
-
-### D1. `settings_currency` — Tiền tệ
+### A10. `settings_currency` — Tiền tệ
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -141,7 +126,7 @@
 | `rounding` | double | | Đơn vị làm tròn |
 | `is_active` | boolean | | Đang sử dụng |
 
-### D2. `settings_currency_exchange_rate` — Tỷ giá theo thời kỳ
+### A11. `settings_currency_exchange_rate` — Tỷ giá theo thời kỳ
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -155,9 +140,9 @@
 
 ---
 
-## Nhóm E — Đơn vị đo lường
+## Nhóm B — Đơn vị đo lường
 
-### E1. `settings_unit_group` — Nhóm đơn vị
+### B1. `settings_unit_group` — Nhóm đơn vị
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -165,7 +150,7 @@
 | `code` | varchar | | Mã nhóm (e.g. `weight`, `volume`, `quantity`) — UNIQUE |
 | `label` | varchar | | Tên nhóm |
 
-### E2. `settings_unit` — Đơn vị đo
+### B2. `settings_unit` — Đơn vị đo
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -179,7 +164,7 @@
 | `description_en` | varchar | | Mô tả tiếng Anh |
 | `is_active` | boolean | | Đang sử dụng |
 
-### E3. `settings_unit_alias` — Bí danh đơn vị
+### B3. `settings_unit_alias` — Bí danh đơn vị
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -190,9 +175,9 @@
 
 ---
 
-## Nhóm F — Hàng hóa
+## Nhóm C — Hàng hóa
 
-### F1. `settings_commodity` — Loại hàng hóa
+### C1. `settings_commodity` — Loại hàng hóa
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -205,9 +190,9 @@
 
 ---
 
-## Nhóm G — Tài chính
+## Nhóm D — Tài chính
 
-### G1. `settings_bank` — Ngân hàng
+### D1. `settings_bank` — Ngân hàng
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -219,7 +204,7 @@
 | `country_id` | bigint | | FK → `settings_country.id` |
 | `is_active` | boolean | | Đang hoạt động |
 
-### G2. `settings_charge_type` — Danh mục loại phí
+### D2. `settings_charge_type` — Danh mục loại phí
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -234,9 +219,9 @@
 
 ---
 
-## Nhóm H — CRM / Phân loại đối tác
+## Nhóm E — CRM / Phân loại đối tác
 
-### H1. `settings_industry` — Ngành nghề
+### E1. `settings_industry` — Ngành nghề
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -245,7 +230,7 @@
 | `label` | varchar | | Tên ngành nghề |
 | `is_active` | boolean | | Đang sử dụng |
 
-### H2. `settings_sale_type` — Loại kinh doanh
+### E2. `settings_sale_type` — Loại kinh doanh
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -254,7 +239,7 @@
 | `label` | varchar | | Tên (e.g. Direct, Agent, Co-loader) |
 | `is_active` | boolean | | Đang sử dụng |
 
-### H3. `settings_partner_source` — Nguồn đối tác
+### E3. `settings_partner_source` — Nguồn đối tác
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
