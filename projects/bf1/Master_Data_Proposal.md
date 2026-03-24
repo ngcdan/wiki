@@ -191,51 +191,9 @@
 
 ---
 
-## Nhóm F — Vận tải & Dịch vụ
+## Nhóm F — Hàng hóa
 
-### F1. `settings_transport_mode` — Phương thức vận chuyển
-
-| Trường | Kiểu | Bắt buộc | Mô tả |
-|---|---|---|---|
-| `id` | bigint | | PK |
-| `code` | varchar | | Mã (e.g. `AIR`, `SEA_FCL`, `SEA_LCL`, `TRUCK`, `RAIL`) — UNIQUE |
-| `label` | varchar | | Tên hiển thị |
-| `is_active` | boolean | | Đang sử dụng |
-
-### F2. `settings_service_type` — Loại dịch vụ logistics
-
-| Trường | Kiểu | Bắt buộc | Mô tả |
-|---|---|---|---|
-| `id` | bigint | | PK |
-| `code` | varchar | | Mã dịch vụ — UNIQUE |
-| `label` | varchar | | Tên dịch vụ (e.g. Import, Export, Customs, Trucking) |
-| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
-| `is_active` | boolean | | Đang sử dụng |
-
-### F3. `settings_transaction_type` — Loại giao dịch
-
-| Trường | Kiểu | Bắt buộc | Mô tả |
-|---|---|---|---|
-| `id` | bigint | | PK |
-| `code` | varchar | | Mã loại giao dịch — UNIQUE |
-| `label` | varchar | | Tên loại |
-| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
-| `service_type_id` | bigint | | FK → `settings_service_type.id` |
-| `is_active` | boolean | | Đang sử dụng |
-
-### F4. `settings_vessel` — Tàu biển
-
-| Trường | Kiểu | Bắt buộc | Mô tả |
-|---|---|---|---|
-| `id` | bigint | | PK |
-| `code` | varchar | | Mã tàu — UNIQUE |
-| `name` | varchar | | Tên tàu |
-| `imo_number` | varchar | | Số IMO quốc tế |
-| `flag_country_id` | bigint | | FK → `settings_country.id` (quốc tịch tàu) |
-| `vessel_type` | varchar | | Loại tàu (Container, Bulk, ...) |
-| `is_active` | boolean | | Đang hoạt động |
-
-### F5. `settings_commodity` — Loại hàng hóa
+### F1. `settings_commodity` — Loại hàng hóa
 
 | Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
@@ -271,7 +229,6 @@
 | `label` | varchar | | Tên phí (e.g. THC, B/L Fee, Origin CFS) |
 | `label_en` | varchar | | Tên tiếng Anh |
 | `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) |
-| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
 | `is_buying` | boolean | | Áp dụng cho giá mua |
 | `is_selling` | boolean | | Áp dụng cho giá bán |
 | `is_active` | boolean | | Đang sử dụng |
@@ -344,8 +301,4 @@ settings_unit_group (id)
   └──► settings_unit (group_id)
          └──► settings_unit_alias (unit_id)
 
-settings_transport_mode (id)
-  ├──► settings_service_type (transport_mode_id)
-  ├──► settings_transaction_type (transport_mode_id)
-  └──► settings_charge_type (transport_mode_id)
 ```
