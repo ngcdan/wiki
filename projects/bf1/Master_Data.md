@@ -19,7 +19,6 @@
 | `phone_code` | varchar(10) | | Mã điện thoại quốc tế (e.g. `+84`) |
 | `currency_code` | varchar(3) | | Mã tiền tệ mặc định (FK → `settings_currency.code`) |
 | `address_format` | varchar | | Template định dạng địa chỉ theo quốc gia |
-| `is_active` | boolean | | Đang sử dụng |
 
 ### A2. `settings_country_group` — Nhóm quốc gia
 
