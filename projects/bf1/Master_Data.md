@@ -25,7 +25,6 @@
 | `code` | varchar | | Mã nhóm (e.g. `ASEAN`, `EU`) — UNIQUE |
 | `label` | varchar | | Tên nhóm |
 | `parent_id` | bigint | | FK → `settings_country_group.id` (hỗ trợ phân cấp) |
-| `is_active` | boolean | | Đang sử dụng |
 
 ### A3. `settings_country_group_rel` — Mapping quốc gia ↔ nhóm
 
@@ -42,7 +41,6 @@
 | `code` | varchar | | Mã khu vực — UNIQUE |
 | `label` | varchar | | Tên khu vực |
 | `zone_type` | varchar | | Phân loại: `global`, `local`, `custom` |
-| `is_active` | boolean | | Đang sử dụng |
 
 ### A5. `settings_location_state` — Tỉnh / Bang
 
@@ -103,7 +101,6 @@
 | `longitude` | double | | Kinh độ |
 | `postal_code` | varchar | | Mã bưu chính |
 | `contact` | varchar | | Thông tin liên hệ |
-| `is_active` | boolean | | Đang hoạt động |
 
 ### A9. `settings_location_reference_code` — Mã tham chiếu bổ sung
 
@@ -124,7 +121,6 @@
 | `symbol` | varchar(10) | | Ký hiệu (e.g. `đ`, `$`, `€`) |
 | `decimal_places` | int | | Số chữ số thập phân (VND=0, USD=2) |
 | `rounding` | double | | Đơn vị làm tròn |
-| `is_active` | boolean | | Đang sử dụng |
 
 ### A11. `settings_currency_exchange_rate` — Tỷ giá theo thời kỳ
 
@@ -162,7 +158,6 @@
 | `scale` | double | | Tỷ lệ quy đổi về đơn vị chuẩn của nhóm |
 | `localized_description` | varchar | | Mô tả tiếng Việt |
 | `localized_description_en` | varchar | | Mô tả tiếng Anh |
-| `is_active` | boolean | | Đang sử dụng |
 
 ### B3. `settings_unit_alias` — Bí danh đơn vị
 
@@ -186,7 +181,6 @@
 | `label` | varchar | | Tên hàng hóa |
 | `hs_code` | varchar | | Mã HS code |
 | `is_dangerous` | boolean | | Hàng nguy hiểm |
-| `is_active` | boolean | | Đang sử dụng |
 
 ---
 
@@ -202,7 +196,6 @@
 | `label` | varchar | | Tên đầy đủ |
 | `short_label` | varchar | | Tên viết tắt |
 | `country_id` | bigint | | FK → `settings_country.id` |
-| `is_active` | boolean | | Đang hoạt động |
 
 ### D2. `settings_charge_type` — Danh mục loại phí
 
@@ -215,7 +208,6 @@
 | `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) |
 | `is_buying` | boolean | | Áp dụng cho giá mua |
 | `is_selling` | boolean | | Áp dụng cho giá bán |
-| `is_active` | boolean | | Đang sử dụng |
 
 ---
 
@@ -228,7 +220,7 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã ngành — UNIQUE |
 | `label` | varchar | | Tên ngành nghề |
-| `is_active` | boolean | | Đang sử dụng |
+
 
 ### E2. `settings_sale_type` — Loại kinh doanh
 
@@ -237,7 +229,7 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã loại — UNIQUE |
 | `label` | varchar | | Tên (e.g. Direct, Agent, Co-loader) |
-| `is_active` | boolean | | Đang sử dụng |
+
 
 ### E3. `settings_partner_source` — Nguồn đối tác
 
@@ -246,7 +238,7 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã nguồn — UNIQUE |
 | `label` | varchar | | Tên nguồn (e.g. Referral, Cold Call, Exhibition) |
-| `is_active` | boolean | | Đang sử dụng |
+
 
 ---
 
