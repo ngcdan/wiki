@@ -12,7 +12,7 @@
 | `code` | varchar(2) | | Mã ISO 3166-1 alpha-2 (e.g. `VN`, `US`) — UNIQUE |
 | `code3` | varchar(3) | | Mã ISO 3166-1 alpha-3 (e.g. `VNM`) |
 | `label` | varchar | | Tên quốc gia (tiếng Anh, uppercase) |
-| `label_local` | varchar | | Tên bản địa |
+| `localized_label` | varchar | | Tên bản địa |
 | `phone_code` | varchar(10) | | Mã điện thoại quốc tế (e.g. `+84`) |
 | `currency_code` | varchar(3) | | Mã tiền tệ mặc định (FK → `settings_currency.code`) |
 | `address_format` | varchar | | Template định dạng địa chỉ theo quốc gia |
@@ -160,8 +160,8 @@
 | `group_id` | bigint | | FK → `settings_unit_group.id` |
 | `iso_code` | varchar | | Mã ISO |
 | `scale` | double | | Tỷ lệ quy đổi về đơn vị chuẩn của nhóm |
-| `description` | varchar | | Mô tả tiếng Việt |
-| `description_en` | varchar | | Mô tả tiếng Anh |
+| `localized_description` | varchar | | Mô tả tiếng Việt |
+| `localized_description_en` | varchar | | Mô tả tiếng Anh |
 | `is_active` | boolean | | Đang sử dụng |
 
 ### B3. `settings_unit_alias` — Bí danh đơn vị
@@ -211,7 +211,7 @@
 | `id` | bigint | | PK |
 | `code` | varchar | | Mã phí — UNIQUE |
 | `label` | varchar | | Tên phí (e.g. THC, B/L Fee, Origin CFS) |
-| `label_en` | varchar | | Tên tiếng Anh |
+| `localized_label_en` | varchar | | Tên tiếng Anh |
 | `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) |
 | `is_buying` | boolean | | Áp dụng cho giá mua |
 | `is_selling` | boolean | | Áp dụng cho giá bán |
