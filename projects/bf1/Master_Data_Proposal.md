@@ -1,201 +1,351 @@
 # Đề xuất Bộ Master Data — BF1 Cloud System
 
-## Bối cảnh
+> Tài liệu đề xuất cấu trúc schema và các trường dữ liệu cho bộ master data của hệ thống BF1 Cloud.
+> Nguồn tham khảo: `Cloud_DB_Schema.md` (datatpdb) và `OF1_DB_Schema.md` (BEE_DB).
 
-Tài liệu này so sánh master data giữa hai hệ thống hiện tại và đề xuất bộ master data chuẩn cho BF1 Cloud:
+---
 
-| Hệ thống | DB | Engine | Ghi chú |
+## Nhóm A — Quốc gia & Khu vực
+
+### A1. `settings_country` — Quốc gia
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
-| **Cloud (datatpdb)** | `datatpdb` | PostgreSQL | Schema mới, đang phát triển |
-| **OF1 (BEE_DB)** | `BEE_DB` | MSSQL | Hệ thống legacy, đang hoạt động |
+| `id` | bigint | ✅ | PK |
+| `code` | varchar(2) | ✅ | Mã ISO 3166-1 alpha-2 (e.g. `VN`, `US`) — UNIQUE |
+| `code3` | varchar(3) | | Mã ISO 3166-1 alpha-3 (e.g. `VNM`) |
+| `label` | varchar | ✅ | Tên quốc gia (tiếng Anh, uppercase) |
+| `label_local` | varchar | | Tên bản địa |
+| `phone_code` | varchar(10) | | Mã điện thoại quốc tế (e.g. `+84`) |
+| `currency_code` | varchar(3) | | Mã tiền tệ mặc định (FK → `settings_currency.code`) |
+| `address_format` | varchar | | Template định dạng địa chỉ theo quốc gia |
+| `is_active` | boolean | ✅ | Đang sử dụng |
 
----
+### A2. `settings_country_group` — Nhóm quốc gia
 
-## 1. So sánh Master Data Hiện Tại
-
-### 1.1 Quốc gia (Country)
-
-| Hạng mục | Cloud (datatpdb) | OF1 (BEE_DB) |
-|---|---|---|
-| Bảng chính | `settings_country` (250 rows) | `Countries` / `lst_Countries` / `lst_Country` (~250 rows) |
-| Nhóm quốc gia | `settings_country_group` (27 rows) | `lst_Continents` (6), `lst_Regions` (23) |
-| Mapping | `settings_country_group_rel` | — |
-| Key field | `code` (ISO 2 ký tự) | — |
-| Thông tin bổ sung | `phone_code`, `currency`, `address_format` | — |
-
-**Nhận xét:** Cloud schema phong phú hơn — có nhóm quốc gia linh hoạt (hỗ trợ cây phân cấp), phone code, address format. OF1 chỉ có flat list + continent/region riêng.
-
----
-
-### 1.2 Tiền tệ & Tỷ giá (Currency)
-
-| Hạng mục | Cloud (datatpdb) | OF1 (BEE_DB) |
-|---|---|---|
-| Danh sách tiền tệ | `settings_currency` (19 rows) | `ExchangeRate` (19 rows) |
-| Tỷ giá theo thời kỳ | `settings_currency_exchange_rate` (0 rows — chưa có data) | `CurrencyExchangeRate` (5,174 rows) |
-| Chi tiết | `symbol`, `ext_usd`, `ext_vnd_sales`, `decimal_places`, `rounding` | — |
-
-**Nhận xét:** OF1 đang dùng `CurrencyExchangeRate` với dữ liệu thực (5K+ rows). Cloud chưa populate `settings_currency_exchange_rate`. Cần migrate tỷ giá từ OF1 sang Cloud.
-
----
-
-### 1.3 Địa điểm (Location)
-
-| Hạng mục | Cloud (datatpdb) | OF1 (BEE_DB) |
-|---|---|---|
-| Tỉnh/bang | `settings_location_state` (5,070 rows) | `lst_States` (17 rows) |
-| Thành phố | `settings_location_city` (1,389 rows) | `lst_Cities` (1,115 rows) |
-| Huyện/quận | `settings_location_district` (706 rows) | — |
-| Phường/xã | `settings_location_subdistrict` (13,923 rows) | — |
-| Sân bay | `settings_location` (location_type=Airport) | `Airports` (15K) / `Airport_AIR` (1K) |
-| Cảng biển | `settings_location` (location_type=Port) | — |
-| Khu vực | — | `lst_Zone` (15) / `lst_Zone_Local` (27) |
-| Tổng hợp | `settings_location` (40,647 rows) — đa năng | — |
-
-**Nhận xét:** Cloud có cấu trúc địa lý hành chính chi tiết hơn nhiều. `settings_location` là bảng đa năng gộp nhiều loại địa điểm. OF1 có `Airports` lớn hơn (15K). Cần xem xét merge airport data.
-
----
-
-### 1.4 Đơn vị đo lường (Unit of Measure)
-
-| Hạng mục | Cloud (datatpdb) | OF1 (BEE_DB) |
-|---|---|---|
-| Đơn vị | `company_settings_unit` (172 rows) | `UnitContents` (145 rows) |
-| Nhóm đơn vị | `company_settings_unit_group` (26 rows) | — |
-| Alias | `company_settings_unit_alias` | — |
-| Scope | Per `company_id` | Global |
-
-**Nhận xét:** Cloud có nhóm đơn vị và alias — linh hoạt hơn. OF1 dùng global list đơn giản.
-
----
-
-### 1.5 Master Data chỉ có trong OF1 (chưa có trong Cloud)
-
-| Bảng OF1 | Mô tả | Ưu tiên đưa vào Cloud |
-|---|---|---|
-| `lst_Bank` (203) | Ngân hàng | **Cao** — dùng trong thanh toán |
-| `VesselCode` (26,376) | Mã tàu biển | **Cao** — cần cho sea shipment |
-| `Commodity` (96) | Loại hàng hóa | **Trung bình** |
-| `lst_Service` (13) | Dịch vụ logistics | **Cao** |
-| `lst_Mode` (8) | Phương thức vận chuyển | **Cao** — air/sea/truck/... |
-| `lst_SaleType` (10) | Loại kinh doanh | **Trung bình** |
-| `lst_Industries` (23) | Ngành nghề | **Thấp** |
-| `lst_Source` (30) | Nguồn khách hàng | **Thấp** |
-| `lst_Zone` / `lst_Zone_Local` | Khu vực địa lý | **Trung bình** |
-| `TransactionType` (17) | Loại giao dịch | **Cao** |
-
----
-
-## 2. Đề xuất Bộ Master Data Chuẩn
-
-### Nhóm A — Địa lý & Quốc gia
-
-| # | Bảng đề xuất | Nguồn | Ghi chú |
+| Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
-| A1 | `settings_country` | Cloud (giữ nguyên) | Đủ 250 quốc gia, có phone_code & address_format |
-| A2 | `settings_country_group` | Cloud (giữ nguyên) | Cấu trúc linh hoạt hơn OF1 |
-| A3 | `settings_country_group_rel` | Cloud (giữ nguyên) | Mapping country ↔ group |
-| A4 | `settings_location` | Cloud (mở rộng) | Bảng đa năng — cần import airport từ OF1 |
-| A5 | `settings_location_state` | Cloud (giữ nguyên) | 5K+ state records |
-| A6 | `settings_location_city` | Cloud (giữ nguyên) | 1.3K cities |
-| A7 | `settings_location_district` | Cloud (giữ nguyên) | 706 huyện |
-| A8 | `settings_location_subdistrict` | Cloud (giữ nguyên) | 13.9K phường/xã |
-| A9 | `settings_location_reference_code` | Cloud (giữ nguyên) | IATA/UNLOCODE reference |
-| A10 | `settings_zone` *(mới)* | OF1: `lst_Zone` + `lst_Zone_Local` | Khu vực vận chuyển (cho pricing) |
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã nhóm (e.g. `ASEAN`, `EU`) — UNIQUE |
+| `label` | varchar | ✅ | Tên nhóm |
+| `parent_id` | bigint | | FK → `settings_country_group.id` (hỗ trợ phân cấp) |
+| `is_active` | boolean | ✅ | Đang sử dụng |
 
-### Nhóm B — Tiền tệ
+### A3. `settings_country_group_rel` — Mapping quốc gia ↔ nhóm
 
-| # | Bảng đề xuất | Nguồn | Ghi chú |
+| Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
-| B1 | `settings_currency` | Cloud (giữ nguyên) | Schema đầy đủ |
-| B2 | `settings_currency_exchange_rate` | Migrate từ OF1: `CurrencyExchangeRate` | Cloud hiện trống — cần populate từ OF1 |
+| `country_id` | bigint | ✅ | FK → `settings_country.id` |
+| `group_id` | bigint | ✅ | FK → `settings_country_group.id` |
 
-### Nhóm C — Đơn vị đo lường
+### A4. `settings_zone` — Khu vực vận chuyển
 
-| # | Bảng đề xuất | Nguồn | Ghi chú |
+| Trường | Kiểu | Bắt buộc | Mô tả |
 |---|---|---|---|
-| C1 | `settings_unit` *(rename)* | Cloud: `company_settings_unit` → global | Bỏ `company_id` scope, chuyển thành global |
-| C2 | `settings_unit_group` *(rename)* | Cloud: `company_settings_unit_group` | Giữ nhóm đơn vị |
-| C3 | `settings_unit_alias` *(rename)* | Cloud: `company_settings_unit_alias` | Alias cho các hệ thống khác (AFR, AMS/ACI) |
-
-### Nhóm D — Vận tải & Dịch vụ
-
-| # | Bảng đề xuất | Nguồn | Ghi chú |
-|---|---|---|---|
-| D1 | `settings_transport_mode` *(mới)* | OF1: `lst_Mode` | Air / Sea FCL / Sea LCL / Truck / Rail |
-| D2 | `settings_service_type` *(mới)* | OF1: `lst_Service` | Import / Export / Customs / ... |
-| D3 | `settings_vessel` *(mới)* | OF1: `VesselCode` (26K) | Tàu biển — cần import |
-| D4 | `settings_commodity` *(mới)* | OF1: `Commodity` | Loại hàng hóa |
-| D5 | `settings_transaction_type` *(mới)* | OF1: `TransactionType` | Loại giao dịch vận chuyển |
-
-### Nhóm E — Tài chính
-
-| # | Bảng đề xuất | Nguồn | Ghi chú |
-|---|---|---|---|
-| E1 | `settings_bank` *(mới)* | OF1: `lst_Bank` (203) | Danh sách ngân hàng |
-| E2 | `settings_charge_type` *(mới)* | OF1: `NameFeeDescription` (1,130) | Danh mục phí — quan trọng cho pricing |
-
-### Nhóm F — CRM / Phân loại
-
-| # | Bảng đề xuất | Nguồn | Ghi chú |
-|---|---|---|---|
-| F1 | `settings_sale_type` *(mới)* | OF1: `lst_SaleType` | Loại kinh doanh |
-| F2 | `settings_industry` *(mới)* | OF1: `lst_Industries` | Ngành nghề đối tác |
-| F3 | `settings_partner_source` *(mới)* | OF1: `lst_Source` | Nguồn đối tác |
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã khu vực — UNIQUE |
+| `label` | varchar | ✅ | Tên khu vực |
+| `zone_type` | varchar | ✅ | Phân loại: `global`, `local`, `custom` |
+| `is_active` | boolean | ✅ | Đang sử dụng |
 
 ---
 
-## 3. Kế hoạch Migration / Khởi tạo Data
+## Nhóm B — Địa lý Hành chính
 
-### Ưu tiên Cao (cần có trước khi go-live)
+### B1. `settings_location_state` — Tỉnh / Bang
 
-| STT | Việc cần làm | Nguồn → Đích |
-|---|---|---|
-| 1 | Import airport data vào `settings_location` | `Airports` (OF1) → Cloud |
-| 2 | Populate `settings_currency_exchange_rate` | `CurrencyExchangeRate` (OF1) → Cloud |
-| 3 | Tạo & import `settings_transport_mode` | `lst_Mode` (OF1) → Cloud |
-| 4 | Tạo & import `settings_service_type` | `lst_Service` (OF1) → Cloud |
-| 5 | Tạo & import `settings_transaction_type` | `TransactionType` (OF1) → Cloud |
-| 6 | Tạo & import `settings_bank` | `lst_Bank` (OF1) → Cloud |
-| 7 | Tạo & import `settings_charge_type` | `NameFeeDescription` (OF1) → Cloud |
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã định danh — UNIQUE |
+| `label` | varchar | ✅ | Tên tỉnh/bang |
+| `country_id` | bigint | ✅ | FK → `settings_country.id` |
+| `country_code` | varchar(2) | | Denormalized |
+| `gov_code` | varchar | | Mã hành chính nhà nước |
+| `administrative_unit` | varchar | | Loại đơn vị (Tỉnh, Thành phố trực thuộc TW) |
 
-### Ưu tiên Trung bình
+### B2. `settings_location_district` — Huyện / Quận
 
-| STT | Việc cần làm | Nguồn → Đích |
-|---|---|---|
-| 8 | Tạo & import `settings_vessel` | `VesselCode` (OF1) → Cloud |
-| 9 | Tạo & import `settings_commodity` | `Commodity` (OF1) → Cloud |
-| 10 | Tạo & import `settings_zone` | `lst_Zone` + `lst_Zone_Local` (OF1) → Cloud |
-| 11 | Rename `company_settings_unit` → global `settings_unit` | Cloud internal refactor |
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã định danh — UNIQUE |
+| `label` | varchar | ✅ | Tên huyện/quận |
+| `state_id` | bigint | ✅ | FK → `settings_location_state.id` |
+| `state_label` | varchar | | Denormalized |
+| `gov_code` | varchar | | Mã hành chính nhà nước |
+| `administrative_unit` | varchar | | Loại đơn vị (Huyện, Quận, Thị xã) |
 
-### Ưu tiên Thấp
+### B3. `settings_location_subdistrict` — Phường / Xã
 
-| STT | Việc cần làm | Ghi chú |
-|---|---|---|
-| 12 | Tạo `settings_sale_type`, `settings_industry`, `settings_partner_source` | CRM lookup tables |
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã định danh — UNIQUE |
+| `label` | varchar | ✅ | Tên phường/xã |
+| `district_id` | bigint | ✅ | FK → `settings_location_district.id` |
+| `district_label` | varchar | | Denormalized |
+| `state_id` | bigint | | FK → `settings_location_state.id` |
+| `state_label` | varchar | | Denormalized |
+| `gov_code` | varchar | | Mã hành chính nhà nước |
+| `administrative_unit` | varchar | | Loại đơn vị (Phường, Xã, Thị trấn) |
+| `postal_code` | varchar | | Mã bưu chính |
 
 ---
 
-## 4. Điểm cần làm rõ
+## Nhóm C — Địa điểm Logistics
 
-| # | Câu hỏi | Lý do cần biết |
-|---|---|---|
-| Q1 | `company_settings_unit` scoped theo `company_id` — có giữ scope hay chuyển global? | Ảnh hưởng đến thiết kế multi-tenant |
-| Q2 | `settings_location` đã có airport VN chưa, hay cần import từ `Airports` (15K)? | Tránh duplicate |
-| Q3 | Tỷ giá sẽ do Cloud quản lý hay vẫn đồng bộ từ OF1? | Quyết định architecture `settings_currency_exchange_rate` |
-| Q4 | `VesselCode` (26K rows) — có cần real-time sync với database tàu quốc tế không? | Ảnh hưởng đến strategy update |
-| Q5 | `NameFeeDescription` trong OF1 là charge catalog chung hay per-company? | Cần biết để thiết kế bảng Cloud tương đương |
+### C1. `settings_location` — Địa điểm (Sân bay, Cảng, KCN, ...)
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã nội bộ — UNIQUE |
+| `iata_code` | varchar(3) | | Mã IATA sân bay |
+| `un_locode` | varchar | | Mã UN/LOCODE cảng biển |
+| `label` | varchar | ✅ | Tên đầy đủ |
+| `short_label` | varchar | | Tên viết tắt |
+| `location_type` | varchar | ✅ | `Airport` / `Port` / `KCN` / `State` / `District` / `Address` |
+| `country_id` | bigint | | FK → `settings_country.id` |
+| `country_label` | varchar | | Denormalized |
+| `state_id` | bigint | | FK → `settings_location_state.id` |
+| `district_id` | bigint | | FK → `settings_location_district.id` |
+| `subdistrict_id` | bigint | | FK → `settings_location_subdistrict.id` |
+| `latitude` | double | | Vĩ độ |
+| `longitude` | double | | Kinh độ |
+| `postal_code` | varchar | | Mã bưu chính |
+| `contact` | varchar | | Thông tin liên hệ |
+| `is_active` | boolean | ✅ | Đang hoạt động |
+
+### C2. `settings_location_reference_code` — Mã tham chiếu bổ sung
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `location_id` | bigint | ✅ | FK → `settings_location.id` |
+| `code` | varchar | ✅ | Giá trị mã |
+| `code_type` | varchar | ✅ | Loại mã: `IATA`, `UNLOCODE`, `CAN_CODE`, `AUS_CODE`, `US_CODE`, ... |
 
 ---
 
-## 5. Tóm tắt
+## Nhóm D — Tiền tệ & Tỷ giá
 
-| Nhóm | Trạng thái hiện tại | Hành động |
+### D1. `settings_currency` — Tiền tệ
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar(3) | ✅ | Mã ISO 4217 (e.g. `VND`, `USD`) — UNIQUE |
+| `label` | varchar | ✅ | Tên tiền tệ |
+| `symbol` | varchar(10) | | Ký hiệu (e.g. `đ`, `$`, `€`) |
+| `decimal_places` | int | ✅ | Số chữ số thập phân (VND=0, USD=2) |
+| `rounding` | double | | Đơn vị làm tròn |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### D2. `settings_currency_exchange_rate` — Tỷ giá theo thời kỳ
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `currency_id` | bigint | ✅ | FK → `settings_currency.id` |
+| `base_currency_id` | bigint | ✅ | Tiền tệ cơ sở (thường là USD hoặc VND) |
+| `rate` | decimal(20,6) | ✅ | Tỷ giá |
+| `valid_from` | timestamp | ✅ | Ngày bắt đầu hiệu lực |
+| `valid_to` | timestamp | | Ngày kết thúc hiệu lực (null = còn hiệu lực) |
+| `source` | varchar | | Nguồn tỷ giá (e.g. `SBV`, `manual`) |
+
+---
+
+## Nhóm E — Đơn vị đo lường
+
+### E1. `settings_unit_group` — Nhóm đơn vị
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã nhóm (e.g. `weight`, `volume`, `quantity`) — UNIQUE |
+| `label` | varchar | ✅ | Tên nhóm |
+
+### E2. `settings_unit` — Đơn vị đo
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã đơn vị (e.g. `KGM`, `MTQ`) — UNIQUE |
+| `label` | varchar | ✅ | Tên hiển thị (e.g. `kg(s)`, `cbm`) |
+| `group_id` | bigint | ✅ | FK → `settings_unit_group.id` |
+| `iso_code` | varchar | | Mã ISO |
+| `scale` | double | | Tỷ lệ quy đổi về đơn vị chuẩn của nhóm |
+| `description` | varchar | | Mô tả tiếng Việt |
+| `description_en` | varchar | | Mô tả tiếng Anh |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### E3. `settings_unit_alias` — Bí danh đơn vị
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `unit_id` | bigint | ✅ | FK → `settings_unit.id` |
+| `alias` | varchar | ✅ | Tên alias |
+| `system` | varchar | | Hệ thống dùng alias (e.g. `AFR`, `AMS_ACI`) |
+
+---
+
+## Nhóm F — Vận tải & Dịch vụ
+
+### F1. `settings_transport_mode` — Phương thức vận chuyển
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã (e.g. `AIR`, `SEA_FCL`, `SEA_LCL`, `TRUCK`, `RAIL`) — UNIQUE |
+| `label` | varchar | ✅ | Tên hiển thị |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### F2. `settings_service_type` — Loại dịch vụ logistics
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã dịch vụ — UNIQUE |
+| `label` | varchar | ✅ | Tên dịch vụ (e.g. Import, Export, Customs, Trucking) |
+| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### F3. `settings_transaction_type` — Loại giao dịch
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã loại giao dịch — UNIQUE |
+| `label` | varchar | ✅ | Tên loại |
+| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
+| `service_type_id` | bigint | | FK → `settings_service_type.id` |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### F4. `settings_vessel` — Tàu biển
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã tàu — UNIQUE |
+| `name` | varchar | ✅ | Tên tàu |
+| `imo_number` | varchar | | Số IMO quốc tế |
+| `flag_country_id` | bigint | | FK → `settings_country.id` (quốc tịch tàu) |
+| `vessel_type` | varchar | | Loại tàu (Container, Bulk, ...) |
+| `is_active` | boolean | ✅ | Đang hoạt động |
+
+### F5. `settings_commodity` — Loại hàng hóa
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã hàng hóa — UNIQUE |
+| `label` | varchar | ✅ | Tên hàng hóa |
+| `hs_code` | varchar | | Mã HS code |
+| `is_dangerous` | boolean | | Hàng nguy hiểm |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+---
+
+## Nhóm G — Tài chính
+
+### G1. `settings_bank` — Ngân hàng
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã ngân hàng — UNIQUE |
+| `swift_code` | varchar | | Mã SWIFT/BIC |
+| `label` | varchar | ✅ | Tên đầy đủ |
+| `short_label` | varchar | | Tên viết tắt |
+| `country_id` | bigint | | FK → `settings_country.id` |
+| `is_active` | boolean | ✅ | Đang hoạt động |
+
+### G2. `settings_charge_type` — Danh mục loại phí
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã phí — UNIQUE |
+| `label` | varchar | ✅ | Tên phí (e.g. THC, B/L Fee, Origin CFS) |
+| `label_en` | varchar | | Tên tiếng Anh |
+| `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) |
+| `transport_mode_id` | bigint | | FK → `settings_transport_mode.id` |
+| `is_buying` | boolean | | Áp dụng cho giá mua |
+| `is_selling` | boolean | | Áp dụng cho giá bán |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+---
+
+## Nhóm H — CRM / Phân loại đối tác
+
+### H1. `settings_industry` — Ngành nghề
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã ngành — UNIQUE |
+| `label` | varchar | ✅ | Tên ngành nghề |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### H2. `settings_sale_type` — Loại kinh doanh
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã loại — UNIQUE |
+| `label` | varchar | ✅ | Tên (e.g. Direct, Agent, Co-loader) |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+### H3. `settings_partner_source` — Nguồn đối tác
+
+| Trường | Kiểu | Bắt buộc | Mô tả |
+|---|---|---|---|
+| `id` | bigint | ✅ | PK |
+| `code` | varchar | ✅ | Mã nguồn — UNIQUE |
+| `label` | varchar | ✅ | Tên nguồn (e.g. Referral, Cold Call, Exhibition) |
+| `is_active` | boolean | ✅ | Đang sử dụng |
+
+---
+
+## Audit Fields (áp dụng cho tất cả bảng)
+
+| Trường | Kiểu | Mô tả |
 |---|---|---|
-| Quốc gia | ✅ Cloud đủ | Giữ nguyên |
-| Tiền tệ | ⚠️ Cloud thiếu tỷ giá | Import từ OF1 |
-| Địa điểm | ⚠️ Cloud thiếu airport đầy đủ | Merge từ OF1 |
-| Đơn vị đo | ✅ Cloud đủ | Cân nhắc bỏ company_id scope |
-| Vận tải/Dịch vụ | ❌ Cloud chưa có | Tạo mới + import OF1 |
-| Tài chính | ❌ Cloud chưa có | Tạo mới + import OF1 |
-| CRM | ❌ Cloud chưa có | Tạo mới (ưu tiên thấp) |
+| `created_by` | varchar | Người tạo |
+| `created_time` | timestamp | Thời điểm tạo |
+| `modified_by` | varchar | Người sửa cuối |
+| `modified_time` | timestamp | Thời điểm sửa cuối |
+| `version` | int | Optimistic locking |
+
+---
+
+## Sơ đồ quan hệ
+
+```
+settings_country (id)
+  ├──► settings_country_group_rel → settings_country_group (hỗ trợ cây phân cấp)
+  ├──► settings_location (country_id)
+  ├──► settings_location_state (country_id)
+  └──► settings_bank (country_id)
+
+settings_location_state (id)
+  └──► settings_location_district (state_id)
+         └──► settings_location_subdistrict (district_id)
+
+settings_location (id)
+  └──► settings_location_reference_code (location_id)
+
+settings_currency (id)
+  └──► settings_currency_exchange_rate (currency_id)
+
+settings_unit_group (id)
+  └──► settings_unit (group_id)
+         └──► settings_unit_alias (unit_id)
+
+settings_transport_mode (id)
+  ├──► settings_service_type (transport_mode_id)
+  ├──► settings_transaction_type (transport_mode_id)
+  └──► settings_charge_type (transport_mode_id)
+```
