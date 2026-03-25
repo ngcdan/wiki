@@ -333,44 +333,7 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm B — Core Process (Quy trình đặt hàng & booking)
-
-| Bảng | Rows | Mô tả |
-|---|---|---|
-| `lgc_mgmt_purchase_order` | 81,226 | Đơn hàng mua (PK: `id`, UNIQUE: `code`) |
-| `lgc_mgmt_purchase_order_follower` | 60,631 | Người theo dõi đơn hàng |
-| `lgc_mgmt_booking_process` | 81,225 | Booking lô hàng (PK: `id`, UNIQUE: `code`; FK: `purchase_order_id`) |
-| `lgc_mgmt_booking_process_commodity` | 78,296 | Hàng hóa trong booking (FK: `booking_process_id`) |
-| `lgc_mgmt_booking_process_commodity_type_rel` | 1 | Mapping: commodity ↔ commodity_type |
-| `lgc_mgmt_order_process` | 84,561 | Quy trình order theo booking (FK: `booking_process_id`) |
-
-**Cột quan trọng `lgc_mgmt_purchase_order`:**
-
-| Cột | Kiểu | Mô tả |
-|---|---|---|
-| `code` | varchar | Mã đơn hàng — UNIQUE, NOT NULL |
-| `label` | varchar | Tên đơn hàng |
-| `client_partner_id` | bigint | FK → partner (khách hàng) |
-| `assignee_employee_id` | bigint | FK → nhân viên phụ trách |
-| `client_label` | varchar | Tên khách hàng (denormalized) |
-| `assignee_label` | varchar | Tên nhân viên (denormalized) |
-
-**Cột quan trọng `lgc_mgmt_booking_process`:**
-
-| Cột | Kiểu | Mô tả |
-|---|---|---|
-| `code` | varchar | Mã booking — UNIQUE, NOT NULL |
-| `mode` | varchar | Phương thức vận chuyển (Air/Sea/Rail/Truck/CC) |
-| `type` | varchar | Loại booking (FCL/LCL/Air/...) |
-| `purchase_order_id` | bigint | FK → `lgc_mgmt_purchase_order.id` |
-| `booking_id` | bigint | FK → booking (bên ngoài lgc_mgmt) |
-| `state` | varchar | Trạng thái (draft/confirmed/...) |
-| `close_date` | timestamp | Ngày đóng booking |
-| `ignore_sync` | boolean | Bỏ qua sync CDC |
-
----
-
-### Nhóm C — Transport Plan (Kế hoạch vận chuyển)
+### Nhóm B — Transport Plan (Kế hoạch vận chuyển)
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -394,7 +357,7 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm D — House Bills (Vận đơn nhà)
+### Nhóm C — House Bills (Vận đơn nhà)
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -456,7 +419,7 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm E — Cargo & Container
+### Nhóm D — Cargo & Container
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -487,6 +450,43 @@ company_settings_unit (id)
 | `max_gross_weight` / `verified_gross_mass` | double | Trọng lượng tối đa / VGM |
 | `requested_temperature` | varchar | Nhiệt độ yêu cầu (Reefer) |
 | `ventilation` | varchar | Thông khí |
+
+---
+
+### Nhóm E — Core Process (Quy trình đặt hàng & booking)
+
+| Bảng | Rows | Mô tả |
+|---|---|---|
+| `lgc_mgmt_purchase_order` | 81,226 | Đơn hàng mua (PK: `id`, UNIQUE: `code`) |
+| `lgc_mgmt_purchase_order_follower` | 60,631 | Người theo dõi đơn hàng |
+| `lgc_mgmt_booking_process` | 81,225 | Booking lô hàng (PK: `id`, UNIQUE: `code`; FK: `purchase_order_id`) |
+| `lgc_mgmt_booking_process_commodity` | 78,296 | Hàng hóa trong booking (FK: `booking_process_id`) |
+| `lgc_mgmt_booking_process_commodity_type_rel` | 1 | Mapping: commodity ↔ commodity_type |
+| `lgc_mgmt_order_process` | 84,561 | Quy trình order theo booking (FK: `booking_process_id`) |
+
+**Cột quan trọng `lgc_mgmt_purchase_order`:**
+
+| Cột | Kiểu | Mô tả |
+|---|---|---|
+| `code` | varchar | Mã đơn hàng — UNIQUE, NOT NULL |
+| `label` | varchar | Tên đơn hàng |
+| `client_partner_id` | bigint | FK → partner (khách hàng) |
+| `assignee_employee_id` | bigint | FK → nhân viên phụ trách |
+| `client_label` | varchar | Tên khách hàng (denormalized) |
+| `assignee_label` | varchar | Tên nhân viên (denormalized) |
+
+**Cột quan trọng `lgc_mgmt_booking_process`:**
+
+| Cột | Kiểu | Mô tả |
+|---|---|---|
+| `code` | varchar | Mã booking — UNIQUE, NOT NULL |
+| `mode` | varchar | Phương thức vận chuyển (Air/Sea/Rail/Truck/CC) |
+| `type` | varchar | Loại booking (FCL/LCL/Air/...) |
+| `purchase_order_id` | bigint | FK → `lgc_mgmt_purchase_order.id` |
+| `booking_id` | bigint | FK → booking (bên ngoài lgc_mgmt) |
+| `state` | varchar | Trạng thái (draft/confirmed/...) |
+| `close_date` | timestamp | Ngày đóng booking |
+| `ignore_sync` | boolean | Bỏ qua sync CDC |
 
 ---
 
