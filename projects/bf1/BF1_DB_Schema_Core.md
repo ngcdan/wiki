@@ -8,47 +8,47 @@
 ## Tổng quan quan hệ
 
 ```
-[Nhóm 16: Master data]
+[Nhóm 10: Master data]
   Partners, Countries, Airports, VesselCode, CurrencyExchangeRate ...
         │
         ▼
-[Nhóm 2: Transactions]          [Nhóm 11: Booking]
+[Nhóm 1: Transactions]          [Nhóm 6: Booking]
   Transactions (TransID)  ◄──── BookingLocal (BkgID)
         │                        SeaBookingNote
         ▼
   TransactionDetails (TransID, HWBNO, ShipperID)
         │                │              │
         │                │              ▼
-        │                │     [Nhóm 16: Partners]
+        │                │     [Nhóm 10: Partners]
         │                ▼
-[Nhóm 3: HAWB]      [Nhóm 13: Customs]
+[Nhóm 2: HAWB]      [Nhóm 8: Customs]
   HAWB (HWBNO)       CustomsDeclaration (MasoTK)
      │  │
-     │  └──► [Nhóm 4: Rates]
+     │  └──► [Nhóm 3: Rates]
      │           SellingRate (HAWBNO)
      │           BuyingRateWithHBL (HAWBNO)
      │           OtherChargeDetail (HBL)
      │
-     ├──► [Nhóm 5: Debit Notes]
+     ├──► [Nhóm 4: Debit Notes]
      │        DebitNoteDetails (HWBNO)
      │              └──► DebitNoteDetails_Payment
      │
-     ├──► [Nhóm 8: Profit & Revenue]
+     ├──► [Nhóm 5: Profit & Revenue]
      │        ProfitShares (HAWBNO)
      │        RevenueDetails_Sheet (HWBNO)
      │
      └──► HAWBTracking, HAWBDETAILS, HAWBRATE
               │
-              └──► [Nhóm 12: Warehouse] (xử lý kho sau khi hàng về)
+              └──► [Nhóm 7: Warehouse] (xử lý kho sau khi hàng về)
                        Warehouse, WarehouseDetail
 
-[Nhóm 14: Trucking]
+[Nhóm 9: Trucking]
   Trucking_Track (gắn với lô hàng/HWBNO)
 ```
 
 ---
 
-## Nhóm 2 — Transactions / Lô hàng
+## Nhóm 1 — Transactions / Lô hàng
 
 ### `Transactions` — Master lô hàng
 
@@ -98,7 +98,7 @@
 
 ---
 
-### Các bảng phụ (Nhóm 2)
+### Các bảng phụ (Nhóm 1)
 
 | Bảng | Rows | Mô tả |
 |------|------|-------|
@@ -110,7 +110,7 @@
 
 ---
 
-## Nhóm 3 — HAWB / House Bill of Lading
+## Nhóm 2 — HAWB / House Bill of Lading
 
 ### `HAWB` — Vận đơn nhà (House Bill)
 
@@ -194,7 +194,7 @@
 
 ---
 
-## Nhóm 4 — Rates / Bảng giá (liên quan Nhóm 2, 3)
+## Nhóm 3 — Rates / Bảng giá (liên quan Nhóm 1, 2)
 
 > Chỉ lấy các bảng có FK trực tiếp tới `HAWB.HWBNO` hoặc `Transactions.TransID`.
 
@@ -303,7 +303,7 @@
 
 ---
 
-## Nhóm 5 — Debit Notes / Công nợ (liên quan Nhóm 2, 3)
+## Nhóm 4 — Debit Notes / Công nợ (liên quan Nhóm 1, 2)
 
 ### `DebitNotes` — Phiếu công nợ
 
@@ -373,7 +373,7 @@
 
 ---
 
-## Nhóm 8 — Profit & Revenue
+## Nhóm 5 — Profit & Revenue
 
 ### `ProfitShares` — Chia lợi nhuận
 
@@ -425,7 +425,7 @@
 
 ---
 
-## Nhóm 11 — Booking
+## Nhóm 6 — Booking
 
 ### `BookingLocal` — Booking nội địa
 
@@ -484,7 +484,7 @@
 
 ---
 
-## Nhóm 12 — Warehouse / Kho
+## Nhóm 7 — Warehouse / Kho
 
 ### `Warehouse` — Kho hàng
 
@@ -528,7 +528,7 @@
 
 ---
 
-## Nhóm 13 — Hải quan / Customs
+## Nhóm 8 — Hải quan / Customs
 
 ### `CustomsDeclaration` — Tờ khai hải quan
 
@@ -574,7 +574,7 @@
 
 ---
 
-## Nhóm 14 — Trucking
+## Nhóm 9 — Trucking
 
 ### `Trucking_Track` — Tracking xe tải
 
@@ -594,7 +594,7 @@
 
 ---
 
-## Nhóm 16 — Master data / Danh mục
+## Nhóm 10 — Master data / Danh mục
 
 | Bảng | Rows | Mô tả | Dùng trong |
 |------|------|-------|-----------|
