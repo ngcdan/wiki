@@ -194,7 +194,7 @@
 
 ---
 
-## Nhóm 3 — Rates / Bảng giá (liên quan Nhóm 1, 2)
+## Nhóm 3 — Rates / Bảng giá
 
 > Chỉ lấy các bảng có FK trực tiếp tới `HAWB.HWBNO` hoặc `Transactions.TransID`.
 
@@ -303,7 +303,7 @@
 
 ---
 
-## Nhóm 4 — Debit Notes / Công nợ (liên quan Nhóm 1, 2)
+## Nhóm 4 — Debit Notes / Công nợ
 
 ### `DebitNotes` — Phiếu công nợ
 
