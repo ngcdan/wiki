@@ -333,31 +333,7 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm B — Transport Plan (Kế hoạch vận chuyển)
-
-| Bảng | Rows | Mô tả |
-|---|---|---|
-| `lgc_mgmt_transport_plan` | 81,225 | Kế hoạch vận chuyển tổng thể (FK: `booking_process_id`) |
-| `lgc_mgmt_order_transport_plan` | 84,560 | Kế hoạch vận chuyển theo order (FK: `transport_plan_id`, `order_process_id`) |
-| `lgc_mgmt_master_bill_transport_plan` | 19,835 | Kế hoạch vận chuyển theo master bill |
-| `lgc_mgmt_transport_route` | 103,058 | Từng chặng vận chuyển (FK: `order_transport_plan_id`, `master_bill_transport_plan_id`) |
-
-**Cột quan trọng `lgc_mgmt_transport_route`:**
-
-| Cột | Kiểu | Mô tả |
-|---|---|---|
-| `from_location_code` / `from_location_label` | varchar | Điểm đi |
-| `to_location_code` / `to_location_label` | varchar | Điểm đến |
-| `depart_time` / `arrival_time` | timestamp | Giờ khởi hành / đến |
-| `transport_no` | varchar | Số chuyến/chuyến bay/tàu |
-| `transport_method_label` | varchar | Tên phương tiện |
-| `carrier_partner_id` | bigint | FK → partner (hãng vận chuyển) |
-| `carrier_label` / `carrier_short_name` | varchar | Tên hãng (denormalized) |
-| `sort_order` | int | Thứ tự chặng |
-
----
-
-### Nhóm C — House Bills (Vận đơn nhà)
+### Nhóm B — House Bills (Vận đơn nhà)
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -416,6 +392,30 @@ company_settings_unit (id)
 | `customs_agency_partner_id` / `customs_agency_partner_name` | Đại lý hải quan |
 | `selectivity_of_customs` | Luồng kiểm tra hải quan |
 | `ops_employee_id` / `ops_employee_label` | Nhân viên ops |
+
+---
+
+### Nhóm C — Transport Plan (Kế hoạch vận chuyển)
+
+| Bảng | Rows | Mô tả |
+|---|---|---|
+| `lgc_mgmt_transport_plan` | 81,225 | Kế hoạch vận chuyển tổng thể (FK: `booking_process_id`) |
+| `lgc_mgmt_order_transport_plan` | 84,560 | Kế hoạch vận chuyển theo order (FK: `transport_plan_id`, `order_process_id`) |
+| `lgc_mgmt_master_bill_transport_plan` | 19,835 | Kế hoạch vận chuyển theo master bill |
+| `lgc_mgmt_transport_route` | 103,058 | Từng chặng vận chuyển (FK: `order_transport_plan_id`, `master_bill_transport_plan_id`) |
+
+**Cột quan trọng `lgc_mgmt_transport_route`:**
+
+| Cột | Kiểu | Mô tả |
+|---|---|---|
+| `from_location_code` / `from_location_label` | varchar | Điểm đi |
+| `to_location_code` / `to_location_label` | varchar | Điểm đến |
+| `depart_time` / `arrival_time` | timestamp | Giờ khởi hành / đến |
+| `transport_no` | varchar | Số chuyến/chuyến bay/tàu |
+| `transport_method_label` | varchar | Tên phương tiện |
+| `carrier_partner_id` | bigint | FK → partner (hãng vận chuyển) |
+| `carrier_label` / `carrier_short_name` | varchar | Tên hãng (denormalized) |
+| `sort_order` | int | Thứ tự chặng |
 
 ---
 
