@@ -298,7 +298,42 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm A — Core Process (Quy trình đặt hàng & booking)
+### Nhóm A — Transactions - Master Bill (Vận đơn chủ)
+
+| Bảng | Rows | Mô tả |
+|---|---|---|
+| `lgc_mgmt_air_master_bill` | 7,779 | Vận đơn chủ hàng không (MAWB) |
+| `lgc_mgmt_air_master_bill_custom_field` | 7 | Custom print fields cho Air MAWB |
+| `lgc_mgmt_air_master_bill_follower` | ~0 | Người theo dõi Air MAWB |
+| `lgc_mgmt_sea_master_bill` | 12,062 | Vận đơn chủ đường biển (MBL/BOL) |
+| `lgc_mgmt_sea_master_bill_custom_field` | 2 | Custom print fields cho Sea MBL |
+| `lgc_mgmt_sea_master_bill_follower` | ~0 | Người theo dõi Sea MBL |
+| `lgc_mgmt_rail_master_bill` | 1 | Vận đơn chủ đường sắt |
+| `lgc_mgmt_rail_master_bill_follower` | ~0 | Người theo dõi Rail MB |
+| `lgc_mgmt_master_bill_attachment` | 6 | File đính kèm vận đơn chủ |
+
+**Cột chung của các Master Bill:**
+
+| Cột | Mô tả |
+|---|---|
+| `code` | Mã nội bộ — UNIQUE |
+| `master_bill_no` | Số vận đơn chủ (MAWB#/MBL#) |
+| `master_shipper_partner_id` / `master_shipper_label` | Người gửi (denormalized) |
+| `master_consignee_partner_id` / `master_consignee_label` | Người nhận (denormalized) |
+| `master_consolidator_partner_id` / `master_consolidator_label` | Consolidator |
+| `carrier_partner_id` / `carrier_label` | Hãng tàu/hàng không |
+| `shipment_type` | Loại lô hàng (FCL/LCL/Air) |
+| `transportation_mode` | Phương thức (AIR/SEA/RAIL) |
+| `purpose` | Mục đích (Original/Sea Waybill/Surrender/...) |
+| `issued_date` | Ngày phát hành |
+| `close_date` | Ngày đóng |
+| `state` | Trạng thái |
+| `chargeable_weight_in_kgs` / `gross_weight_in_kgs` / `volume_in_cbm` | Thông số hàng hóa |
+| `ignore_sync` | Bỏ qua sync CDC |
+
+---
+
+### Nhóm B — Core Process (Quy trình đặt hàng & booking)
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -335,7 +370,7 @@ company_settings_unit (id)
 
 ---
 
-### Nhóm B — Transport Plan (Kế hoạch vận chuyển)
+### Nhóm C — Transport Plan (Kế hoạch vận chuyển)
 
 | Bảng | Rows | Mô tả |
 |---|---|---|
@@ -356,41 +391,6 @@ company_settings_unit (id)
 | `carrier_partner_id` | bigint | FK → partner (hãng vận chuyển) |
 | `carrier_label` / `carrier_short_name` | varchar | Tên hãng (denormalized) |
 | `sort_order` | int | Thứ tự chặng |
-
----
-
-### Nhóm C — Master Bills (Vận đơn chủ)
-
-| Bảng | Rows | Mô tả |
-|---|---|---|
-| `lgc_mgmt_air_master_bill` | 7,779 | Vận đơn chủ hàng không (MAWB) |
-| `lgc_mgmt_air_master_bill_custom_field` | 7 | Custom print fields cho Air MAWB |
-| `lgc_mgmt_air_master_bill_follower` | ~0 | Người theo dõi Air MAWB |
-| `lgc_mgmt_sea_master_bill` | 12,062 | Vận đơn chủ đường biển (MBL/BOL) |
-| `lgc_mgmt_sea_master_bill_custom_field` | 2 | Custom print fields cho Sea MBL |
-| `lgc_mgmt_sea_master_bill_follower` | ~0 | Người theo dõi Sea MBL |
-| `lgc_mgmt_rail_master_bill` | 1 | Vận đơn chủ đường sắt |
-| `lgc_mgmt_rail_master_bill_follower` | ~0 | Người theo dõi Rail MB |
-| `lgc_mgmt_master_bill_attachment` | 6 | File đính kèm vận đơn chủ |
-
-**Cột chung của các Master Bill:**
-
-| Cột | Mô tả |
-|---|---|
-| `code` | Mã nội bộ — UNIQUE |
-| `master_bill_no` | Số vận đơn chủ (MAWB#/MBL#) |
-| `master_shipper_partner_id` / `master_shipper_label` | Người gửi (denormalized) |
-| `master_consignee_partner_id` / `master_consignee_label` | Người nhận (denormalized) |
-| `master_consolidator_partner_id` / `master_consolidator_label` | Consolidator |
-| `carrier_partner_id` / `carrier_label` | Hãng tàu/hàng không |
-| `shipment_type` | Loại lô hàng (FCL/LCL/Air) |
-| `transportation_mode` | Phương thức (AIR/SEA/RAIL) |
-| `purpose` | Mục đích (Original/Sea Waybill/Surrender/...) |
-| `issued_date` | Ngày phát hành |
-| `close_date` | Ngày đóng |
-| `state` | Trạng thái |
-| `chargeable_weight_in_kgs` / `gross_weight_in_kgs` / `volume_in_cbm` | Thông số hàng hóa |
-| `ignore_sync` | Bỏ qua sync CDC |
 
 ---
 
