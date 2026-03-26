@@ -318,13 +318,14 @@
 | `label` | varchar | | Tên phí (e.g. THC, B/L Fee, Origin CFS) | `label` |
 | `localized_label` | varchar | | Tên bản địa | `local_label` |
 | `charge_group` | varchar | | Nhóm phí (Origin, Freight, Destination, Other) | `charge_group` |
+| `type` | varchar | | Phân loại: `SELLING` / `BUYING` | `type` |
 
 **Sample data:**
 
-| id | code | label | localized_label | charge_group |
-|---|---|---|---|---|
-| 1 | `OBL` | Original B/L Fee | Phí vận đơn gốc | `Origin` |
-| 2 | `OCF` | Ocean Freight | Cước biển | `Freight` |
+| id | code | label | localized_label | charge_group | type |
+|---|---|---|---|---|---|
+| 1 | `OBL` | Original B/L Fee | Phí vận đơn gốc | `Origin` | `SELLING` |
+| 2 | `OCF` | Ocean Freight | Cước biển | `Freight` | `BUYING` |
 
 ---
 
