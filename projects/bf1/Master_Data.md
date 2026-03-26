@@ -449,6 +449,34 @@
 
 ---
 
+## Nhóm F — Partner / Forwarder
+
+### F1. `lgc_forwarder_custom_list` — Danh sách forwarder (custom)
+
+Danh sách đối tác forwarder được quản lý tùy chỉnh theo team nội bộ. Dùng làm nguồn tra cứu khi chọn forwarder cho lô hàng.
+
+| Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
+|---|---|---|---|---|
+| `id` | bigserial | | PK | `id` |
+| `code` | varchar(255) | ✓ | Mã forwarder — UNIQUE | `code` |
+| `label` | varchar(255) | | Nhãn hiển thị | `label` |
+| `name` | varchar(255) | | Tên đầy đủ | `name` |
+| `note` | varchar(4096) | | Ghi chú | `note` |
+| `province` | varchar(255) | | Tỉnh/thành phố | `province` |
+| `team_code` | varchar(255) | | Mã team phụ trách | `team_code` |
+| `team_name` | varchar(255) | | Tên team phụ trách | `team_name` |
+| `storage_state` | varchar(255) | | Trạng thái: `CREATED` / `ACTIVE` / `INACTIVE` / `JUNK` / `DEPRECATED` / `ARCHIVED` | `storage_state` |
+
+**Sample data:**
+
+| id | code | label | name | province | team_code | team_name | storage_state |
+|---|---|---|---|---|---|---|---|
+| 1 | `FWD-HCM-001` | Vinafco | Vinafco Logistics Corp | Hồ Chí Minh | `TEAM_HCM` | Team HCM | `ACTIVE` |
+| 2 | `FWD-HAN-001` | Gemadept HN | Gemadept Hanoi Branch | Hà Nội | `TEAM_HN` | Team HN | `ACTIVE` |
+| 3 | `FWD-HCM-002` | Transimex | Transimex Corp | Hồ Chí Minh | `TEAM_HCM` | Team HCM | `INACTIVE` |
+
+---
+
 ## Audit Fields (áp dụng cho tất cả bảng)
 
 | Trường | Kiểu | Mô tả |
@@ -483,5 +511,8 @@ settings_currency (id)
 settings_unit_group (id)
   └──► settings_unit (group_id)
          └──► settings_unit_alias (unit_id)
+
+lgc_forwarder_custom_list — danh sách độc lập, không FK ra ngoài
+  (tra cứu theo team_code, province)
 
 ```
