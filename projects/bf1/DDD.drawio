@@ -1,0 +1,128 @@
+<mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ══════════════════════════════════ -->
+    <!--         ORDER DOMAIN              -->
+    <!-- ══════════════════════════════════ -->
+    <mxCell id="10" value="Order Domain" style="swimlane;fontStyle=1;fontSize=14;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;arcSize=4;" vertex="1" parent="1">
+      <mxGeometry x="160" y="20" width="680" height="190" as="geometry" />
+    </mxCell>
+
+    <mxCell id="11" value="Purchase Order" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="10">
+      <mxGeometry x="240" y="50" width="200" height="50" as="geometry" />
+    </mxCell>
+
+    <mxCell id="12" value="Booking" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="10">
+      <mxGeometry x="60" y="120" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <mxCell id="13" value="Booking Process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="10">
+      <mxGeometry x="460" y="120" width="180" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════ -->
+    <!--       SHIPMENT DOMAIN             -->
+    <!-- ══════════════════════════════════ -->
+    <mxCell id="20" value="Shipment Domain" style="swimlane;fontStyle=1;fontSize=14;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;arcSize=4;" vertex="1" parent="1">
+      <mxGeometry x="40" y="290" width="920" height="170" as="geometry" />
+    </mxCell>
+
+    <mxCell id="21" value="Transactions - Master Bill" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="20">
+      <mxGeometry x="30" y="65" width="220" height="50" as="geometry" />
+    </mxCell>
+
+    <mxCell id="22" value="House Bill" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="20">
+      <mxGeometry x="380" y="65" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <mxCell id="23" value="Hawb Detail" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="20">
+      <mxGeometry x="720" y="65" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════ -->
+    <!--      SUPPORTING DOMAINS           -->
+    <!-- ══════════════════════════════════ -->
+    <mxCell id="30" value="Supporting Domains" style="swimlane;fontStyle=1;fontSize=14;fillColor=#f9f9f9;strokeColor=#aaaaaa;dashed=1;rounded=1;arcSize=4;" vertex="1" parent="1">
+      <mxGeometry x="20" y="550" width="960" height="220" as="geometry" />
+    </mxCell>
+
+    <!-- Cargo Domain -->
+    <mxCell id="31" value="Cargo Domain" style="swimlane;fontStyle=1;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;arcSize=4;" vertex="1" parent="30">
+      <mxGeometry x="20" y="40" width="270" height="150" as="geometry" />
+    </mxCell>
+    <mxCell id="32" value="Container / Cargo / Commodity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=11;" vertex="1" parent="31">
+      <mxGeometry x="25" y="60" width="220" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Pricing Domain -->
+    <mxCell id="33" value="Pricing Domain" style="swimlane;fontStyle=1;fontSize=12;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;arcSize=4;" vertex="1" parent="30">
+      <mxGeometry x="360" y="40" width="240" height="150" as="geometry" />
+    </mxCell>
+    <mxCell id="34" value="Rates / Profit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="33">
+      <mxGeometry x="20" y="60" width="200" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Transport Domain -->
+    <mxCell id="35" value="Transport Domain" style="swimlane;fontStyle=1;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;arcSize=4;" vertex="1" parent="30">
+      <mxGeometry x="680" y="40" width="260" height="150" as="geometry" />
+    </mxCell>
+    <mxCell id="36" value="Transport Plan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="35">
+      <mxGeometry x="25" y="45" width="210" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="37" value="Transport Route" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="35">
+      <mxGeometry x="25" y="95" width="210" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════ -->
+    <!--             EDGES                 -->
+    <!-- ══════════════════════════════════ -->
+
+    <!-- PO → BK : 1 → N -->
+    <mxCell id="50" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" source="11" target="12" parent="10">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- PO → BP : 1 → N -->
+    <mxCell id="51" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" source="11" target="13" parent="10">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- BK → MB : N → 1 -->
+    <mxCell id="52" value="N → 1" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="12" target="21" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- MB → HB : 1 → N -->
+    <mxCell id="53" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="21" target="22" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- HB → HD : 1 → 1 -->
+    <mxCell id="54" value="1 → 1" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="22" target="23" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- HB → CC : 1 → N -->
+    <mxCell id="55" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="22" target="32" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- HB → RP : 1 → N -->
+    <mxCell id="56" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="22" target="34" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- HB → TP : 1 → 1 -->
+    <mxCell id="57" value="1 → 1" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="22" target="36" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- TP → TR : 1 → N -->
+    <mxCell id="58" value="1 → N" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=11;" edge="1" source="36" target="37" parent="35">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
