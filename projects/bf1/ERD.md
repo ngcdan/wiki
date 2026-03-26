@@ -14,6 +14,7 @@ Sơ đồ Entity Relationship cho các thực thể nghiệp vụ cốt lõi c�
 graph TD
     subgraph ORDER["Order Domain"]
         PO["Purchase Order"] -->|"1 → N"| BK["Booking"]
+        PO -->|"1 → N"| BP["Booking Process\n(Tracking thông tin từng booking)"]
     end
 
     subgraph SHIPMENT["Shipment Domain"]
