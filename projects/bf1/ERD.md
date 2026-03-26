@@ -10,55 +10,44 @@ Sơ đồ Entity Relationship cho các thực thể nghiệp vụ cốt lõi c�
 
 ## Sơ đồ Domain Driven Design
 
-```plantuml
-@startuml
-skinparam packageStyle rectangle
-skinparam linetype ortho
-skinparam ArrowColor #444444
-skinparam ArrowFontSize 11
-skinparam PackageFontSize 13
-skinparam ComponentFontSize 12
-skinparam BackgroundColor white
-skinparam PackageBorderColor #888888
+```mermaid
+graph TB
+    subgraph ORDER["Order Domain"]
+        PO("Purchase Order")
+        BK("Booking")
+        BP("Booking Process")
+    end
 
-top to bottom direction
+    subgraph SHIPMENT["Shipment Domain"]
+        MB("Transactions - Master Bill")
+        HB("House Bill")
+        HD("Hawb Detail")
+    end
 
-package "Order Domain" {
-    [Purchase Order] as PO
-    [Booking] as BK
-    [Booking Process] as BP
-    PO --> BK : 1 → N
-    PO --> BP : 1 → N
-}
+    subgraph BOTTOM[ ]
+        subgraph CARGO["Cargo Domain"]
+            CC("Container / Cargo / Commodity")
+        end
+        subgraph PRICING["Pricing Domain"]
+            RP("Rates / Profit")
+        end
+        subgraph TRANSPORT["Transport Domain"]
+            TP("Transport Plan")
+            TR("Transport Route")
+        end
+    end
 
-package "Shipment Domain" {
-    [Transactions - Master Bill] as MB
-    [House Bill] as HB
-    [Hawb Detail] as HD
-    MB --> HB : 1 → N
-    HB --> HD : 1 → 1
-}
+    PO -->|"1 → N"| BK
+    PO -->|"1 → N"| BP
+    BK -->|"N → 1"| MB
+    MB -->|"1 → N"| HB
+    HB -->|"1 → 1"| HD
+    HB -->|"1 → N"| CC
+    HB -->|"1 → N"| RP
+    HB -->|"1 → 1"| TP
+    TP -->|"1 → N"| TR
 
-package "Cargo Domain" {
-    [Container / Cargo / Commodity] as CC
-}
-
-package "Pricing Domain" {
-    [Rates / Profit] as RP
-}
-
-package "Transport Domain" {
-    [Transport Plan] as TP
-    [Transport Route] as TR
-    TP --> TR : 1 → N
-}
-
-BK --> MB : N → 1
-HB --> CC : 1 → N
-HB --> RP : 1 → N
-HB --> TP : 1 → 1
-
-@enduml
+    style BOTTOM fill:none,stroke:none
 ```
 
 ---
