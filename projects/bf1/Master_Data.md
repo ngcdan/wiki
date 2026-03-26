@@ -367,6 +367,7 @@
 
 ### F1. `of1_fms_custom_list` — Danh sách chi cục hải quan
 
+> DB: `lgc_forwarder_custom_list`
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
@@ -389,6 +390,7 @@
 
 ### F2. `of1_fms_partner` — Đối tác / Khách hàng
 
+> DB: `lgc_forwarder_crm_partner`
 
 **Định danh & phân loại:**
 
