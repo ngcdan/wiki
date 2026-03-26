@@ -149,23 +149,23 @@ erDiagram
 
 | Entity (ERD) | Bảng thực tế | Ghi chú |
 |---|---|---|
-| Purchase Order | `lgc_mgmt_purchase_order` | PK: `id`, UNIQUE: `code` |
-| Booking | `lgc_mgmt_booking_process` | FK: `purchase_order_id` |
-| Transactions / Master Bill | `lgc_mgmt_air_master_bill` | Mode: Air (MAWB) |
-| | `lgc_mgmt_sea_master_bill` | Mode: Sea (MBL) |
-| | `lgc_mgmt_rail_master_bill` | Mode: Rail |
-| House Bill | `lgc_mgmt_air_house_bill` | Mode: Air (HAWB) |
-| | `lgc_mgmt_sea_house_bill` | Mode: Sea FCL/LCL (HBL) |
-| | `lgc_mgmt_truck_house_bill` | Mode: Truck |
-| | `lgc_mgmt_rail_house_bill` | Mode: Rail |
-| | `lgc_mgmt_cc_house_bill` | Mode: Cross-Country |
-| Container/Cargo/Commodity | `lgc_mgmt_trackable_cargo` | FK: `booking_process_id`, `container_id` |
-| | `lgc_mgmt_trackable_container` | Thông tin container |
-| | `lgc_mgmt_booking_process_commodity` | Hàng hóa khai báo trong booking |
-| Transport Plan | `lgc_mgmt_transport_plan` | FK: `booking_process_id` |
-| | `lgc_mgmt_order_transport_plan` | Kế hoạch theo order |
-| | `lgc_mgmt_master_bill_transport_plan` | Kế hoạch theo master bill |
-| Transport Route | `lgc_mgmt_transport_route` | FK: `order_transport_plan_id` |
+| Purchase Order | `of1_fms_lgc_mgmt_purchase_order` | PK: `id`, UNIQUE: `code` |
+| Booking | `of1_fms_lgc_mgmt_booking_process` | FK: `purchase_order_id` |
+| Transactions / Master Bill | `of1_fms_lgc_mgmt_air_master_bill` | Mode: Air (MAWB) |
+| | `of1_fms_lgc_mgmt_sea_master_bill` | Mode: Sea (MBL) |
+| | `of1_fms_lgc_mgmt_rail_master_bill` | Mode: Rail |
+| House Bill | `of1_fms_lgc_mgmt_air_house_bill` | Mode: Air (HAWB) |
+| | `of1_fms_lgc_mgmt_sea_house_bill` | Mode: Sea FCL/LCL (HBL) |
+| | `of1_fms_lgc_mgmt_truck_house_bill` | Mode: Truck |
+| | `of1_fms_lgc_mgmt_rail_house_bill` | Mode: Rail |
+| | `of1_fms_lgc_mgmt_cc_house_bill` | Mode: Cross-Country |
+| Container/Cargo/Commodity | `of1_fms_lgc_mgmt_trackable_cargo` | FK: `booking_process_id`, `container_id` |
+| | `of1_fms_lgc_mgmt_trackable_container` | Thông tin container |
+| | `of1_fms_lgc_mgmt_booking_process_commodity` | Hàng hóa khai báo trong booking |
+| Transport Plan | `of1_fms_lgc_mgmt_transport_plan` | FK: `booking_process_id` |
+| | `of1_fms_lgc_mgmt_order_transport_plan` | Kế hoạch theo order |
+| | `of1_fms_lgc_mgmt_master_bill_transport_plan` | Kế hoạch theo master bill |
+| Transport Route | `of1_fms_lgc_mgmt_transport_route` | FK: `order_transport_plan_id` |
 
 ### BEE DB (BFS One — MSSQL)
 
