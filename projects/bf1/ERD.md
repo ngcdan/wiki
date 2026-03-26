@@ -24,7 +24,7 @@ graph TB
         HD("Hawb Detail")
     end
 
-    subgraph BOTTOM[ ]
+    subgraph BOTTOM["Supporting Domains"]
         subgraph CARGO["Cargo Domain"]
             CC("Container / Cargo / Commodity")
         end
@@ -47,7 +47,7 @@ graph TB
     HB -->|"1 → 1"| TP
     TP -->|"1 → N"| TR
 
-    style BOTTOM fill:none,stroke:none
+    style BOTTOM fill:#f9f9f9,stroke:#cccccc,stroke-dasharray:4
 ```
 
 ---
