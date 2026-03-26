@@ -12,39 +12,32 @@ Sơ đồ Entity Relationship cho các thực thể nghiệp vụ cốt lõi c�
 
 ```mermaid
 graph TD
-    subgraph ORDER["🛒 Order Domain"]
-        PO["Purchase Order"]
-        BK["Booking"]
+    subgraph ORDER["Order Domain"]
+        PO["Purchase Order"] -->|"1 → N"| BK["Booking"]
     end
 
-    subgraph SHIPMENT["🚢 Shipment Domain"]
-        MB["Transactions\n(Master Bill)"]
-        HB["House Bill"]
-        HD["Hawb Detail"]
+    subgraph SHIPMENT["Shipment Domain"]
+        MB["Master Bill"] -->|"1 → N"| HB["House Bill"]
+        HB -->|"1 → 1"| HD["Hawb Detail"]
     end
 
-    subgraph CARGO["📦 Cargo Domain"]
-        CC["Container /\nCargo / Commodity"]
+    subgraph CARGO["Cargo Domain"]
+        CC["Container / Cargo / Commodity"]
     end
 
-    subgraph PRICING["💰 Pricing Domain"]
+    subgraph PRICING["Pricing Domain"]
         RP["Rates / Profit"]
     end
 
-    subgraph TRANSPORT["🗺️ Transport Domain"]
-        TP["Transport Plan"]
-        TR["Transport Route"]
+    subgraph TRANSPORT["Transport Domain"]
+        TP["Transport Plan"] -->|"1 → N"| TR["Transport Route"]
     end
 
-    PO -->|"1 → N"| BK
     BK -->|"N → 1"| MB
-    MB -->|"1 → N"| HB
-    BK -.->|"1 → 0..1\n(optional)"| HB
+    BK -.->|"optional"| HB
     HB -->|"1 → N"| CC
     HB -->|"1 → N"| RP
-    HB -->|"1 → 1"| HD
     HB -->|"1 → 1"| TP
-    TP -->|"1 → N"| TR
 ```
 
 ---
