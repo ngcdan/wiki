@@ -529,41 +529,7 @@
 | `modified_by` | varchar | Người sửa cuối |
 | `modified_time` | timestamp | Thời điểm sửa cuối |
 | `version` | int | Optimistic locking |
+| `storage_state` | varchar | Vòng đời bản ghi: `CREATED` / `ACTIVE` / `INACTIVE` / `JUNK` / `DEPRECATED` / `ARCHIVED` |
 
 ---
 
-## Sơ đồ quan hệ
-
-```
-settings_country (id)
-  ├──► settings_country_group_rel → settings_country_group (hỗ trợ cây phân cấp)
-  ├──► settings_location (country_id)
-  ├──► settings_location_state (country_id)
-  └──► settings_bank (country_id)
-
-settings_location_state (id)
-  └──► settings_location_district (state_id)
-         └──► settings_location_subdistrict (district_id)
-
-settings_location (id)
-  └──► settings_location_reference_code (location_id)
-
-settings_currency (id)
-  └──► settings_currency_exchange_rate (currency_id)
-
-settings_unit_group (id)
-  └──► settings_unit (group_id)
-         └──► settings_unit_alias (unit_id)
-
-of1_fms_custom_list — danh sách độc lập, không FK ra ngoài
-  (tra cứu theo team_code, province)
-
-of1_fms_partner
-  ├──► settings_country (country_id)
-  ├──► settings_location_state (province_id)
-  └──► settings_industry (industry_code)
-
-of1_fms_saleman_partner_obligation
-  └──► of1_fms_partner (partner_id)
-
-```
