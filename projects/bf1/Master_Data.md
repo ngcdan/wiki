@@ -360,20 +360,21 @@
 | 1 | `DIRECT` | Direct |
 | 2 | `AGENT` | Agent |
 
-### E3. `settings_partner_source` — Nguồn đối tác
+### E3. `settings_partner_source` — Nguồn đối tác (mạng lưới forwarder)
+
+Nguồn gốc/kênh tuyển dụng đối tác — chủ yếu là các mạng lưới freight forwarder quốc tế. Mapping từ bảng `lst_Source` trong BEE_DB.
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
 | `id` | bigint | | PK | `id` |
-| `code` | varchar | | Mã nguồn — UNIQUE | `name` |
-| `label` | varchar | | Tên nguồn (e.g. Referral, Cold Call, Exhibition) | `label` |
+| `label` | varchar | | Tên mạng lưới / kênh nguồn | `name` |
 
 **Sample data:**
 
-| id | code | label |
-|---|---|---|
-| 1 | `REF` | Referral |
-| 2 | `COLD` | Cold Call |
+| id | label |
+|---|---|
+| 1 | WCA |
+| 2 | WPA |
 
 ---
 
