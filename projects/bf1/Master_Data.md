@@ -345,22 +345,7 @@
 | 1 | `MAN` | Manufacturing |
 | 2 | `LOG` | Logistics / Freight Forwarding |
 
-### E2. `settings_sale_type` — Loại kinh doanh
-
-| Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
-|---|---|---|---|---|
-| `id` | bigint | | PK | `id` |
-| `code` | varchar | | Mã loại — UNIQUE | `name` |
-| `label` | varchar | | Tên (e.g. Direct, Agent, Co-loader) | `label` |
-
-**Sample data:**
-
-| id | code | label |
-|---|---|---|
-| 1 | `DIRECT` | Direct |
-| 2 | `AGENT` | Agent |
-
-### E3. `settings_partner_source` — Nguồn đối tác (mạng lưới forwarder)
+### E2. `settings_partner_source` — Nguồn đối tác (mạng lưới forwarder)
 
 Nguồn gốc/kênh tuyển dụng đối tác — chủ yếu là các mạng lưới freight forwarder quốc tế. Mapping từ bảng `lst_Source` trong BEE_DB.
 
