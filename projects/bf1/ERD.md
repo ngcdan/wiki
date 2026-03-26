@@ -17,7 +17,7 @@ graph TD
     end
 
     subgraph SHIPMENT["Shipment Domain"]
-        MB["Master Bill"] -->|"1 → N"| HB["House Bill"]
+        MB["Transactions - Master Bill"] -->|"1 → N"| HB["House Bill"]
         HB -->|"1 → 1"| HD["Hawb Detail"]
     end
 
