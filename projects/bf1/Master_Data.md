@@ -389,6 +389,113 @@ Danh mục chi cục hải quan và đội thủ tục, dùng tra cứu khi khai
 | 788 | `01D1` | Chi cục HQ Bưu Điện TP Hà Nội | MYDINHBDHN | Hà Nội | `00` | Đội Thủ tục HH XNK liên tỉnh | `ACTIVE` |
 | 789 | `01D2` | Chi cục HQ Bưu Điện TP Hà Nội | FEDEXBDHN | Hà Nội | `00` | Đội Thủ tục HH XNK CPN – FeDex | `ACTIVE` |
 
+### F2. `of1_fms_partner` — Đối tác / Khách hàng
+
+Master đối tác trong hệ thống BF1 Cloud. Tên bảng gốc trong DB: `lgc_forwarder_crm_partner`.
+
+**Định danh & phân loại:**
+
+| Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
+|---|---|---|---|---|
+| `id` | bigserial | | PK | `id` |
+| `partner_code` | varchar | | Mã đối tác — UNIQUE (e.g. `CS016288`, `CN000138`) | `partner_code` |
+| `category` | varchar | | Loại: `CUSTOMER`, `VENDOR`, ... | `category` |
+| `partner_group` | varchar | | Nhóm: `CUSTOMERS`, `AGENTS`, ... | `partner_group` |
+| `scope` | varchar | | Phạm vi: `Domestic` / `International` | `scope` |
+| `shareable` | varchar | | Chia sẻ: `PRIVATE` / `PUBLIC` | `shareable` |
+| `source` | varchar | | Hệ thống nguồn (e.g. `BEE`) | `source` |
+| `partner_source` | varchar | | Mạng lưới / kênh (FK → `settings_partner_source.label`, e.g. `BEE_VN`) | `partner_source` |
+| `status` | varchar | | Trạng thái bổ sung | `status` |
+| `storage_state` | varchar | | `CREATED` / `ACTIVE` / `INACTIVE` / `JUNK` / `DEPRECATED` / `ARCHIVED` | `storage_state` |
+
+**Tên & địa chỉ:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `label` | varchar | Tên tiếng Anh (uppercase) | `label` |
+| `localized_label` | varchar | Tên tiếng Việt | `localized_label` |
+| `name` | varchar | Tên ngắn / tên in | `name` |
+| `address` | varchar | Địa chỉ tiếng Anh | `address` |
+| `localized_address` | varchar | Địa chỉ tiếng Việt | `localized_address` |
+| `work_address` | varchar | Địa chỉ làm việc | `work_address` |
+| `country_id` | bigint | FK → `settings_country.id` | `country_id` |
+| `country_label` | varchar | Denormalized | `country_label` |
+| `province_id` | bigint | FK → `settings_location_state.id` | `province_id` |
+| `province_label` | varchar | Denormalized | `province_label` |
+| `continent` | varchar | Châu lục | `continent` |
+
+**Liên hệ:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `email` | varchar | Email | `email` |
+| `cell` | varchar | Điện thoại di động | `cell` |
+| `home_phone` | varchar | Điện thoại nhà | `home_phone` |
+| `work_phone` | varchar | Điện thoại văn phòng | `work_phone` |
+| `fax` | varchar | Fax | `fax` |
+| `personal_contact` | varchar | Người liên hệ | `personal_contact` |
+| `vip_contact` | varchar | Liên hệ VIP | `vip_contact` |
+| `vip_cellphone` | varchar | SĐT VIP | `vip_cellphone` |
+| `vip_email` | varchar | Email VIP | `vip_email` |
+| `vip_position` | varchar | Chức vụ VIP | `vip_position` |
+
+**Tài chính & thuế:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `tax_code` | varchar | Mã số thuế | `tax_code` |
+| `swift_code` | varchar | Mã SWIFT | `swift_code` |
+| `bank_name` | varchar | Tên ngân hàng | `bank_name` |
+| `bank_accs_no` | varchar | Số tài khoản | `bank_accs_no` |
+| `bank_address` | varchar | Địa chỉ ngân hàng | `bank_address` |
+| `bank_account` | varchar | Tài khoản ngân hàng bổ sung | `bank_account` |
+| `bank_currency` | varchar | Tiền tệ tài khoản | `bank_currency` |
+| `is_refund` | boolean | Có hoàn tiền không | `is_refund` |
+
+**Phân loại ngành & KCN:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `industry_code` | varchar | FK → `settings_industry.code` | `industry_code` |
+| `industry_label` | varchar | Denormalized | `industry_label` |
+| `kcn_code` | varchar | Mã khu công nghiệp | `kcn_code` |
+| `kcn_label` | varchar | Tên khu công nghiệp | `kcn_label` |
+| `investment_origin` | varchar | Nguồn vốn đầu tư | `investment_origin` |
+
+**Quản lý & phê duyệt:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `account_id` | bigint | FK account người phụ trách | `account_id` |
+| `sale_owner_account_id` | bigint | Account sale phụ trách | `sale_owner_account_id` |
+| `sale_owner_full_name` | varchar | Tên sale phụ trách | `sale_owner_full_name` |
+| `approved_by_account_id` | bigint | Account duyệt | `approved_by_account_id` |
+| `approved_by_full_name` | varchar | Tên người duyệt | `approved_by_full_name` |
+| `request_by_account_id` | bigint | Account yêu cầu tạo | `request_by_account_id` |
+| `request_by_full_name` | varchar | Tên người yêu cầu | `request_by_full_name` |
+| `group_name` | varchar | Nhóm quản lý | `group_name` |
+| `bfsone_group_id` | bigint | ID nhóm BFSOne | `bfsone_group_id` |
+| `lead_code` | varchar | Mã lead | `lead_code` |
+| `date_created` | timestamp | Ngày tạo nghiệp vụ (khác `created_time`) | `date_created` |
+| `date_modified` | timestamp | Ngày sửa nghiệp vụ | `date_modified` |
+
+**Khác:**
+
+| Trường | Kiểu | Mô tả | BF1 Column |
+|---|---|---|---|
+| `note` | varchar | Ghi chú | `note` |
+| `warning_message` | varchar | Cảnh báo hiển thị | `warning_message` |
+| `suggestion` | varchar | Gợi ý | `suggestion` |
+| `position` | varchar | Chức vụ | `position` |
+| `print_custom_confirm_bill_info` | varchar | Thông tin in trên confirm bill | `print_custom_confirm_bill_info` |
+
+**Sample data:**
+
+| id | partner_code | label | localized_label | category | tax_code | province_label | partner_source | storage_state |
+|---|---|---|---|---|---|---|---|---|
+| 34682 | `CS016288` | LAVERGNE VIETNAM CO LTD | Công ty TNHH Lavergne Việt Nam | `CUSTOMER` | `4000765976` | Quảng Nam | `BEE_VN` | `ACTIVE` |
+| 34700 | `CS016198` | HANESBRANDS VIETNAM CO., LTD-HUE BRANCH | CÔNG TY TNHH HANESBRANDS VIỆT NAM HUẾ | `CUSTOMER` | `3301559929` | Thừa Thiên Huế | `BEE_VN` | `ACTIVE` |
+
 ---
 
 ## Audit Fields (áp dụng cho tất cả bảng)
@@ -428,5 +535,10 @@ settings_unit_group (id)
 
 of1_fms_custom_list (lgc_forwarder_custom_list) — danh sách độc lập, không FK ra ngoài
   (tra cứu theo team_code, province)
+
+of1_fms_partner (lgc_forwarder_crm_partner)
+  ├──► settings_country (country_id)
+  ├──► settings_location_state (province_id)
+  └──► settings_industry (industry_code)
 
 ```
