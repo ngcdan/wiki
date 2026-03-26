@@ -495,6 +495,32 @@
 | 34682 | `CS016288` | LAVERGNE VIETNAM CO LTD | Công ty TNHH Lavergne Việt Nam | `CUSTOMER` | `4000765976` | Quảng Nam | `BEE_VN` | `ACTIVE` |
 | 34700 | `CS016198` | HANESBRANDS VIETNAM CO., LTD-HUE BRANCH | CÔNG TY TNHH HANESBRANDS VIỆT NAM HUẾ | `CUSTOMER` | `3301559929` | Thừa Thiên Huế | `BEE_VN` | `ACTIVE` |
 
+### F3. `of1_fms_saleman_partner_obligation` — Cam kết salesman ↔ đối tác
+
+> DB: `lgc_settings_saleman_partner_obligation`
+
+| Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
+|---|---|---|---|---|
+| `id` | bigserial | | PK | `id` |
+| `code` | varchar | | Mã cam kết — UNIQUE | `code` |
+| `obligation_type` | varchar | | Loại cam kết | `obligation_type` |
+| `partner_id` | bigint | | FK → `of1_fms_partner.id` | `partner_id` |
+| `partner_name` | varchar | | Denormalized | `partner_name` |
+| `saleman_company_id` | bigint | | FK → công ty salesman | `saleman_company_id` |
+| `saleman_account_id` | bigint | | FK → account salesman | `saleman_account_id` |
+| `saleman_label` | varchar | | Tên salesman (denormalized) | `saleman_label` |
+| `effective_from` | varchar | | Ngày bắt đầu hiệu lực | `effective_from` |
+| `effective_to` | varchar | | Ngày kết thúc hiệu lực | `effective_to` |
+| `note` | varchar | | Ghi chú | `note` |
+| `storage_state` | varchar | | `CREATED` / `ACTIVE` / `INACTIVE` / `JUNK` / `DEPRECATED` / `ARCHIVED` | `storage_state` |
+
+**Sample data:**
+
+| id | code | obligation_type | partner_id | partner_name | saleman_account_id | saleman_label | effective_from | effective_to | storage_state |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | `OBL-001` | `EXCLUSIVE` | 34682 | LAVERGNE VIETNAM CO LTD | 101 | Nguyễn Văn A | `2026-01-01` | `2026-12-31` | `ACTIVE` |
+| 2 | `OBL-002` | `SHARED` | 34700 | HANESBRANDS VIETNAM | 102 | Trần Thị B | `2026-01-01` | null | `ACTIVE` |
+
 ---
 
 ## Audit Fields (áp dụng cho tất cả bảng)
@@ -539,5 +565,8 @@ of1_fms_partner (lgc_forwarder_crm_partner)
   ├──► settings_country (country_id)
   ├──► settings_location_state (province_id)
   └──► settings_industry (industry_code)
+
+of1_fms_saleman_partner_obligation (lgc_settings_saleman_partner_obligation)
+  └──► of1_fms_partner (partner_id)
 
 ```
