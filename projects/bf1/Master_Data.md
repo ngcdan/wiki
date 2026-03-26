@@ -366,28 +366,28 @@ Nguồn gốc/kênh tuyển dụng đối tác — chủ yếu là các mạng l
 
 ## Nhóm F — Partner / Forwarder
 
-### F1. `lgc_forwarder_custom_list` — Danh sách forwarder (custom)
+### F1. `of1_fms_custom_list` — Danh sách chi cục hải quan
 
-Danh sách đối tác forwarder được quản lý tùy chỉnh theo team nội bộ. Dùng làm nguồn tra cứu khi chọn forwarder cho lô hàng.
+Danh mục chi cục hải quan và đội thủ tục, dùng tra cứu khi khai báo tờ khai XNK. Tên bảng gốc trong DB: `lgc_forwarder_custom_list`.
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
 | `id` | bigserial | | PK | `id` |
-| `code` | varchar(255) | ✓ | Mã forwarder — UNIQUE | `code` |
-| `label` | varchar(255) | | Nhãn hiển thị | `label` |
-| `name` | varchar(255) | | Tên đầy đủ | `name` |
+| `code` | varchar(255) | ✓ | Mã chi cục hải quan — UNIQUE | `code` |
+| `label` | varchar(255) | | Tên chi cục hải quan | `label` |
+| `name` | varchar(255) | | Mã nội bộ / tên định danh | `name` |
 | `note` | varchar(4096) | | Ghi chú | `note` |
 | `province` | varchar(255) | | Tỉnh/thành phố | `province` |
-| `team_code` | varchar(255) | | Mã team phụ trách | `team_code` |
-| `team_name` | varchar(255) | | Tên team phụ trách | `team_name` |
+| `team_code` | varchar(255) | | Mã cục hải quan cấp trên | `team_code` |
+| `team_name` | varchar(255) | | Tên đội thủ tục | `team_name` |
 | `storage_state` | varchar(255) | | Trạng thái: `CREATED` / `ACTIVE` / `INACTIVE` / `JUNK` / `DEPRECATED` / `ARCHIVED` | `storage_state` |
 
 **Sample data:**
 
 | id | code | label | name | province | team_code | team_name | storage_state |
 |---|---|---|---|---|---|---|---|
-| 1 | `FWD-HCM-001` | Vinafco | Vinafco Logistics Corp | Hồ Chí Minh | `TEAM_HCM` | Team HCM | `ACTIVE` |
-| 2 | `FWD-HAN-001` | Gemadept HN | Gemadept Hanoi Branch | Hà Nội | `TEAM_HN` | Team HN | `ACTIVE` |
+| 788 | `01D1` | Chi cục HQ Bưu Điện TP Hà Nội | MYDINHBDHN | Hà Nội | `00` | Đội Thủ tục HH XNK liên tỉnh | `ACTIVE` |
+| 789 | `01D2` | Chi cục HQ Bưu Điện TP Hà Nội | FEDEXBDHN | Hà Nội | `00` | Đội Thủ tục HH XNK CPN – FeDex | `ACTIVE` |
 
 ---
 
@@ -426,7 +426,7 @@ settings_unit_group (id)
   └──► settings_unit (group_id)
          └──► settings_unit_alias (unit_id)
 
-lgc_forwarder_custom_list — danh sách độc lập, không FK ra ngoài
+of1_fms_custom_list (lgc_forwarder_custom_list) — danh sách độc lập, không FK ra ngoài
   (tra cứu theo team_code, province)
 
 ```
