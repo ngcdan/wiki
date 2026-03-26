@@ -11,8 +11,9 @@ Sơ đồ Entity Relationship cho các thực thể nghiệp vụ cốt lõi c�
 ## Sơ đồ Domain Driven Design
 
 ```mermaid
-graph LR
+graph TB
     subgraph ORDER["Order Domain"]
+        direction LR
         PO["Purchase Order"]
         BK["Booking"]
         BP["Booking Process"]
@@ -21,11 +22,8 @@ graph LR
     end
 
     subgraph SHIPMENT["Shipment Domain"]
-        MB["Transactions - Master Bill"]
-        HB["House Bill"]
-        HD["Hawb Detail"]
-        MB -->|"1 → N"| HB
-        HB -->|"1 → 1"| HD
+        direction LR
+        MB["Transactions - Master Bill"] -->|"1 → N"| HB["House Bill"] -->|"1 → 1"| HD["Hawb Detail"]
     end
 
     subgraph CARGO["Cargo Domain"]
@@ -37,13 +35,11 @@ graph LR
     end
 
     subgraph TRANSPORT["Transport Domain"]
-        TP["Transport Plan"]
-        TR["Transport Route"]
-        TP -->|"1 → N"| TR
+        direction LR
+        TP["Transport Plan"] -->|"1 → N"| TR["Transport Route"]
     end
 
     BK -->|"N → 1"| MB
-    BK -.->|"optional"| HB
     HB -->|"1 → N"| CC
     HB -->|"1 → N"| RP
     HB -->|"1 → 1"| TP
