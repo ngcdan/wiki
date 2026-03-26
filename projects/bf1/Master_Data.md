@@ -513,10 +513,10 @@
 
 **Sample data:**
 
-| id | code | obligation_type | partner_id | partner_name | saleman_account_id | saleman_label | effective_from | effective_to | storage_state |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | `OBL-001` | `EXCLUSIVE` | 34682 | LAVERGNE VIETNAM CO LTD | 101 | Nguyễn Văn A | `2026-01-01` | `2026-12-31` | `ACTIVE` |
-| 2 | `OBL-002` | `SHARED` | 34700 | HANESBRANDS VIETNAM | 102 | Trần Thị B | `2026-01-01` | null | `ACTIVE` |
+| id | obligation_type | partner_id | partner_name | saleman_company_id | saleman_account_id | saleman_label | storage_state |
+|---|---|---|---|---|---|---|---|
+| 409473 | `OWNER` | 85303 | BALTIC HAI DUONG-BALTIC HAI DUONG | 8 | 62378 | BEE HPH | `ACTIVE` |
+| 409474 | `OWNER` | 81187 | XAY DUNG DIEN GREEN TECH | 8 | 2605 | TRẦN THỊ HỒNG LINH - NDLINHTTH | `ACTIVE` |
 
 ---
 
