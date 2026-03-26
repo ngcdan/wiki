@@ -348,7 +348,6 @@
 
 ### E2. `settings_partner_source` — Nguồn đối tác (mạng lưới forwarder)
 
-Nguồn gốc/kênh tuyển dụng đối tác — chủ yếu là các mạng lưới freight forwarder quốc tế. Mapping từ bảng `lst_Source` trong BEE_DB.
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
@@ -368,7 +367,6 @@ Nguồn gốc/kênh tuyển dụng đối tác — chủ yếu là các mạng l
 
 ### F1. `of1_fms_custom_list` — Danh sách chi cục hải quan
 
-Danh mục chi cục hải quan và đội thủ tục, dùng tra cứu khi khai báo tờ khai XNK. Tên bảng gốc trong DB: `lgc_forwarder_custom_list`.
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
@@ -391,7 +389,6 @@ Danh mục chi cục hải quan và đội thủ tục, dùng tra cứu khi khai
 
 ### F2. `of1_fms_partner` — Đối tác / Khách hàng
 
-Master đối tác trong hệ thống BF1 Cloud. Tên bảng gốc trong DB: `lgc_forwarder_crm_partner`.
 
 **Định danh & phân loại:**
 
