@@ -23,10 +23,6 @@
 |---|---|---|---|---|---|---|
 | 1 | `VN` | `VNM` | VIETNAM | Việt Nam | `+84` | `VND` |
 | 2 | `US` | `USA` | UNITED STATES | Hoa Kỳ | `+1` | `USD` |
-| 3 | `CN` | `CHN` | CHINA | Trung Quốc | `+86` | `CNY` |
-| 4 | `SG` | `SGP` | SINGAPORE | Singapore | `+65` | `SGD` |
-| 5 | `JP` | `JPN` | JAPAN | Nhật Bản | `+81` | `JPY` |
-| 6 | `KR` | `KOR` | KOREA, REPUBLIC OF | Hàn Quốc | `+82` | `KRW` |
 
 ### A2. `settings_country_group` — Nhóm quốc gia
 
@@ -43,8 +39,6 @@
 |---|---|---|---|
 | 1 | `ASEAN` | ASEAN Countries | null |
 | 2 | `EU` | European Union | null |
-| 3 | `APAC` | Asia Pacific | null |
-| 4 | `SEA` | Southeast Asia | 3 |
 
 ### A3. `settings_country_group_rel` — Mapping quốc gia ↔ nhóm
 
@@ -58,9 +52,7 @@
 | country_id | group_id | (mô tả) |
 |---|---|---|
 | 1 (VN) | 1 (ASEAN) | Vietnam → ASEAN |
-| 1 (VN) | 4 (SEA) | Vietnam → SEA |
-| 4 (SG) | 1 (ASEAN) | Singapore → ASEAN |
-| 4 (SG) | 4 (SEA) | Singapore → SEA |
+| 2 (US) | 2 (EU) | — |
 
 ### A4. `settings_zone` — Khu vực vận chuyển
 
@@ -77,9 +69,6 @@
 |---|---|---|---|
 | 1 | `GLOBAL` | Global | `global` |
 | 2 | `VN_NORTH` | Vietnam - North | `local` |
-| 3 | `VN_SOUTH` | Vietnam - South | `local` |
-| 4 | `VN_CENTRAL` | Vietnam - Central | `local` |
-| 5 | `ASEAN_ZONE` | ASEAN Region | `custom` |
 
 ### A5. `settings_location_state` — Tỉnh / Bang
 
@@ -99,9 +88,6 @@
 |---|---|---|---|---|---|---|
 | 1 | `VN-SG` | Hồ Chí Minh | 1 | `VN` | `79` | Thành phố trực thuộc TW |
 | 2 | `VN-HN` | Hà Nội | 1 | `VN` | `01` | Thành phố trực thuộc TW |
-| 3 | `VN-DN` | Đà Nẵng | 1 | `VN` | `48` | Thành phố trực thuộc TW |
-| 4 | `VN-BD` | Bình Dương | 1 | `VN` | `74` | Tỉnh |
-| 5 | `VN-DN2` | Đồng Nai | 1 | `VN` | `75` | Tỉnh |
 
 ### A6. `settings_location_district` — Huyện / Quận
 
@@ -120,9 +106,7 @@
 | id | code | label | state_id | state_label | gov_code | administrative_unit |
 |---|---|---|---|---|---|---|
 | 1 | `VN-SG-Q1` | Quận 1 | 1 | Hồ Chí Minh | `760` | Quận |
-| 2 | `VN-SG-Q7` | Quận 7 | 1 | Hồ Chí Minh | `770` | Quận |
-| 3 | `VN-SG-BT` | Bình Thạnh | 1 | Hồ Chí Minh | `765` | Quận |
-| 4 | `VN-HN-HK` | Hoàn Kiếm | 2 | Hà Nội | `002` | Quận |
+| 2 | `VN-HN-HK` | Hoàn Kiếm | 2 | Hà Nội | `002` | Quận |
 
 ### A7. `settings_location_subdistrict` — Phường / Xã
 
@@ -145,7 +129,6 @@
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | `VN-SG-Q1-BN` | Bến Nghé | 1 | Quận 1 | 1 | Hồ Chí Minh | `26734` | Phường | `700000` |
 | 2 | `VN-SG-Q1-BT` | Bến Thành | 1 | Quận 1 | 1 | Hồ Chí Minh | `26737` | Phường | `700000` |
-| 3 | `VN-SG-Q7-TPH` | Tân Phong | 2 | Quận 7 | 1 | Hồ Chí Minh | `26863` | Phường | `700000` |
 
 ### A8. `settings_location` — Địa điểm (Sân bay, Cảng, KCN, ...)
 
@@ -173,11 +156,7 @@
 | id | code | iata_code | un_locode | label | short_label | location_type | country_id | country_label | state_id | latitude | longitude |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 1 | `SGN` | `SGN` | — | Tan Son Nhat International Airport | SGN | `Airport` | 1 | VIETNAM | 1 | 10.8188 | 106.6520 |
-| 2 | `HAN` | `HAN` | — | Noi Bai International Airport | HAN | `Airport` | 1 | VIETNAM | 2 | 21.2213 | 105.8074 |
-| 3 | `DAD` | `DAD` | — | Da Nang International Airport | DAD | `Airport` | 1 | VIETNAM | 3 | 16.0439 | 108.1993 |
-| 4 | `VNSGN` | — | `VNSGN` | Ho Chi Minh Port (Cat Lai) | Cat Lai | `Port` | 1 | VIETNAM | 1 | 10.7741 | 106.7590 |
-| 5 | `VNDAD` | — | `VNDAD` | Da Nang Port | Da Nang | `Port` | 1 | VIETNAM | 3 | 16.0746 | 108.2237 |
-| 6 | `SIN` | `SIN` | — | Singapore Changi Airport | SIN | `Airport` | 4 | SINGAPORE | null | 1.3644 | 103.9915 |
+| 2 | `VNSGN` | — | `VNSGN` | Ho Chi Minh Port (Cat Lai) | Cat Lai | `Port` | 1 | VIETNAM | 1 | 10.7741 | 106.7590 |
 
 ### A9. `settings_location_reference_code` — Mã tham chiếu bổ sung
 
@@ -193,9 +172,7 @@
 | id | location_id | code | code_type |
 |---|---|---|---|
 | 1 | 1 (SGN) | `SGN` | `IATA` |
-| 2 | 4 (VNSGN) | `VNSGN` | `UNLOCODE` |
-| 3 | 4 (VNSGN) | `C0001` | `CAN_CODE` |
-| 4 | 5 (VNDAD) | `VNDAD` | `UNLOCODE` |
+| 2 | 2 (VNSGN) | `VNSGN` | `UNLOCODE` |
 
 ### A10. `settings_currency` — Tiền tệ
 
@@ -214,11 +191,6 @@
 |---|---|---|---|---|---|
 | 1 | `VND` | Vietnamese Dong | `đ` | 0 | 1.0 |
 | 2 | `USD` | US Dollar | `$` | 2 | 0.01 |
-| 3 | `EUR` | Euro | `€` | 2 | 0.01 |
-| 4 | `CNY` | Chinese Yuan | `¥` | 2 | 0.01 |
-| 5 | `SGD` | Singapore Dollar | `S$` | 2 | 0.01 |
-| 6 | `JPY` | Japanese Yen | `¥` | 0 | 1.0 |
-| 7 | `KRW` | Korean Won | `₩` | 0 | 1.0 |
 
 ### A11. `settings_currency_exchange_rate` — Tỷ giá theo thời kỳ
 
@@ -237,10 +209,7 @@
 | id | currency_id | base_currency_id | rate | valid_from | valid_to | source |
 |---|---|---|---|---|---|---|
 | 1 | 1 (VND) | 2 (USD) | `25450.000000` | `2026-01-01` | null | `SBV` |
-| 2 | 3 (EUR) | 2 (USD) | `1.085000` | `2026-01-01` | null | `manual` |
-| 3 | 4 (CNY) | 2 (USD) | `7.240000` | `2026-01-01` | null | `manual` |
-| 4 | 5 (SGD) | 2 (USD) | `1.340000` | `2026-01-01` | null | `manual` |
-| 5 | 1 (VND) | 2 (USD) | `24850.000000` | `2025-01-01` | `2025-12-31` | `SBV` |
+| 2 | 1 (VND) | 2 (USD) | `24850.000000` | `2025-01-01` | `2025-12-31` | `SBV` |
 
 ---
 
@@ -260,9 +229,6 @@
 |---|---|---|
 | 1 | `weight` | Weight |
 | 2 | `volume` | Volume |
-| 3 | `quantity` | Quantity |
-| 4 | `length` | Length |
-| 5 | `area` | Area |
 
 ### B2. `settings_unit` — Đơn vị đo
 
@@ -282,13 +248,7 @@
 | id | code | label | group_id | iso_code | scale | description | localized_description |
 |---|---|---|---|---|---|---|---|
 | 1 | `KGM` | kg(s) | 1 (weight) | `KGM` | 1.0 | Kilogram | Kilogram |
-| 2 | `TNE` | ton(s) | 1 (weight) | `TNE` | 1000.0 | Metric Ton | Tấn |
-| 3 | `LBR` | lbs | 1 (weight) | `LBR` | 0.453592 | Pound | Pound |
-| 4 | `MTQ` | cbm | 2 (volume) | `MTQ` | 1.0 | Cubic Meter | Mét khối |
-| 5 | `LTR` | liter(s) | 2 (volume) | `LTR` | 0.001 | Liter | Lít |
-| 6 | `PKG` | pkg(s) | 3 (quantity) | `PKG` | 1.0 | Package | Kiện |
-| 7 | `PCE` | pcs | 3 (quantity) | `PCE` | 1.0 | Piece | Cái |
-| 8 | `CTN` | ctn(s) | 3 (quantity) | `CTN` | 1.0 | Carton | Thùng |
+| 2 | `MTQ` | cbm | 2 (volume) | `MTQ` | 1.0 | Cubic Meter | Mét khối |
 
 ### B3. `settings_unit_alias` — Bí danh đơn vị
 
@@ -305,9 +265,6 @@
 |---|---|---|---|
 | 1 | 1 (KGM) | `KG` | `AFR` |
 | 2 | 1 (KGM) | `KGS` | `AMS_ACI` |
-| 3 | 4 (MTQ) | `CBM` | `AFR` |
-| 4 | 4 (MTQ) | `M3` | `AMS_ACI` |
-| 5 | 6 (PKG) | `PKGS` | `AFR` |
 
 ---
 
@@ -329,12 +286,6 @@
 |---|---|---|---|---|
 | 1 | `GEN` | General Cargo | — | false |
 | 2 | `DGR` | Dangerous Goods | — | true |
-| 3 | `PER` | Perishables | — | false |
-| 4 | `CLD` | Cold Chain / Reefer | — | false |
-| 5 | `ELC` | Electronics | `8471` | false |
-| 6 | `TEX` | Garment / Textile | `6109` | false |
-| 7 | `MAC` | Machinery & Equipment | `8479` | false |
-| 8 | `CHE` | Chemicals | `2800` | true |
 
 ---
 
@@ -357,10 +308,6 @@
 |---|---|---|---|---|---|
 | 1 | `VCB` | `BFTVVNVX` | Ngân hàng TMCP Ngoại Thương Việt Nam | Vietcombank | 1 (VN) |
 | 2 | `BIDV` | `BIDVVNVX` | Ngân hàng TMCP Đầu Tư và Phát Triển VN | BIDV | 1 (VN) |
-| 3 | `ACB` | `ASCBVNVX` | Ngân hàng TMCP Á Châu | ACB | 1 (VN) |
-| 4 | `TCB` | `VTCBVNVX` | Ngân hàng TMCP Kỹ Thương Việt Nam | Techcombank | 1 (VN) |
-| 5 | `HSBC_VN` | `HSBCVNVX` | HSBC Vietnam | HSBC | 1 (VN) |
-| 6 | `CITI_SG` | `CITISGSX` | Citibank Singapore | Citibank SG | 4 (SG) |
 
 ### D2. `settings_charge_type` — Danh mục loại phí
 
@@ -377,14 +324,7 @@
 | id | code | label | localized_label | charge_group |
 |---|---|---|---|---|
 | 1 | `OBL` | Original B/L Fee | Phí vận đơn gốc | `Origin` |
-| 2 | `OTHC` | Origin THC | Phí xếp hàng cảng xuất | `Origin` |
-| 3 | `OCFS` | Origin CFS | Phí CFS xuất | `Origin` |
-| 4 | `OCF` | Ocean Freight | Cước biển | `Freight` |
-| 5 | `FSC` | Fuel Surcharge | Phụ phí xăng dầu | `Freight` |
-| 6 | `DTHC` | Destination THC | Phí xếp hàng cảng nhập | `Destination` |
-| 7 | `DCFS` | Destination CFS | Phí CFS nhập | `Destination` |
-| 8 | `DO` | Delivery Order Fee | Phí lệnh giao hàng | `Destination` |
-| 9 | `COD` | COD Fee | Phí thu hộ | `Other` |
+| 2 | `OCF` | Ocean Freight | Cước biển | `Freight` |
 
 ---
 
@@ -403,12 +343,7 @@
 | id | code | label |
 |---|---|---|
 | 1 | `MAN` | Manufacturing |
-| 2 | `TRD` | Trading / Import-Export |
-| 3 | `LOG` | Logistics / Freight Forwarding |
-| 4 | `RET` | Retail |
-| 5 | `CON` | Construction |
-| 6 | `AGR` | Agriculture / Food |
-| 7 | `ELC` | Electronics / Technology |
+| 2 | `LOG` | Logistics / Freight Forwarding |
 
 ### E2. `settings_sale_type` — Loại kinh doanh
 
@@ -424,9 +359,6 @@
 |---|---|---|
 | 1 | `DIRECT` | Direct |
 | 2 | `AGENT` | Agent |
-| 3 | `CO_LOAD` | Co-loader |
-| 4 | `BROKER` | Customs Broker |
-| 5 | `CARRIER` | Carrier / Airline |
 
 ### E3. `settings_partner_source` — Nguồn đối tác
 
@@ -442,10 +374,6 @@
 |---|---|---|
 | 1 | `REF` | Referral |
 | 2 | `COLD` | Cold Call |
-| 3 | `EXPO` | Exhibition / Trade Fair |
-| 4 | `ONLINE` | Online / Website |
-| 5 | `WALK_IN` | Walk-in |
-| 6 | `EXISTING` | Existing Customer |
 
 ---
 
@@ -473,7 +401,6 @@ Danh sách đối tác forwarder được quản lý tùy chỉnh theo team nộ
 |---|---|---|---|---|---|---|---|
 | 1 | `FWD-HCM-001` | Vinafco | Vinafco Logistics Corp | Hồ Chí Minh | `TEAM_HCM` | Team HCM | `ACTIVE` |
 | 2 | `FWD-HAN-001` | Gemadept HN | Gemadept Hanoi Branch | Hà Nội | `TEAM_HN` | Team HN | `ACTIVE` |
-| 3 | `FWD-HCM-002` | Transimex | Transimex Corp | Hồ Chí Minh | `TEAM_HCM` | Team HCM | `INACTIVE` |
 
 ---
 
