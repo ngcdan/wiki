@@ -367,7 +367,6 @@
 
 ### F1. `of1_fms_custom_list` — Danh sách chi cục hải quan
 
-> DB: `lgc_forwarder_custom_list`
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
@@ -390,7 +389,6 @@
 
 ### F2. `of1_fms_partner` — Đối tác / Khách hàng
 
-> DB: `lgc_forwarder_crm_partner`
 
 **Định danh & phân loại:**
 
@@ -497,7 +495,6 @@
 
 ### F3. `of1_fms_saleman_partner_obligation` — Cam kết salesman ↔ đối tác
 
-> DB: `lgc_settings_saleman_partner_obligation`
 
 | Trường | Kiểu | Bắt buộc | Mô tả | BF1 Column |
 |---|---|---|---|---|
@@ -558,15 +555,15 @@ settings_unit_group (id)
   └──► settings_unit (group_id)
          └──► settings_unit_alias (unit_id)
 
-of1_fms_custom_list (lgc_forwarder_custom_list) — danh sách độc lập, không FK ra ngoài
+of1_fms_custom_list — danh sách độc lập, không FK ra ngoài
   (tra cứu theo team_code, province)
 
-of1_fms_partner (lgc_forwarder_crm_partner)
+of1_fms_partner
   ├──► settings_country (country_id)
   ├──► settings_location_state (province_id)
   └──► settings_industry (industry_code)
 
-of1_fms_saleman_partner_obligation (lgc_settings_saleman_partner_obligation)
+of1_fms_saleman_partner_obligation
   └──► of1_fms_partner (partner_id)
 
 ```
