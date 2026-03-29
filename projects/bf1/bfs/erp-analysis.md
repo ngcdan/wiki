@@ -17,7 +17,7 @@
 
 ### 1.2 Luồng dữ liệu giữa các app
 
-![ERD](../img/ERD.png)
+![ERD](../fms/img/erd.png)
 
 ---
 

@@ -2,7 +2,7 @@
 
 Sơ đồ Entity Relationship cho các thực thể nghiệp vụ cốt lõi của hệ thống BF1.
 
-![DDD](img/DDD.png)
+![Domain Model](img/domain-model.png)
 
 ---
 
