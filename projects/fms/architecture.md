@@ -33,6 +33,12 @@ React Frontend (TypeScript)
 | Spring Boot | 3.x | REST API backend, xử lý nghiệp vụ |
 | React + TypeScript | 18+ | Frontend — tra cứu, báo cáo, quản lý nghiệp vụ |
 
+### Phạm vi dữ liệu
+
+FMS giai đoạn hiện tại sync từ **MSSQL database `BEE_DB`** (hệ thống BF1 cũ). Các database ECUS khác (`ECUS5VNACCS`, `BEE_NEW`, `BEEOLD`) được quản lý bởi Debezium connector riêng (xem `projects/bf1/fms/cdc-architecture.md`).
+
+**Về Kafka Consumer:** Giai đoạn 1 khuyến nghị triển khai consumer như một **Spring Boot microservice độc lập** để tách biệt CDC sync logic. Giai đoạn 2 có thể tích hợp vào FMS API chính tuỳ theo cấu trúc deployment.
+
 ---
 
 ## 2. CDC Event Format
@@ -106,6 +112,8 @@ fms-consumer-group
 Message key = Primary Key của record (ví dụ: `TransID`, `HWBNO`, `PartnerID`).
 
 Mục đích: đảm bảo ordering per-record — tất cả thay đổi của cùng một record đi vào cùng một partition, consumer xử lý đúng thứ tự.
+
+> **Giai đoạn 2 — Write-Back Topics:** Khi FMS ghi dữ liệu ngược về MSSQL, dùng topic pattern `fms.writeback.<table_name>` để phân biệt với CDC sync topics.
 
 ---
 
