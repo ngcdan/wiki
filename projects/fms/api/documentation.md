@@ -32,7 +32,7 @@ Lấy danh sách transaction (Master Bill of Lading).
 | Tham số | Kiểu | Mô tả |
 |---|---|---|
 | type_of_service | string | Loại dịch vụ: `FCL`, `LCL`, `AIR`, `TRUCKING` |
-| state | string | Trạng thái: `OPEN`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED` |
+| state | string | Trạng thái: `OPEN`, `IN_TRANSIT`, `ARRIVED`, `COMPLETED`, `CANCELLED` |
 | from_date | string | Ngày tạo từ (ISO 8601: `YYYY-MM-DD`) |
 | to_date | string | Ngày tạo đến (ISO 8601: `YYYY-MM-DD`) |
 | page | integer | Số trang (mặc định: 1) |
@@ -176,7 +176,7 @@ Thay đổi trạng thái của transaction.
 }
 ```
 
-Giá trị hợp lệ cho `state`: `OPEN`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED`.
+Giá trị hợp lệ cho `state`: `OPEN`, `IN_TRANSIT`, `ARRIVED`, `COMPLETED`, `CANCELLED`.
 
 **Response 200:**
 
@@ -212,7 +212,7 @@ Lấy danh sách House Bill of Lading.
 | Tham số | Kiểu | Mô tả |
 |---|---|---|
 | transaction_id | string | Lọc theo transaction (Master Bill) |
-| status | string | Trạng thái: `DRAFT`, `ISSUED`, `SURRENDERED`, `TELEX_RELEASED` |
+| status | string | Trạng thái: `DRAFT`, `CONFIRMED`, `ISSUED`, `COMPLETED`, `SURRENDERED`, `TELEX_RELEASED` |
 | page | integer | Số trang (mặc định: 1) |
 | size | integer | Số bản ghi mỗi trang (mặc định: 20) |
 

@@ -34,7 +34,7 @@ Lấy danh sách hóa đơn.
 | Tham số | Kiểu | Mô tả |
 |---|---|---|
 | partner_id | string | Lọc theo đối tác (khách hàng hoặc nhà cung cấp) |
-| status | string | Trạng thái: `DRAFT`, `ISSUED`, `PARTIALLY_PAID`, `PAID`, `CANCELLED` |
+| status | string | Trạng thái: `DRAFT`, `ISSUED`, `PARTIAL_PAID`, `PAID`, `CANCELLED` |
 | from_date | string | Ngày hóa đơn từ (ISO 8601: `YYYY-MM-DD`) |
 | to_date | string | Ngày hóa đơn đến (ISO 8601: `YYYY-MM-DD`) |
 | page | integer | Số trang (mặc định: 1) |
@@ -302,7 +302,7 @@ Ghi nhận một khoản thanh toán.
 }
 ```
 
-> Ghi chú: Sau khi tạo payment, hệ thống tự tính toán lại `paid_amount` và cập nhật `status` của invoice (`PARTIALLY_PAID` hoặc `PAID`).
+> Ghi chú: Sau khi tạo payment, hệ thống tự tính toán lại `paid_amount` và cập nhật `status` của invoice (`PARTIAL_PAID` hoặc `PAID`).
 
 ---
 
@@ -423,6 +423,19 @@ Lấy P/L chi tiết của một transaction.
   "updated_at": "2026-04-20T16:00:00Z"
 }
 ```
+
+---
+
+## Cost & Revenue Entries
+
+> **Note:** `of1_fms_cost_revenue` entries được tạo **tự động** khi:
+> - Invoice ISSUED → tạo Revenue entry
+> - Payment recorded → tạo actual received entry
+> - Advance Request APPROVED → tạo Cost entry
+>
+> Không có endpoint riêng để tạo cost/revenue entries. Xem `schema/accounting.md` cho cấu trúc bảng.
+>
+> Để đọc P/L detail: `GET /api/v1/pl-sheets/{transaction_id}` trả về tổng hợp từ bảng này.
 
 ---
 

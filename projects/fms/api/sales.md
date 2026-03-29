@@ -223,7 +223,7 @@ Lấy danh sách booking.
 | Tham số | Kiểu | Mô tả |
 |---|---|---|
 | type | string | Loại dịch vụ: `FCL`, `LCL`, `AIR`, `TRUCKING` |
-| status | string | Trạng thái: `PENDING`, `CONFIRMED`, `CANCELLED` |
+| status | string | Trạng thái: `PENDING`, `CONFIRMED`, `CANCELLED`, `CLOSED` |
 | customer_id | string | Lọc theo khách hàng |
 | page | integer | Số trang (mặc định: 1) |
 | size | integer | Số bản ghi mỗi trang (mặc định: 20) |

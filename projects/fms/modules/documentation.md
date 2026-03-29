@@ -35,6 +35,8 @@ flowchart TD
 | CONFIRMED | Đã xác nhận thông tin hàng |
 | ISSUED | Đã phát hành chứng từ |
 | COMPLETED | Hoàn tất |
+| SURRENDERED | Đã surrender bill (Sea) | — |
+| TELEX_RELEASED | Đã telex release (Sea) | — |
 
 ## Phase 1 vs Phase 2
 

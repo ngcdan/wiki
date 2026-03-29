@@ -25,9 +25,9 @@ Tài liệu schema cho các bảng nghiệp vụ vận đơn và hàng hóa tron
 | `arrival_date` | timestamp | | Ngày hàng đến thực tế | |
 | `etd` | timestamp | | Estimated Time of Departure | |
 | `eta` | timestamp | | Estimated Time of Arrival | |
-| `from_location_code` | varchar | | Cảng xếp hàng | FK → `of1_fms_settings_location.code` |
+| `from_location_code` | varchar | | Cảng xếp hàng | FK → `settings_location.code` |
 | `from_location_label` | varchar | | Tên cảng xếp hàng (denormalized) | |
-| `to_location_code` | varchar | | Cảng dỡ hàng | FK → `of1_fms_settings_location.code` |
+| `to_location_code` | varchar | | Cảng dỡ hàng | FK → `settings_location.code` |
 | `to_location_label` | varchar | | Tên cảng dỡ hàng (denormalized) | |
 | `state` | varchar | | Trạng thái | |
 
@@ -56,7 +56,7 @@ Tài liệu schema cho các bảng nghiệp vụ vận đơn và hàng hóa tron
 | `id` | bigserial | | PK | |
 | `hawb_no` | varchar | ✓ | Mã nội bộ tự gen hoặc số house bill trên chứng từ — UNIQUE | |
 | `type_of_service` | varchar | | Loại dịch vụ (xem enum `of1_fms_transactions`) | |
-| `booking_process_id` | bigint | | FK → booking | FK → `of1_fms_booking.id` |
+| `booking_process_id` | bigint | | FK → `of1_fms_booking.id` (booking nguồn — alias là booking_process trong BF1 cũ) | `of1_fms_booking.id` |
 | `transaction_id` | bigint | | Liên kết vận đơn chủ | FK → `of1_fms_transactions.id` |
 | `shipment_type` | varchar | | Loại lô hàng | |
 | `client_partner_id` | bigint | | Khách hàng | FK → `of1_fms_partner.id` |

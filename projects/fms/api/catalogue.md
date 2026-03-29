@@ -50,7 +50,7 @@ Lấy danh sách partner.
 
 | Tham số | Kiểu | Mô tả |
 |---|---|---|
-| type | string | Loại partner: `CUSTOMER`, `CARRIER`, `AGENT`, `VENDOR` |
+| type | string | Loại partner: `CUSTOMER`, `CARRIER`, `AGENT`, `SHIPPER`, `CONSIGNEE`, `VENDOR`, `OTHER` |
 | status | string | Trạng thái: `ACTIVE`, `LOCK` |
 | page | integer | Số trang (bắt đầu từ 1, mặc định: 1) |
 | size | integer | Số bản ghi mỗi trang (mặc định: 20) |

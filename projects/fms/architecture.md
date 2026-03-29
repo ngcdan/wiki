@@ -274,3 +274,12 @@ KAFKA_TOPIC_PREFIX=fms
 | PostgreSQL | 5432 |
 | Spring Boot API | 8080 |
 | React Dev Server | 3000 |
+
+---
+
+## Authentication & Authorization
+
+> **Scope:** Auth/authorization mechanism is out of scope for this documentation phase.
+>
+> Developers should expect: JWT Bearer token via `Authorization` header for all `/api/v1/*` endpoints.
+> Role-based access control (RBAC) design to be defined separately.

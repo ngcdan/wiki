@@ -160,7 +160,7 @@ Ghi nhận báo giá gửi cho khách hàng. Mỗi báo giá liên kết với 1
 
 ### `of1_fms_booking` — Booking request
 
-Ghi nhận yêu cầu đặt chỗ từ khách hàng sau khi báo giá được chấp nhận. Sau khi xác nhận booking, hệ thống tạo `of1_fms_booking_process` để xử lý vận hành.
+Ghi nhận yêu cầu đặt chỗ từ khách hàng sau khi báo giá được chấp nhận. Sau khi xác nhận booking, hệ thống tạo `of1_fms_booking` để xử lý vận hành.
 
 | Trường | Kiểu | Bắt buộc | Mô tả | FK |
 |---|---|---|---|---|
@@ -200,7 +200,7 @@ Ghi nhận yêu cầu đặt chỗ từ khách hàng sau khi báo giá được 
 > **Lưu ý quy trình:**
 > - AIR: Booking Request (PENDING) → Booking Confirm (CONFIRMED) — 2 bước
 > - Sea / Internal: Internal Booking Request (1 bước, CONFIRMED ngay sau khi tạo)
-> - Sau khi `CONFIRMED`, hệ thống tạo `of1_fms_booking_process` liên kết với `of1_fms_purchase_order`
+> - Sau khi `CONFIRMED`, hệ thống tạo `of1_fms_booking` liên kết với `of1_fms_purchase_order`
 
 **Sample data:**
 
@@ -290,4 +290,4 @@ Tất cả các bảng trên kế thừa Audit Fields tiêu chuẩn (xem catalog
 - `of1_fms_vessel_schedule` (N) → `settings_location` (POL/POD)
 
 > Cross-reference: xem schema/catalogue.md cho định nghĩa đầy đủ của partner và location.
-> `of1_fms_booking.id` được dùng làm FK trong schema/documentation.md (transactions — qua `of1_fms_booking_process`).
+> `of1_fms_booking.id` được dùng làm FK trong schema/documentation.md (transactions — qua `of1_fms_booking`).
