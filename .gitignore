@@ -76,3 +76,10 @@ htmlcov/
 
 # Independent sub-repos
 dev-kit/scripts/
+
+# AI assistant config dirs
+.claude/
+.familiar/
+
+# Cheatsheets (may contain sensitive info)
+cheatsheets/

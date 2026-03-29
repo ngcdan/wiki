@@ -108,11 +108,5 @@ updated: 2026-02-19
 ---
 ## BACKLOG - Issues
 
-#### #457 Enhancement Customer Map
-- **Repo:** of1-crm
-- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/457
-- **Labels:** Enhancement
-- **Assignee:** @vutuongan2003
-- **Status:** closed
-- **Updated at:** 2026-03-19
+- (none)
 
