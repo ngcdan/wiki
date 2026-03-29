@@ -58,6 +58,8 @@
 
 ## Trạng thái module
 
+> Tài liệu đang được xây dựng. Các link bên dưới sẽ hoạt động khi file tương ứng được tạo.
+
 | Module | Schema | API | Nghiệp vụ | Owner | Status |
 |---|---|---|---|---|---|
 | Catalogue | [ ] | [ ] | [ ] | — | planned |
