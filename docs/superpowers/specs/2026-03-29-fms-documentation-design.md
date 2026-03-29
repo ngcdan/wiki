@@ -54,15 +54,19 @@ projects/fms/
 - Tech stack table
 - Bảng navigation đến từng section (architecture, schema, api, modules)
 - Phase 1 vs Phase 2 overview
-- Trạng thái từng module: `planned` / `in-progress` / `done`
+- Trạng thái từng module: `planned` / `in-progress` / `done` + owner
 
 ### `architecture.md`
 - Sơ đồ kiến trúc tổng thể (text/mermaid):
   `MSSQL → Debezium → Kafka → Consumer → PostgreSQL`
 - Tech stack chi tiết từng component
 - CDC event format: `before` / `after` / `op` (c/u/d/r)
+- Kafka topic naming convention: pattern, ví dụ cụ thể
+- Consumer group ID và partition strategy
+- Error handling: Dead-Letter Queue (DLQ) khi event fail
 - Phase 1 data flow: sync-only, read-first
 - Phase 2 data flow: write vào DB mới, đồng bộ ngược về MSSQL
+- Config reference: required env vars (DB, Kafka broker, Debezium connector)
 
 ### `schema/catalogue.md`
 - Shared/master entities dùng chung toàn hệ thống
@@ -77,7 +81,6 @@ projects/fms/
 ### `schema/documentation.md`
 - Entities cho module Documentation
 - Bảng: `of1_fms_transactions` (Master Bill), House Bill, Shipment ops, chứng từ
-- State machine cho transaction lifecycle
 
 ### `schema/accounting.md`
 - Entities cho module Accounting
@@ -85,15 +88,17 @@ projects/fms/
 - Relations đến transactions và partner
 
 ### `api/*.md` (mỗi module)
-- Danh sách endpoints theo resource
+- Danh sách endpoints theo resource, prefix `/api/v1/`
 - Format: `METHOD /path` — mô tả ngắn
-- Request body (fields, types, required)
+- Request body (fields, types, required) — DTOs có thể khác schema nếu cần
 - Response format
 - Error codes
+- Ghi chú cross-reference đến `schema/*.md` tương ứng
 
 ### `modules/*.md` (mỗi module)
 - Business flow dạng mermaid diagram
-- State/status lifecycle của entity chính
+- State/status lifecycle của **tất cả entity chính** trong module (không chỉ transaction)
+- **Phase 1 vs Phase 2**: đánh dấu rõ operation nào read-only (Phase 1), operation nào writable (Phase 2)
 - Business rules quan trọng (validation, constraints)
 - Danh sách màn hình liên quan
 
