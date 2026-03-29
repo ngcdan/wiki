@@ -58,11 +58,11 @@
 
 ## Trạng thái module
 
-> Tài liệu đang được xây dựng. Các link bên dưới sẽ hoạt động khi file tương ứng được tạo.
+> Tài liệu đã hoàn thành. Tất cả links đều hoạt động.
 
 | Module | Schema | API | Nghiệp vụ | Owner | Status |
 |---|---|---|---|---|---|
-| Catalogue | [ ] | [ ] | [ ] | — | planned |
-| Sales | [ ] | [ ] | [ ] | — | planned |
-| Documentation | [ ] | [ ] | [ ] | — | planned |
-| Accounting | [ ] | [ ] | [ ] | — | planned |
+| Catalogue | [x] | [x] | [x] | — | done |
+| Sales | [x] | [x] | [x] | — | done |
+| Documentation | [x] | [x] | [x] | — | done |
+| Accounting | [x] | [x] | [x] | — | done |
