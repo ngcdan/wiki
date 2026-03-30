@@ -20,13 +20,14 @@ Tài liệu phân tích và thiết kế cho dự án migrate từ hệ thống 
 ## Hệ thống cũ — `bfs/`
 
 - [`bfs/of1-project-analysis.md`](bfs/of1-project-analysis.md) — Phân tích tổng thể dự án OF1
-- [`bfs/erp-analysis.md`](bfs/erp-analysis.md) — Phân tích ERP
+- [`bfs/of1-project-analysis.md`](bfs/of1-project-analysis.md) — Phân tích dự án OF1
 - [`bfs/overview-report.pdf`](bfs/overview-report.pdf) — Báo cáo tổng quan
 - [`bfs/references/`](bfs/references/) — Tài liệu chi tiết theo module: accounting, catalogue, documentation, sale-executive
 
 ## Hệ thống mới — `fms/`
 
-- [`fms/erd.md`](fms/erd.md) — Entity Relationship Diagram
+- [`fms/entity-relationship-diagram.md`](fms/entity-relationship-diagram.md) — Entity Relationship Diagram
+- [`fms/fms-feature-spec.md`](fms/fms-feature-spec.md) — Đặc tả tính năng FMS (ERP Analysis)
 - [`fms/master-data.md`](fms/master-data.md) — Master Data
 - [`fms/cdc-architecture.md`](fms/cdc-architecture.md) — Kiến trúc CDC (Change Data Capture)
 - [`fms/domain-model.drawio`](fms/domain-model.drawio) — Domain Model (DDD)

@@ -108,5 +108,11 @@ updated: 2026-02-19
 ---
 ## BACKLOG - Issues
 
-- (none)
+#### #482 CRM User Role: Bổ sung Accessible Company Branches cho phân quyền GROUP_ALL
+- **Repo:** of1-crm
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/482
+- **Labels:** Enhancement
+- **Assignee:** @qngnhat
+- **Status:** closed
+- **Updated at:** 2026-03-30
 
