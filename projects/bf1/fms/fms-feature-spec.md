@@ -288,107 +288,84 @@ Sales lập báo giá → khách confirm → đặt chỗ → tạo Service Requ
 
 ## 5. FMS - Documentations Module
 
-Nhận Internal Booking từ Sales → mở file → tạo vận đơn → nhập giá → xuất Debit/Credit Note.
-"File" (Transaction) là thực thể trung tâm của toàn hệ thống.
+**Luồng chính:** Nhận Internal Booking từ Sales → mở File → tạo vận đơn (Master Bill / House Bill) → nhập giá mua/bán → xuất Debit/Credit Note.
 
+> "File" (Transaction) là thực thể trung tâm của toàn hệ thống — mỗi lô hàng = 1 file.
 
-→ ERD mapping: `of1_fms_transactions` (Master Bill) + `of1_fms_house_bill` (House Bill)
-->
->  `of1_fms_air_house_bill_detail`
->  `of1_fms_sea_house_bill_detail`
->  `of1_fms_truck_house_bill_detail`
->  `of1_fms_logistics_house_bill_detail`
----
+### 5.1 Data Model — ERD Mapping
 
-`of1_fms_transactions` 1 -> 1 `of1_fms_transport_plan`
-`of1_fms_transport_plan` 1 -> n `of1_fms_transport_route` (Thông tin lịch trình est và thông tin chi tiết từng tuyến vận chuyển)
+#### Transaction (Master Bill)
 
-`of1_fms_transport_route` phản ánh route của từng dịch vụ của từng khách hàng (`Booking -> Booking Process`)
+| Quan hệ | Bảng | Mô tả |
+|---------|------|-------|
+| Root | `of1_fms_transactions` | Master Bill — thực thể gốc đại diện cho 1 lô hàng |
+| 1 → 1 | `of1_fms_transport_plan` | Kế hoạch vận chuyển tổng thể |
+| 1 → n | `of1_fms_transport_route` | Từng tuyến vận chuyển cụ thể (ETD/ETA, thông tin chi tiết). Phản ánh route của từng dịch vụ cho từng khách hàng (Booking → Booking Process) |
+| 1 → n | `of1_fms_container` | Thông tin container — áp dụng cho Sea / Trucking / Logistics (No, Type, Seal, GW/CBM) |
 
+#### House Bill
 
-`of1_fms_house_bill` thông tin chung cho house bill các nghiệp vụ (POL, POD, Client, Shipment Type, ...)
-`of1_fms_[xxx]_house_bill_detail` Thông tin riêng từng nghiệp vụ như air/ sea/ rail/ trucking/ logistics.
+| Quan hệ | Bảng | Mô tả |
+|---------|------|-------|
+| Transaction 1 → n | `of1_fms_house_bill` | Thông tin chung cho house bill (POL, POD, Client, Shipment Type, ...) |
+| House Bill 1 → n | `of1_fms_air_house_bill_detail` | Chi tiết riêng nghiệp vụ Air |
+| House Bill 1 → n | `of1_fms_sea_house_bill_detail` | Chi tiết riêng nghiệp vụ Sea |
+| House Bill 1 → n | `of1_fms_truck_house_bill_detail` | Chi tiết riêng nghiệp vụ Trucking |
+| House Bill 1 → n | `of1_fms_logistics_house_bill_detail` | Chi tiết riêng nghiệp vụ Logistics |
+| House Bill 1 → n | `of1_fms_cargo` | Từng kiện hàng: mô tả, commodity, HS code. Liên kết với `of1_fms_container` để biết cargo đóng ở container nào |
 
-`of1_fms_house_bill` 1 -> n `of1_fms_[xxx]_house_bill_detail`
+#### Invoice (Chi phí)
 
+| Quan hệ | Bảng | Mô tả |
+|---------|------|-------|
+| House Bill 1 → n | `of1_fms_house_bill_invoice` | Tổng hợp chi phí gom nhóm theo từng bên (party) |
+| Invoice 1 → n | `of1_fms_house_bill_invoice_item` | Từng dòng phí chi tiết |
 
-`of1_fms_house_bill_invoice` : rates của house bill (toàn bộ chi phí gom nhóm theo từng parties.)
-`of1_fms_house_bill_invoice_item` : từng phí chi tiết.
-`of1_fms_house_bill` 1 -> n `of1_fms_house_bill_invoice`
-`of1_fms_house_bill_invoice` 1 -> n `of1_fms_house_bill_invoice_item`
+> **Lưu ý tách invoice:** Nếu thu cho khách hàng 5 phí, trong đó 2 phí thu hộ cho Agent → tạo 2 invoice riêng (tách theo payer). Màn hình in Debit/Credit Note sẽ flatten toàn bộ invoice items cho user chọn, hoặc query theo payer = client/customer.
 
-_Note_: trường hợp chi cho khách hàng 5 phí, trong đó có 2 phí thu hộ AGENT => tạo 2 invoice riêng.
-=> Việc in Debit Note/ Credit Note sẽ có màn hình riêng, flatted (cào bằng) toàn bộ invoice items cho user chọn hoặc bốc dưới db lên theo payer là client/ customer.
+### 5.2 Cấu trúc giá (Rates)
 
+Tất cả loại giá đều lưu trong `of1_fms_house_bill_invoice`, phân biệt bằng `invoice_type`:
 
-`of1_fms_container` : Thông tin container (cho nghiệp vụ hàng Sea/ Trucking/ Logistics)
-`of1_fms_transactions` 1 -> n `of1_fms_container`
+| Loại giá | `invoice_type` | Mặc định | Mô tả |
+|----------|---------------|----------|-------|
+| **Buying / Costing Rate** (Giá mua — phải trả) | `Credit` | `payer = BEE` | Phí công ty trả cho nhà cung cấp: co-loader, hãng tàu, hãng bay, customs agent |
+| **Selling Rate** (Giá bán — phải thu) | `Debit` | `payee = BEE` | Phí khách hàng / agent trả cho công ty. Cấu trúc tương tự Costing Rate |
+| **On Behalf** (Thu hộ — Chi hộ) | `OnBehalf` | `payer, payee ≠ BEE/HPS` | Phí công ty thu/chi hộ cho khách hàng hoặc agent |
 
-`of1_fms_cargo` : Thông tin từng kiện hàng, mô tả, commodity/ hs code,
-thông tin số container no (link với bảng of1_fms_container -> cargo được đóng ở container nào).
-`of1_fms_house_bill` 1 -> n `of1_fms_cargo`
+### 5.3 Chức năng phụ trợ trên File
 
-#### Buying/ Costing Rate - Other Credit (Giá mua - phải trả)
-→ ERD mapping: `of1_fms_house_bill_invoice` với `invoice_type = 'Credit'` `payer default = BEE`
-
-Phí công ty phải trả cho nhà cung cấp (co-loader, hãng tàu, hãng bay, customs agent).
-
-#### Selling Rate - Other Debit (Giá bán - phải thu)
-
-→ ERD mapping: `of1_fms_house_bill_invoice` với `invoice_type = 'Debit'` `payee default = BEE`
-
-Phí khách hàng, agent trả cho công ty. Cấu trúc tương tự Costing Rate.
-
-#### On Behalf (Thu hộ - Chi hộ)
-
-→ ERD mapping: `of1_fms_house_bill_invoice` với `invoice_type = 'OnBehalf'`, `payer, payee not BEE/ HPS`
-
-Phí công ty thu hộ cho khách hàng, agent.
-
-`of1_fms_house_bill_invoice` 1 -> n `of1_fms_house_bill_invoice_item`
-
-#### Invoice & Debit/Credit Note => Need to discuss
-
-Docs xuất Invoice từ Selling Rate → theo dõi thanh toán.
-
-#### Customs Clearance => Need to discuss
-
-Theo dõi tờ khai hải quan. Gắn với OPS cho Logistics/Trucking.
-
-#### Task Notes => Need to discuss
-
-Ghi chú công việc theo file. Gán cho OPS Staff với deadline và trạng thái.
-
-#### EDI (Electronic Data Interchange) => Need to discuss
-
-Gửi/nhận dữ liệu điện tử với hãng tàu, cảng, hải quan.
-
-#### Shipping Instruction (SI) => Need to discuss
-
-Hướng dẫn vận chuyển gửi co-loader / hãng tàu. Print Preview để gửi email.
+| Chức năng | Mô tả | Trạng thái |
+|-----------|-------|------------|
+| Invoice & Debit/Credit Note | Xuất Invoice từ Selling Rate → theo dõi thanh toán | ⚠️ Need to discuss |
+| Customs Clearance | Theo dõi tờ khai hải quan. Gắn với OPS cho Logistics/Trucking | ⚠️ Need to discuss |
+| Task Notes | Ghi chú công việc theo file. Gán cho OPS Staff với deadline và trạng thái | ⚠️ Need to discuss |
+| EDI (Electronic Data Interchange) | Gửi/nhận dữ liệu điện tử với hãng tàu, cảng, hải quan | ⚠️ Need to discuss |
+| Shipping Instruction (SI) | Hướng dẫn vận chuyển gửi co-loader / hãng tàu. Print Preview để gửi email | ⚠️ Need to discuss |
 
 ---
 
-### 5.3 Các loại pdf/ document (11 loại)
+### 5.4 Các loại File theo nghiệp vụ (11 loại)
 
-| Loại | Hướng | Phương thức | Đặc điểm |
-|------|-------|-------------|----------|
-| Express | Xuất | Chuyên phát nhanh | Đơn giản nhất, ít fields => Need to discuss |
-| Outbound Air | Xuất | Hàng không | MAWB + HAWB, Print 2 dạng |
-| Inbound Air | Nhập | Hàng không | + Arrival Notice, Authorized Letter, DO |
-| LCL Outbound Sea | Xuất | Sea lẻ | HBL 15+ loại in, Extract E-Manifest |
-| LCL Inbound Sea | Nhập | Sea lẻ | + Arrival Notice, DO |
-| FCL Outbound Sea | Xuất | Sea nguyên cont | + Container info (No, Type, Seal, GW/CBM) |
-| FCL Inbound Sea | Nhập | Sea nguyên cont | + Arrival Notice, DO |
-| Outbound Sea Consol | Xuất | Gom hàng biển | Nhiều HBL → 1 MBL => Cân nhắc bỏ |
-| Inbound Sea Consol | Nhập | Gom hàng biển | Nhiều HBL → 1 MBL => Cân nhắc bỏ |
-| Inland Trucking | Nội địa | Xe tải | Truck Type, From/To, CDS No. |
-| Logistics | Phức hợp | Thông quan | CDS No/Date, Selectivity, Customs Agency |
+| Loại | Hướng | Phương thức | Đặc điểm | Ghi chú |
+|------|-------|-------------|----------|---------|
+| Express | Xuất | Chuyên phát nhanh | Đơn giản nhất, ít fields | ⚠️ Need to discuss |
+| Outbound Air | Xuất | Hàng không | MAWB + HAWB, Print 2 dạng | |
+| Inbound Air | Nhập | Hàng không | + Arrival Notice, Authorized Letter, DO | |
+| LCL Outbound Sea | Xuất | Sea lẻ | HBL 15+ loại in, Extract E-Manifest | |
+| LCL Inbound Sea | Nhập | Sea lẻ | + Arrival Notice, DO | |
+| FCL Outbound Sea | Xuất | Sea nguyên cont | + Container info (No, Type, Seal, GW/CBM) | |
+| FCL Inbound Sea | Nhập | Sea nguyên cont | + Arrival Notice, DO | |
+| Outbound Sea Consol | Xuất | Gom hàng biển | Nhiều HBL → 1 MBL | ⚠️ Cân nhắc bỏ |
+| Inbound Sea Consol | Nhập | Gom hàng biển | Nhiều HBL → 1 MBL | ⚠️ Cân nhắc bỏ |
+| Inland Trucking | Nội địa | Xe tải | Truck Type, From/To, CDS No. | |
+| Logistics | Phức hợp | Thông quan | CDS No/Date, Selectivity, Customs Agency | |
 
-=> _Xin toàn bộ form bản in._
+> _TODO: Xin toàn bộ form bản in từ nghiệp vụ._
 
+### 5.5 Màu trạng thái Transaction (Master Bill)
 
-**Màu trạng thái đơn hàng:** => Need to discuss, trạng thái ở danh sách transactions - master bill.
+> ⚠️ Need to discuss — áp dụng trên danh sách transactions.
 
 | Màu | Trạng thái |
 |-----|-----------|
@@ -398,7 +375,9 @@ Hướng dẫn vận chuyển gửi co-loader / hãng tàu. Print Preview để 
 | Đỏ | Thu chi xong hết |
 | Xanh nước biển | Gợi ý giá (lô đã qua cảng) |
 
-### 5.4 Cross-cutting Functions => Need to discuss.
+### 5.6 Cross-cutting Functions
+
+> ⚠️ Need to discuss — toàn bộ nhóm chức năng này cần làm rõ scope.
 
 | Chức năng | Mô tả |
 |-----------|-------|

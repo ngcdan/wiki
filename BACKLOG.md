@@ -108,11 +108,34 @@ updated: 2026-02-19
 ---
 ## BACKLOG - Issues
 
-#### #482 CRM User Role: Bổ sung Accessible Company Branches cho phân quyền GROUP_ALL
+#### #467 Báo cáo Sales Performance (Freehand/Key Account)
 - **Repo:** of1-crm
-- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/482
-- **Labels:** Enhancement
-- **Assignee:** @qngnhat
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/467
+- **Labels:** Feature
+- **Assignee:** @vutuongan2003, @duynien
 - **Status:** closed
-- **Updated at:** 2026-03-30
+- **Updated at:** 2026-04-01
+
+#### #466 Chuẩn bị API BF1 đấu nối vào S3
+- **Repo:** of1-crm
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/466
+- **Assignee:** @ntduc2810
+- **Status:** closed
+- **Updated at:** 2026-04-01
+
+#### #484 CRM: tổ chức lại phân quyền App CRM, phân quyền theo screens thay vì nghiệp vụ như hiện tại
+- **Repo:** of1-crm
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/484
+- **Labels:** Enhancement
+- **Assignee:** @qngnhat, @duynien
+- **Status:** closed
+- **Updated at:** 2026-03-31
+
+#### #490 CRM: Agent List (No Trans) bổ sung thêm các field mới từ API BF1
+- **Repo:** of1-crm
+- **Link:** https://git.datatp.cloud/of1-crm/of1-crm/issues/490
+- **Labels:** Enhancement
+- **Assignee:** @duynien
+- **Status:** closed
+- **Updated at:** 2026-03-31
 
