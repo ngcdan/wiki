@@ -1,62 +1,112 @@
----
-title: "DOCS"
-type: documentation
-tags: [work]
-created: 2026-01-26
-updated: 2026-01-26
-related:
-  - 2026-01-26_ten-chu-de.md
----
-# DOCS
+# Wiki Index
 
-Kho lưu trữ ghi chú cá nhân liên quan đến công việc, phục vụ công việc và việc tra cứu lại sau này.
+## Projects
 
-## Mục đích
-- Hệ thống hóa ghi chú, quyết định và bài học.
-- Lưu các note còn mơ hồ để AI tổng hợp, review và viết lại cho rõ ràng.
-- Nhận gợi ý kế hoạch triển khai, bước thực hiện, và rủi ro cần lưu ý.
+### BF1 — Migration BFS One → OF1 FMS
 
-## Cách sử dụng
-- Tạo file mới cho từng chủ đề hoặc cập nhật file hiện có.
-- Dán nội dung thô vào file, sau đó yêu cầu AI tổng hợp/làm rõ.
-- Khi cần kế hoạch, mô tả mục tiêu, bối cảnh, ràng buộc và deadline.
+- [Project Overview](projects/bf1/project-overview.md)
+- [Reorganization Design](projects/bf1/2026-03-29-bf1-reorganization-design.md)
 
-## Phạm vi nội dung
-- Ý tưởng, quy trình, checklist, quyết định, kết quả.
-- Ghi chú họp, vấn đề phát sinh, hướng xử lý, bài học.
-- Tóm tắt tài liệu hoặc ghi chú cần “làm sạch”.
+#### FMS Specs
 
-## Quy trình với AI
-- Dán note thô -> yêu cầu: tóm tắt, chuẩn hóa, viết lại.
-- Đưa mục tiêu -> AI đề xuất kế hoạch, bước thực hiện, rủi ro và giảm thiểu.
-- Yêu cầu “review” -> AI chỉ ra thiếu sót, điểm cần xác minh.
+- [Feature Spec](projects/bf1/fms/fms-feature-spec.md)
+- [Entity Relationship Diagram](projects/bf1/fms/entity-relationship-diagram.md)
+- [CDC Architecture](projects/bf1/fms/cdc-architecture.md)
+- [Master Data](projects/bf1/fms/master-data.md)
 
-## Cấu trúc
-- `notes/00_inbox/` — ghi chú thô chưa xử lý
-- `notes/daily/` — briefing hàng ngày (tự động tạo)
-- `personal/` — framework cá nhân: plan, workflow, self-review, skill-practice
-- `projects/` — tài liệu dự án: bf1/, DataTP, MrHenry, OF1_Crm
-- `assistant/` — operating manual cho AI assistant
-- `rulebooks/` — framework vận hành cá nhân
-- `cheatsheets/` — reference/command cheatsheets
-- `automation/` — scripts tự động hóa (briefing, issue sync)
-- `dev-kit/` — AI config packs (git submodule)
+#### Schema
 
-## Mẫu ghi chú (gợi ý)
-```
-# Tiêu đề
-## Bối cảnh
-## Vấn đề
-## Giải pháp/Quyết định
-## Việc cần làm tiếp theo
-## Lưu ý/Tham khảo
-```
+- [DB Schema (BEE)](projects/bf1/fms/schema/db-schema.md)
+- [DB Schema Core](projects/bf1/fms/schema/db-schema-core.md)
+- [DB Schema Cloud](projects/bf1/fms/schema/db-schema-cloud.md)
 
-## Tìm kiếm nhanh
-- Dùng tiêu đề rõ ràng, từ khóa đặc trưng.
-- Có thể thêm tag đơn giản: [backend], [infra], [meeting].
+#### Dev
 
-## Quy ước nhớ
-- Đặt tên file ngắn gọn, dễ hiểu.
-- Ưu tiên dùng tiêu đề và gạch đầu dòng.
-- Thêm ngày tháng nếu cần theo dõi tiến độ.
+- [Devlog](projects/bf1/dev/devlog.md)
+- [Query Reference](projects/bf1/dev/query-reference.md)
+- [MSSQL Windows Setup](projects/bf1/dev/mssql-windows-setup.md)
+
+#### BFS References
+
+- [Catalogue](projects/bf1/bfs/references/catalogue.md)
+- [Sale Executive](projects/bf1/bfs/references/sale-executive.md)
+- [System Documentation](projects/bf1/bfs/references/system-documentation.md)
+- [Accounting](projects/bf1/bfs/references/accounting.md)
+
+### FMS — Freight Management System
+
+- [Architecture](projects/fms/architecture.md)
+
+#### Schema
+
+- [Catalogue](projects/fms/schema/catalogue.md)
+- [Sales](projects/fms/schema/sales.md)
+- [Documentation](projects/fms/schema/documentation.md)
+- [Accounting](projects/fms/schema/accounting.md)
+
+#### Modules
+
+- [Catalogue](projects/fms/modules/catalogue.md)
+- [Sales](projects/fms/modules/sales.md)
+- [Documentation](projects/fms/modules/documentation.md)
+- [Accounting](projects/fms/modules/accounting.md)
+
+#### API
+
+- [Catalogue](projects/fms/api/catalogue.md)
+- [Sales](projects/fms/api/sales.md)
+- [Documentation](projects/fms/api/documentation.md)
+- [Accounting](projects/fms/api/accounting.md)
+
+### Other
+
+- [DataTP](projects/DataTP.md)
+- [MrHenry Jan2026 Plan](projects/MrHenry_Jan2026_plan.md)
+
+## Personal
+
+- [Workflow](personal/workflow.md)
+- [Skill Practice](personal/skill-practice.md)
+- [Plan](personal/plan.md)
+- [Self Review](personal/self-review.md)
+
+## Cheatsheets
+
+- [CLI](cheatsheets/cli.md)
+
+## Rulebooks
+
+- [Living Framework](rulebooks/living-framework.md)
+- [Goal Setting](rulebooks/goal-setting.md)
+- [AI Integration](rulebooks/ai-integration.md)
+
+## Setup
+
+- [Config](setup/config.md)
+- [Muscle Shortcuts](setup/muscle-shortcuts.md)
+- [Shortcut Unification](setup/shortcut-unification-session.md)
+- [Ghostty + Tmux](setup/ghostty-tmux.md)
+- [Tmux Guide](setup/TMUX.md)
+- [Remote Mac mini](setup/remote-macmini.md)
+- [Moltbot Setup](setup/moltbot.md)
+- [Egov Local Setup](setup/egov-local-setup.md)
+
+## Notes
+
+Ghi chú thô → `notes/00_inbox/` · Briefing hàng ngày → `notes/daily/`
+
+## Automation
+
+Scripts tự động hóa wiki → `automation/`
+
+## Assistant
+
+AI operating manual → `assistant/`
+
+## Templates
+
+Mẫu tài liệu → `templates/`
+
+## Docs
+
+Spec documents → `docs/`
