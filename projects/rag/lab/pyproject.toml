@@ -1,0 +1,18 @@
+[project]
+name = "rag-lab"
+version = "0.1.0"
+description = "RAG learning project — bottom-up approach"
+requires-python = ">=3.10"
+dependencies = [
+    "openai",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+rag-lab = "cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
