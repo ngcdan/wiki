@@ -1,0 +1,7 @@
+[
+    {
+        "question": "Example question about the documents?",
+        "expected_answer": "Expected answer text",
+        "source_doc": "path/to/relevant/doc.md"
+    }
+]
