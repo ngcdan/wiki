@@ -7,6 +7,7 @@ dependencies = [
     "openai",
     "python-dotenv",
     "chromadb",
+    "pypdf",
 ]
 
 [project.optional-dependencies]
