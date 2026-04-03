@@ -8,6 +8,8 @@ dependencies = [
     "python-dotenv",
     "chromadb",
     "pypdf",
+    "anthropic",
+    "click",
 ]
 
 [project.optional-dependencies]
