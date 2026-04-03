@@ -10,6 +10,7 @@ dependencies = [
     "pypdf",
     "anthropic",
     "click",
+    "ollama",
 ]
 
 [project.optional-dependencies]
