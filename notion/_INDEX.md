@@ -36,7 +36,38 @@ source: Notion workspace (1 workspace, no teamspaces)
 
 ## 🌱 Cá nhân (`03_ca_nhan/`)
 
-- (Password, English, Interview — chứa thông tin cá nhân, không sync)
+- [English](03_ca_nhan/English.md) — Luyện viết tiếng Anh A2–B1, AI prompts, weather vocab, IELTS speaking
+- [Interview](03_ca_nhan/Interview.md) — Đánh giá ứng viên phỏng vấn (Duy, Đạt, An)
+
+## 📊 Data TP — Project Hub (`05_data_tp/`)
+
+> Notion Page ID: `e321c961d37a424fa0f5148f4ebea3a5`
+> Chứa 2 inline databases dạng Board/Kanban
+
+### Data TP Database (Board View)
+- **Collection ID:** `collection://8849b5d8-23ec-4c30-a9ba-6387ed081724`
+- **Schema:** Name (title), Assign (person), Language (select), Project start date (date), Status (select: Interview/Meeting/Discuss, Business Domain, Planning/TODO, Technical)
+
+**Child pages:**
+- [BF1 Web Upgrade](05_data_tp/BF1_Web_Upgrade.md) — BF1 project setup, SPM reports, CDC architecture, cost estimates
+- [Reports](05_data_tp/Reports.md) — OF1 Cloud phases, SSO/Keycloak, CRM roadmap
+- [CDC Debezium](05_data_tp/CDC_Debezium.md) — MSSQL CDC setup, Kafka Connect pipeline, PostgreSQL CDC
+- [Issue Data Sync Conflict](05_data_tp/Issue_Data_Sync_Conflict.md) — Partner data conflict resolution, PartnerReference, SQL migration
+- [Mobile](05_data_tp/Mobile.md) — Flutter build commands, iOS/Android setup, App Store listing
+- [HPS Odoo](05_data_tp/HPS_Odoo.md) — Odoo ERP accounting, invoice management, reconciliation
+- [Odoo ERP](05_data_tp/Odoo_ERP.md) — Odoo dev setup, k8s deployment, Docker concepts
+- [Mail Outlook](05_data_tp/Mail_Outlook.md) — Exchange Online PowerShell, CRM Teams meeting integration
+
+### ☑️ Tasks Database (Board View)
+- **Collection ID:** `collection://2c3f924d-5d7b-8188-8865-000b6149e9e1`
+- **Schema:** Name (title), Assign (person), Request By (text), Start date (date), Status (select: Backlog 1-2 Week, Doing Current Week, Planning/TODO, Done, Review 2-3 days, Report/Feedback)
+
+**Child pages:**
+- [Bugs / Enhance](05_data_tp/Bugs_Enhance.md) — CRM identity sync, role template sync, forgot password
+- [IT BD Supports](05_data_tp/IT_BD_Supports.md) — Task Calendar BD, AMN user type, agency agreement
+- [Performance Report KA](05_data_tp/Performance_Report_KA.md) — Key Account report customization
+- [Nhật Week 1](05_data_tp/Nhat_Week1.md) — Enhance/Fix Bugs tuần 1: filter data, partner name normalize, app features, role review
+- [Nhật Week 2](05_data_tp/Nhat_Week2.md) — Enhance/Maintenance tuần 2: Lead/Agent UI, report permissions, HPH asset, CDC pipeline
 
 ## 🗄️ Databases (Home page)
 
@@ -45,10 +76,14 @@ source: Notion workspace (1 workspace, no teamspaces)
 - **Schema:** Name (title), Danh mục (select: Công việc/Kỹ thuật/Cá nhân/Inbox), Link (url), Mô tả (text)
 - **Ghi chú:** Database dạng gallery view trên trang Home, dùng để điều hướng workspace. Không chứa dữ liệu độc lập.
 
-### 📋Home Database
+### 📋 Home Database
 - **ID:** 8723ca60e10f4e41a84fa36f43065919
 - **Schema:** Tên trang (title), Danh mục (select), Link (url), Mô tả (text)
 - **Ghi chú:** Database dạng gallery view, tương tự Workspace database. Không chứa dữ liệu độc lập.
+
+### 📝 My Tasks Database
+- **ID:** 5fdea32c311841ad9b5aac9201496bae
+- **Ghi chú:** System-level database trên Home page, list view filtered by assignee. Không chứa dữ liệu riêng.
 
 ## ⚡ Inbox (`04_inbox/`)
 
