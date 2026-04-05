@@ -1,0 +1,19 @@
+{
+  "types": {
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "Assign": "multitext",
+    "Project start date": "date",
+    "Status": "text",
+    "Language": "text",
+    "Start date": "date",
+    "Request By": "text",
+    "Date": "date",
+    "Type": "text",
+    "Deadline": "date",
+    "Catalog": "text",
+    "Context": "multitext",
+    "Due": "text"
+  }
+}

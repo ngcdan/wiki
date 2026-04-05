@@ -10,14 +10,24 @@ A personal knowledge base of Markdown notes (no application code). The primary p
 
 ## Structure
 
-- `notes/00_inbox/` — raw, unprocessed notes (date-prefixed filenames)
-- `notes/daily/` — daily briefing reports (`YYYY-MM-DD_briefing.md`)
-- `personal/` — personal framework: plan, workflow, self-review, skill practice
-- `projects/` — project docs (bf1/, DataTP, MrHenry, OF1_Crm, …)
-- `projects/bf1/` — BF1 project; `CDC_Architecture.md` = kiến trúc tổng thể, `DEVLOG.md` = sandbox setup
-- `assistant/` — AI assistant operating manual
-- `cheatsheets/` — reference/command-sheet style docs
-- `rulebooks/` — personal operating frameworks (bao gồm ai-integration)
+All notes live inside the `wiki/` Obsidian vault. Folders outside the vault serve automation and tooling only.
+
+### Obsidian vault (`wiki/`)
+
+- `wiki/inbox/` — raw, unprocessed notes (date-prefixed filenames)
+- `wiki/daily/` — daily briefing reports (`YYYY-MM-DD_briefing.md`)
+- `wiki/projects/` — project docs (bf1/, datatp/, mr-henry/)
+- `wiki/personal/` — personal framework, lifestyle, learning (english/, books/, finance, habits…)
+- `wiki/rulebooks/` — personal operating frameworks (ai-integration, goal-setting, living-framework)
+- `wiki/assistant/` — AI assistant operating manual
+- `wiki/setup/` — dev environment setup guides (ghostty, tmux, remote, egov…)
+- `wiki/cheatsheets/` — reference/command-sheet style docs
+- `wiki/templates/` — note & project templates
+- `wiki/specs/` — design specs and implementation plans
+- `wiki/attachments/` — images and binary files (Obsidian attachment folder)
+
+### Outside the vault
+
 - `automation/` — Python scripts that automate issue syncing and briefing generation
 - `dev-kit/` — AI assistant configuration packs (Gemini skills, Claude guidelines for other projects)
 
