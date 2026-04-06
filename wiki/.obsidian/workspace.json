@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ef90223fcda2cc3d",
+        "id": "ff320c8410aa006a",
         "type": "tabs",
         "children": [
           {
-            "id": "a92b9099707844da",
+            "id": "6f0c2bef4f10cd21",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/bf1/fms/entity-relationship-diagram.md",
+                "file": "projects/Namespace, IP Cloud.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "entity-relationship-diagram"
+              "title": "Namespace, IP Cloud"
             }
           }
         ]
@@ -185,8 +185,37 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "a92b9099707844da",
+  "active": "6f0c2bef4f10cd21",
   "lastOpenFiles": [
+    "projects/egov/specs/2026-03-29-remove-getSyncSourceConfigurationId-design.md",
+    "projects/egov/specs/2026-03-29-ecus-thaison-architecture-design.md",
+    "projects/egov/specs/2026-03-29-ecus-entity-mapping-design.md",
+    "projects/egov/specs/2026-03-29-company-mapper-batch-single-split-design.md",
+    "projects/egov/plans/2026-03-30-move-mapping-back-to-mapper.md",
+    "projects/egov/plans/2026-03-29-remove-getSyncSourceConfigurationId.md",
+    "projects/egov/plans/2026-03-29-ecus-thaison-gaps.md",
+    "projects/egov/plans/2026-03-29-ecus-entity-mapping-refactor.md",
+    "projects/egov/plans/2026-03-29-company-mapper-batch-single-split.md",
+    "projects/egov/webui-term.md",
+    "projects/egov/webui-readme.md",
+    "projects/egov/webui-memory.md",
+    "projects/egov/webui-claude-rules.md",
+    "projects/egov/specs",
+    "projects/egov/plans",
+    "projects/egov/first-setup-accounts.md",
+    "projects/egov/ecus-batch-sync.md",
+    "projects/egov/devlog.md",
+    "projects/egov/declaration-entity-design.md",
+    "projects/egov/claude-rules.md",
+    "projects/egov/README.md",
+    "projects/egov",
+    "daily/260406-cdc-handler-refactor-plan.md",
+    "daily/260406-cdc-handler-refactor.md",
+    "attachments/Screenshot 2026-04-06 at 08.51.29.png",
+    "projects/Namespace, IP Cloud.md",
+    "daily",
+    "personal/english/todo-list/hoc-lai-tieng-anh-tu-dau.md",
+    "projects/bf1/fms/entity-relationship-diagram.md",
     "projects/bf1/fms/img/catalogue/catalogue_36.png",
     "projects/bf1/fms/img/catalogue/catalogue_35.png",
     "projects/bf1/fms/img/catalogue/catalogue_34.png",
@@ -196,8 +225,6 @@
     "projects/bf1/fms/img/catalogue/catalogue_30.png",
     "projects/bf1/fms/img/catalogue/catalogue_29.png",
     "projects/bf1/fms/img/catalogue/catalogue_28.png",
-    "projects/bf1/fms/img/catalogue/catalogue_27.png",
-    "projects/bf1/fms/img/catalogue/catalogue_26.png",
     "projects/bf1/fms/img/catalogue",
     "projects/bf1/fms/img/sale-executive",
     "projects/bf1/fms/img/dev",
@@ -205,33 +232,6 @@
     "projects/bf1/fms/img/accounting",
     "projects/bf1/devlog-fms.md",
     "projects/bf1/fms-readme.md",
-    "projects/bf1/project-overview.md",
-    "projects/bf1/fms/cdc-architecture.md",
-    "projects/bf1/ai/docs-rules.md",
-    "specs/2026-04-05-personal-reorganization-design.md",
-    "projects/of1/identity.md",
-    "projects/of1",
-    "projects/bf1/ai/webui-boilerplate.md",
-    "projects/bf1/ai/ui-list-guide.md",
-    "projects/bf1/ai/multi-datasource-rules.md",
-    "projects/bf1/ai/kafka-rules.md",
-    "projects/bf1/ai/frontend-rules.md",
-    "projects/bf1/ai/devops-rules.md",
-    "projects/bf1/ai/backend-rules.md",
-    "projects/bf1/fms/mapping/README.md",
-    "projects/bf1/fms/mapping/pipeline-guide.md",
-    "projects/bf1/fms/mapping/mapping-transport-plan.md",
-    "projects/bf1/fms/mapping/mapping-transactions.md",
-    "projects/bf1/fms/mapping/mapping-purchase-order.md",
-    "projects/bf1/fms/mapping/mapping-hawb-rates.md",
-    "projects/bf1/fms/mapping/mapping-cargo-container.md",
-    "projects/bf1/fms/references-index.md",
-    "projects/bf1/fms/api/api-bfs-storage.md",
-    "projects/bf1/fms/sync-pipeline.md",
-    "projects/bf1/fms/fms-business-analysis.md",
-    "projects/bf1/ai",
-    "projects/bf1/fms/api",
-    "projects/bf1/fms/mapping",
-    "specs"
+    "projects/of1"
   ]
 }
