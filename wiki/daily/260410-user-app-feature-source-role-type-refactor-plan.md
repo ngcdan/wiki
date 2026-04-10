@@ -6,9 +6,59 @@
 
 **Architecture:** Backend fixes: single-line guard in `AppLogic.saveAppPermission` (covers all admin save paths), rewrite of `UserAppFeatureTemplateLogic.syncUserPermissions` with CUSTOM-collision filter and max-capability winner selection, direct in-transaction sync call added to both `IdentityEventLogic.syncRoles` and `syncIdentities`, TODO stubs at template save/delete, and SQL exposure of `source_role_type_id` / `source_role_type_label`. Frontend cleanup: drop the `templateAppMap` workaround and read the new fields directly.
 
-**Tech Stack:** Java 17 + Spring Boot + JPA + Lombok (backend), Groovy SQL templates, JUnit 5 + Mockito + Spring Boot test slices, React + TypeScript + custom `@of1-webui/lib` (frontend).
+**Tech Stack:** Java 17 + Spring Boot + JPA + Lombok (backend), Groovy SQL templates, JUnit 5 + Mockito (frontend), React + TypeScript + custom `@of1-webui/lib`.
 
 **Spec:** `/Users/nqcdan/dev/wiki/wiki/daily/260410-user-app-feature-source-role-type-refactor.md`
+
+---
+
+## Working Environment
+
+**Repo root:** `/Users/nqcdan/OF1/forgejo/of1-platform/`
+
+All relative paths in this plan are anchored to that root. Two top-level subprojects matter:
+
+- **Backend:** `of1-core/` — Gradle project, no wrapper. Uses system `gradle` (verified 9.2.0+). Project name for the affected module: `datatp-core-module-platform-federation` (declared in `of1-core/settings.gradle` → `project(':datatp-core-module-platform-federation').projectDir = new File('module/platform-federation')`).
+- **Frontend:** `of1-platform/webui/platform/` — TypeScript + webpack. Use `npx tsc` for type-check.
+
+**Backend commands you will run repeatedly** (always from `of1-core/`):
+
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+
+# Compile only
+gradle :datatp-core-module-platform-federation:compileJava
+
+# Run all tests in the module
+gradle :datatp-core-module-platform-federation:test
+
+# Run a single test class
+gradle :datatp-core-module-platform-federation:test --tests datatp.platform.resource.UserAppFeatureTemplateLogicTest
+
+# Run a single test method
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.syncWithCustomCollision_customWinsAndTemplateSkipped'
+```
+
+If `gradle` command is not on PATH, activate via sdkman: `source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use gradle current`.
+
+**Frontend commands** (always from `of1-platform/webui/platform/`):
+
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-platform/webui/platform
+
+# Type-check the whole project (raw exit code is the gate, not grep output)
+npx tsc --noEmit -p tsconfig.json
+```
+
+**Git**: all commits are run from the repo root `/Users/nqcdan/OF1/forgejo/of1-platform/`.
+
+## Conventions
+
+- **Entities use Lombok `@Getter @Setter`**. If a setter like `setSourceRoleTypeId` is not visible in the source file, it is Lombok-generated — trust it and the build will confirm. `PersistableEntity<PK>` exposes `setId(PK)` / `getId()` via Lombok on its own superclass — do not reach for reflection to set the id.
+- **Test packages**: existing tests live under `datatp.identity.*`, `datatp.federation.*`, `datatp.ai.*`. The new tests in this plan use `datatp.platform.resource.*` and `datatp.platform.identity.queue.*` — deliberate, matching the package of the class under test for discoverability. No Spring config restricts test class-scan.
+- **Commits**: subject ≤70 chars, conventional-commits style (`feat:`, `fix:`, `chore:`, `test:`, `docs:`). No attribution footer (disabled globally).
+- **TDD rhythm**: for every behavior change, write the failing test first, run it to see it fail, write the minimal code, run it to see it pass, commit. Commits happen at the end of each task, not after every step.
 
 ---
 
@@ -63,17 +113,17 @@ public UserAppFeature saveAppPermission(ClientContext client, UserAppFeature per
 
 - [ ] **Step 3: Build to verify no compile error**
 
-Run from `of1-core/module/platform-federation`:
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+gradle :datatp-core-module-platform-federation:compileJava
 ```
-mvn -pl module/platform-federation -am compile -DskipTests -o
-```
-(Adjust module path / build command to match repo conventions; if Gradle, use `./gradlew :platform-federation:compileJava`.)
 
-Expected: `BUILD SUCCESS` with no errors.
+Expected: `BUILD SUCCESSFUL` with no errors.
 
 - [ ] **Step 4: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/resource/logic/AppLogic.java
 git commit -m "fix(security): force sourceRoleTypeId=null on saveAppPermission
 
@@ -121,8 +171,10 @@ class UserAppFeatureTemplateLogicTest {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.resource.UserAppFeatureTemplateLogicTest
 ```
 
 Expected: 2 tests fail with `Not yet implemented`.
@@ -147,15 +199,17 @@ void capabilityRank_ordersAdminHighestNoneLowest() {
 
 - [ ] **Step 4: Run it — expect compile error (helper doesn't exist)**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest#capabilityRank_ordersAdminHighestNoneLowest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.capabilityRank_ordersAdminHighestNoneLowest'
 ```
 
 Expected: compile failure "cannot find symbol: method capabilityRank".
 
 - [ ] **Step 5: Add the helper in `UserAppFeatureTemplateLogic.java`**
 
-Add inside the class, near the bottom (package-private so tests can reach it without reflection):
+Verified enum constants in `/Users/nqcdan/OF1/forgejo/of1-platform/of1-core/module/common/src/main/java/net/datatp/security/client/Capability.java` are `None, Read, Write, Moderator, Admin` (PascalCase). Add inside the class, near the bottom:
+
 ```java
 static int capabilityRank(Capability c) {
   if (c == null) return 0;
@@ -170,12 +224,13 @@ static int capabilityRank(Capability c) {
 }
 ```
 
-Before writing, verify the exact enum constant names by reading `net.datatp.security.client.Capability`. Adjust casing/spelling if the enum uses different labels (e.g. `ADMIN` vs `Admin`).
+Deliberate deviation from the spec's `private static`: the helper is package-private (no access modifier) so the test class in the same package can call it directly without reflection. Standard Java test-seam pattern.
 
 - [ ] **Step 6: Run the test — expect pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest#capabilityRank_ordersAdminHighestNoneLowest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.capabilityRank_ordersAdminHighestNoneLowest'
 ```
 
 Expected: 1 test passed.
@@ -198,7 +253,8 @@ void dataScopeRank_ordersAllHighestOwnerLowest() {
 
 - [ ] **Step 8: Run — expect compile failure, then add helper**
 
-Add to `UserAppFeatureTemplateLogic.java` below `capabilityRank`:
+Verified enum constants in `/Users/nqcdan/OF1/forgejo/of1-platform/of1-core/module/common/src/main/java/net/datatp/security/client/DataScope.java` are `Owner, Group, Company, All` (PascalCase). Add to `UserAppFeatureTemplateLogic.java` below `capabilityRank`:
+
 ```java
 static int dataScopeRank(DataScope s) {
   if (s == null) return 0;
@@ -212,12 +268,11 @@ static int dataScopeRank(DataScope s) {
 }
 ```
 
-Again verify enum constant names against `net.datatp.security.client.DataScope`.
-
 - [ ] **Step 9: Run both rank tests — expect pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.resource.UserAppFeatureTemplateLogicTest
 ```
 
 Expected: 2/2 passed.
@@ -225,6 +280,7 @@ Expected: 2/2 passed.
 - [ ] **Step 10: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/resource/logic/UserAppFeatureTemplateLogic.java \
         of1-core/module/platform-federation/src/test/java/datatp/platform/resource/UserAppFeatureTemplateLogicTest.java
 git commit -m "test(security): add capabilityRank/dataScopeRank helpers with unit tests"
@@ -286,6 +342,8 @@ private static void setField(Object target, String name, Object value) throws Ex
   f.set(target, value);
 }
 
+// AccessType.Employee confirmed as enum constant in net.datatp.security.client.AccessType
+// (also used in UserAppFeature.java:64 default). DataScope.Owner confirmed similarly.
 private static UserAppFeature custom(Long appId, Capability cap) {
   UserAppFeature u = new UserAppFeature();
   u.setAppId(appId);
@@ -357,8 +415,9 @@ void syncWithEmptyRoleTypeIds_deletesAllRoleSourcedRowsOnly() {
 
 - [ ] **Step 3: Run — expect fail (existing method may partially work; check)**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest#syncWithEmptyRoleTypeIds_deletesAllRoleSourcedRowsOnly
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.syncWithEmptyRoleTypeIds_deletesAllRoleSourcedRowsOnly'
 ```
 
 If the existing implementation already handles this, it passes — fine, move on. If it fails, implement the minimum to pass (likely already does).
@@ -391,8 +450,9 @@ void syncWithCustomCollision_customWinsAndTemplateSkipped() {
 
 - [ ] **Step 5: Run — expect fail because current code will try to insert a fresh row for appId=1**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest#syncWithCustomCollision_customWinsAndTemplateSkipped
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.syncWithCustomCollision_customWinsAndTemplateSkipped'
 ```
 
 Expected: FAIL — either assertion violation on save, or `saveAll` called with a row for appId=1.
@@ -484,12 +544,14 @@ public void syncUserPermissions(ClientContext ctx, Long companyId, Long accountI
 }
 ```
 
-Add imports at the top of the file if missing: `java.util.Comparator`, `java.util.HashMap`, `java.util.Map`.
+Ensure imports: add `java.util.Comparator` and `java.util.HashMap` if missing. `java.util.Map`, `java.util.HashSet`, `java.util.Set`, `java.util.List`, `java.util.ArrayList`, and `java.util.stream.Collectors` are already imported in the existing file.
 
 - [ ] **Step 7: Run tests 1 and 5 — expect pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest#syncWithEmptyRoleTypeIds_deletesAllRoleSourcedRowsOnly+syncWithCustomCollision_customWinsAndTemplateSkipped
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.syncWithEmptyRoleTypeIds_deletesAllRoleSourcedRowsOnly' \
+  --tests 'datatp.platform.resource.UserAppFeatureTemplateLogicTest.syncWithCustomCollision_customWinsAndTemplateSkipped'
 ```
 
 Expected: 2/2 passed.
@@ -558,11 +620,12 @@ void syncRemovesRoleRowsNotBackedByAnyTemplate() {
 
 - [ ] **Step 9: Run — expect all 3 pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.resource.UserAppFeatureTemplateLogicTest
 ```
 
-Expected: 5/5 passed (tests 1–4 + CUSTOM collision).
+Expected: 5/5 sync tests passed + 2 rank helper tests = 7/7.
 
 - [ ] **Step 10: Write tests #6, #7, #8 — multi-role tie-breakers**
 
@@ -628,17 +691,19 @@ void syncWithMultiRoleSameCapAndScope_tieBreaksBySmallerRoleTypeId() {
 }
 ```
 
-- [ ] **Step 11: Run — expect all 8 pass**
+- [ ] **Step 11: Run — expect all 10 pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=UserAppFeatureTemplateLogicTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.resource.UserAppFeatureTemplateLogicTest
 ```
 
-Expected: 8/8 passed (rank helpers + all 8 sync scenarios).
+Expected: 10/10 passed (2 rank helpers + 8 sync scenarios).
 
 - [ ] **Step 12: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/resource/logic/UserAppFeatureTemplateLogic.java \
         of1-core/module/platform-federation/src/test/java/datatp/platform/resource/UserAppFeatureTemplateLogicTest.java
 git commit -m "fix(security): rewrite syncUserPermissions with CUSTOM guard + max-capability
@@ -703,15 +768,17 @@ At the end of the existing method, before the closing brace:
 
 - [ ] **Step 4: Build to verify**
 
-```
-mvn -pl module/platform-federation compile -DskipTests -o
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+gradle :datatp-core-module-platform-federation:compileJava
 ```
 
-Expected: `BUILD SUCCESS`.
+Expected: `BUILD SUCCESSFUL`.
 
 - [ ] **Step 5: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/resource/logic/UserAppFeatureTemplateLogic.java
 git commit -m "chore(security): stub syncUserAppFeatures with TODO for async consumer"
 ```
@@ -728,7 +795,7 @@ git commit -m "chore(security): stub syncUserAppFeatures with TODO for async con
 
 - [ ] **Step 1: Convert `IdentityEventLogic` to constructor injection for the new dependency**
 
-Open `IdentityEventLogic.java`. Keep existing `@Autowired` fields as-is (don't churn unrelated code), but add a new constructor-injected field:
+Open `IdentityEventLogic.java`. Keep existing `@Autowired` fields as-is (don't churn unrelated code) and add a new constructor-injected field:
 
 ```java
 private final UserAppFeatureTemplateLogic templateLogic;
@@ -738,11 +805,18 @@ public IdentityEventLogic(UserAppFeatureTemplateLogic templateLogic) {
 }
 ```
 
-Note: if the class already has a constructor, add the new parameter to it. If Spring complains about ambiguous constructors, annotate the new one with `@Autowired`.
+Add `import datatp.platform.resource.logic.UserAppFeatureTemplateLogic;` if missing.
+
+Spring auto-selects the single constructor (no `@Autowired` needed since Spring 4.3+). The other fields continue to be field-injected. The class has no subclass, so no `super()` call worries.
 
 - [ ] **Step 2: Write integration test #9 — sync materializes rows**
 
-Create `IdentityEventLogicSyncTest.java`:
+Create `IdentityEventLogicSyncTest.java`. Key correctness notes baked into the scaffolding:
+
+1. `Identity` extends `PersistableEntity<Long>`, which has Lombok `@Getter @Setter` → use `i.setId(...)`. No reflection needed.
+2. Both `Identity.changeRequest` and `IdentityRole.changeRequest` are read inside `syncRoles` and `syncIdentities`. Production code uses `Objects.ensureNotNull(...)` for `Identity.changeRequest` but does direct `role.getChangeRequest().setAckStatus(...)` for `IdentityRole.changeRequest` in `syncRoles` — that path NPEs on null. Always attach a `ChangeRequest` instance to the role.
+3. Use `lenient()` on stubs that may not be exercised by every test (Mockito strict-stubbing default fails on unused stubs).
+
 ```java
 package datatp.platform.identity.queue;
 
@@ -750,6 +824,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import datatp.platform.identity.entity.ChangeRequest;
 import datatp.platform.identity.entity.Identity;
 import datatp.platform.identity.entity.IdentityRole;
 import datatp.platform.identity.repository.IdentityRepository;
@@ -780,7 +855,7 @@ class IdentityEventLogicSyncTest {
     identityRoleRepo = mock(IdentityRoleRepository.class);
     eventProducer = mock(IdentityEventProducer.class);
     ctx = mock(ClientContext.class);
-    when(ctx.getCompanyId()).thenReturn(COMPANY_ID);
+    lenient().when(ctx.getCompanyId()).thenReturn(COMPANY_ID);
 
     eventLogic = new IdentityEventLogic(templateLogic);
     setField(eventLogic, "identityRepo", identityRepo);
@@ -794,29 +869,25 @@ class IdentityEventLogicSyncTest {
     f.set(target, value);
   }
 
-  private static Identity identity(Long accountId) {
+  /** PersistableEntity has Lombok @Setter — setId(Long) exists via generation. */
+  private static Identity identity(Long id, Long accountId) {
     Identity i = new Identity();
-    // Use the entity's available setters (verify against Identity.java)
-    try {
-      java.lang.reflect.Field idField = Identity.class.getSuperclass().getDeclaredField("id");
-      idField.setAccessible(true);
-      idField.set(i, IDENTITY_ID);
-    } catch (Exception ignored) {}
+    i.setId(id);
     i.setAccountId(accountId);
+    i.setChangeRequest(new ChangeRequest());
     return i;
   }
 
   private static IdentityRole role(Long roleTypeId) {
     IdentityRole r = new IdentityRole();
     r.setRoleTypeId(roleTypeId);
-    // Ensure change request is non-null — sync sets PROCESSED on it.
-    // Use whatever the entity API requires; if a no-arg ChangeRequest needs to be attached, attach one.
+    r.setChangeRequest(new ChangeRequest());  // production reads this directly — must be non-null
     return r;
   }
 
   @Test
   void syncRoles_materializesPermissionsInSameTransaction() {
-    Identity id = identity(ACCOUNT_ID);
+    Identity id = identity(IDENTITY_ID, ACCOUNT_ID);
     IdentityRole r1 = role(10L);
     IdentityRole r2 = role(20L);
 
@@ -837,18 +908,19 @@ class IdentityEventLogicSyncTest {
 
   @Test
   void syncRoles_skipsSyncWhenAccountIdIsNull() {
-    Identity id = identity(null);
+    Identity id = identity(IDENTITY_ID, null);
     when(identityRepo.getById(IDENTITY_ID)).thenReturn(id);
-    when(identityRoleRepo.findByIds(anyLong(), anyList())).thenReturn(List.of());
+    // empty roleIds → production short-circuits to roles=[] without calling identityRoleRepo,
+    // so no stub needed for findByIds.
 
     eventLogic.syncRoles(ctx, IDENTITY_ID, List.of());
 
-    verifyNoInteractions(templateLogic);
+    verify(templateLogic, never()).syncUserPermissions(any(), any(), any(), any());
   }
 
   @Test
   void syncRoles_propagatesExceptionFromSyncUserPermissions() {
-    Identity id = identity(ACCOUNT_ID);
+    Identity id = identity(IDENTITY_ID, ACCOUNT_ID);
     IdentityRole r1 = role(10L);
     when(identityRepo.getById(IDENTITY_ID)).thenReturn(id);
     when(identityRoleRepo.findByIds(eq(COMPANY_ID), eq(List.of(30L))))
@@ -859,18 +931,20 @@ class IdentityEventLogicSyncTest {
     assertThrows(RuntimeException.class,
         () -> eventLogic.syncRoles(ctx, IDENTITY_ID, List.of(30L)));
 
-    // Event must NOT be published on failure — transaction would rollback
+    // Event must NOT be published on failure — transaction would rollback at the
+    // service-layer @Transactional boundary (IdentityEventService.syncRoles).
     verify(eventProducer, never()).send(any(), any());
   }
 }
 ```
 
-Note on test #3 (`propagatesExceptionFromSyncUserPermissions`): this is the "rollback on failure" check (test #10 from the spec). We assert the exception propagates; the actual DB rollback happens at the `@Transactional` service boundary and is tested implicitly.
+Note on test #3 (`propagatesExceptionFromSyncUserPermissions`): this is the unit-level proxy for spec test #10. We assert the exception propagates and the event is not published. Actual DB rollback happens at `IdentityEventService.syncRoles`'s `@Transactional` boundary and would require an `@SpringBootTest`-style integration test to verify directly — out of scope here.
 
 - [ ] **Step 3: Run tests — expect fail (method not yet calling syncUserPermissions)**
 
-```
-mvn -pl module/platform-federation test -Dtest=IdentityEventLogicSyncTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.identity.queue.IdentityEventLogicSyncTest
 ```
 
 Expected: `syncRoles_materializesPermissionsInSameTransaction` fails because `templateLogic.syncUserPermissions` is never called.
@@ -894,8 +968,9 @@ Add `import java.util.stream.Collectors;` if not already imported.
 
 - [ ] **Step 5: Run tests — expect pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=IdentityEventLogicSyncTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.identity.queue.IdentityEventLogicSyncTest
 ```
 
 Expected: 3/3 passed.
@@ -903,6 +978,7 @@ Expected: 3/3 passed.
 - [ ] **Step 6: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/identity/queue/IdentityEventLogic.java \
         of1-core/module/platform-federation/src/test/java/datatp/platform/identity/queue/IdentityEventLogicSyncTest.java
 git commit -m "feat(security): syncRoles materializes UserAppFeature rows in-transaction
@@ -931,16 +1007,8 @@ Append to `IdentityEventLogicSyncTest.java`:
 @Test
 void syncIdentities_materializesPermissionsPerIdentity() {
   Long id1 = 501L, id2 = 502L, acc1 = 601L, acc2 = 602L;
-  Identity i1 = new Identity();
-  try { java.lang.reflect.Field f = Identity.class.getSuperclass().getDeclaredField("id");
-    f.setAccessible(true); f.set(i1, id1); } catch (Exception ignored) {}
-  i1.setAccountId(acc1);
-
-  Identity i2 = new Identity();
-  try { java.lang.reflect.Field f = Identity.class.getSuperclass().getDeclaredField("id");
-    f.setAccessible(true); f.set(i2, id2); } catch (Exception ignored) {}
-  i2.setAccountId(acc2);
-
+  Identity i1 = identity(id1, acc1);
+  Identity i2 = identity(id2, acc2);
   IdentityRole r1 = role(11L);
   IdentityRole r2 = role(12L);
 
@@ -957,17 +1025,57 @@ void syncIdentities_materializesPermissionsPerIdentity() {
 }
 ```
 
+The shared `identity(id, accountId)` helper from Task 5 already attaches a `ChangeRequest` and uses Lombok `setId` — no reflection.
+
 - [ ] **Step 2: Run — expect fail**
 
-```
-mvn -pl module/platform-federation test -Dtest=IdentityEventLogicSyncTest#syncIdentities_materializesPermissionsPerIdentity
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests 'datatp.platform.identity.queue.IdentityEventLogicSyncTest.syncIdentities_materializesPermissionsPerIdentity'
 ```
 
 Expected: verification fails because `syncIdentities` does not yet call `templateLogic.syncUserPermissions`.
 
 - [ ] **Step 3: Patch `syncIdentities`**
 
-Inside the existing `for (Identity identity : identities)` loop, after the block that saves `roles` via `identityRoleRepo.saveAll(roles)` and before building the `IdentityEvent`, add:
+Open `IdentityEventLogic.java` and locate `syncIdentities` (starts around line 60). The current shape inside the per-identity for-loop is:
+
+```java
+for (Identity identity : identities) {
+  ChangeRequest identityCr = Objects.ensureNotNull(identity.getChangeRequest(), ChangeRequest::new);
+  identityCr.setAckStatus(ChangeRequest.AckStatus.PROCESSED);
+  identityCr.setAckNote("PROCESSED");
+  identityCr.setAckAt(new Date());
+  identity.setChangeRequest(identityCr);
+  identity = identityRepo.save(identity);
+
+  List<IdentityRole> roles = identityRoleRepo.getRoleByIdentityId(ctx.getCompanyId(), identity.getId());
+
+  if (roles != null && !roles.isEmpty()) {
+    roles.forEach(role -> {
+      ChangeRequest roleCr = Objects.ensureNotNull(role.getChangeRequest(), ChangeRequest::new);
+      roleCr.setAckStatus(ChangeRequest.AckStatus.PROCESSED);
+      roleCr.setAckNote("PROCESSED");
+      roleCr.setAckAt(new Date());
+      role.setChangeRequest(roleCr);
+    });
+    identityRoleRepo.saveAll(roles);
+  }
+
+  // ← INSERT THE NEW BLOCK HERE, AFTER the closing } of the if-block ABOVE
+  //   and BEFORE the IdentityEvent construction below.
+
+  IdentityEvent event = new IdentityEvent();
+  event.setType(IdentityEventType.Sync);
+  event.setIdentity(identity);
+  event.setRoles(roles);
+
+  eventProducer.send(ctx, event);
+  log.info("Sent Sync event for identity: {} ({})", identity.getId(), identity.getLoginId());
+}
+```
+
+Insert at the marked location:
 
 ```java
 Long syncAccountId = identity.getAccountId();
@@ -979,12 +1087,15 @@ if (syncAccountId != null) {
 }
 ```
 
-Watch variable naming — the existing loop may already declare a local `accountId` for something else; prefix with `sync` to avoid collision. Keep the enclosing `if (roles != null && !roles.isEmpty())` block intact for the save; the new sync block lives after it, outside that guard, because we still want sync to run (with an empty roleTypeIds list) for identities with no roles — that correctly deletes their orphaned role-sourced rows.
+Use `syncAccountId` (not `accountId`) to avoid any name collision with future locals. The new block is **outside** the `if (roles != null && !roles.isEmpty())` guard so that identities with zero roles still trigger a sync — that correctly deletes their orphaned role-sourced rows.
+
+Add `import java.util.stream.Collectors;` if not already present (the existing file may already import it).
 
 - [ ] **Step 4: Run — expect pass**
 
-```
-mvn -pl module/platform-federation test -Dtest=IdentityEventLogicSyncTest
+```bash
+gradle :datatp-core-module-platform-federation:test \
+  --tests datatp.platform.identity.queue.IdentityEventLogicSyncTest
 ```
 
 Expected: 4/4 passed.
@@ -992,6 +1103,7 @@ Expected: 4/4 passed.
 - [ ] **Step 5: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/identity/queue/IdentityEventLogic.java \
         of1-core/module/platform-federation/src/test/java/datatp/platform/identity/queue/IdentityEventLogicSyncTest.java
 git commit -m "feat(security): syncIdentities also materializes UserAppFeature rows"
@@ -1044,11 +1156,12 @@ Only change: add `srt.label AS source_role_type_label` to the SELECT list and ad
 
 - [ ] **Step 3: Build to verify Groovy compiles**
 
-```
-mvn -pl module/platform-federation compile -DskipTests -o
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+gradle :datatp-core-module-platform-federation:compileGroovy
 ```
 
-Expected: `BUILD SUCCESS`.
+Expected: `BUILD SUCCESSFUL`. If the module does not have a `compileGroovy` task (Groovy may be loaded as a runtime resource rather than compiled), fall back to `gradle :datatp-core-module-platform-federation:compileJava` and rely on the test run to catch syntax issues at runtime via the Groovy script loader.
 
 - [ ] **Step 4: Manual smoke test (optional, requires running instance)**
 
@@ -1057,6 +1170,7 @@ Start the backend locally, open the Identity detail screen on an identity that h
 - [ ] **Step 5: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-core/module/platform-federation/src/main/java/datatp/platform/resource/groovy/AppSql.groovy
 git commit -m "feat(security): expose source_role_type_label in SearchUserAppPermissions"
 ```
@@ -1071,13 +1185,22 @@ git commit -m "feat(security): expose source_role_type_label in SearchUserAppPer
 
 **Rationale:** These two edits must ship in the same commit — shipping FE-1 without FE-2 leaves a TypeScript compile error (call to deleted method).
 
-- [ ] **Step 1: Open `UIIdentityAppFeatureList.tsx` and locate the sections to remove**
+- [ ] **Step 1: Delete the obsolete pieces in `UIIdentityAppFeatureList.tsx`**
 
-Identify and delete:
+Identify and delete (in this order, save once at the end):
 - The instance field `templateAppMap: Map<string, string[]> = new Map();`
-- The entire `componentDidMount` override (including its `super.componentDidMount()` call).
+- The entire `componentDidMount` override, including its `super.componentDidMount()` call. **Delete the whole method, do not leave an empty stub** — an empty override without `super` would silently break the base class lifecycle.
 - The entire `loadTemplates = () => { ... }` method.
-- The `In Role Template` column's current `customRender` (replace below, don't leave stale code).
+- The `In Role Template` column's current `customRender` block (it will be replaced in Step 2; do not leave stale code in place).
+
+- [ ] **Step 1.5: Verify the deletions broke compilation as expected**
+
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-platform/webui/platform
+npx tsc --noEmit -p tsconfig.json 2>&1 | grep -E "loadTemplates|templateAppMap"
+```
+
+Expected: a TypeScript error in `UIIdentity.tsx` referencing `loadTemplates` (it's still called from `onRolesChanged`). This is the RED state — proves your deletions actually took effect. The error disappears once Step 4 lands.
 
 - [ ] **Step 2: Replace the column config**
 
@@ -1148,16 +1271,18 @@ onRolesChanged = () => {
 }
 ```
 
-- [ ] **Step 5: Type-check both files**
+- [ ] **Step 5: Type-check the whole project**
 
-From `of1-platform/webui/platform`:
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-platform/webui/platform
+npx tsc --noEmit -p tsconfig.json
 ```
-npx tsc --noEmit -p tsconfig.json 2>&1 | grep -E "UIIdentity|UIIdentityAppFeatureList"
-```
 
-Expected: no output (clean).
+Expected: exit code 0, no errors. The raw exit code is the gate, not a grep filter — if there are pre-existing errors elsewhere, investigate before continuing. A focused grep can isolate refactor-related ones if needed: `npx tsc --noEmit -p tsconfig.json 2>&1 | grep -E "UIIdentity|UIIdentityAppFeatureList"`.
 
-- [ ] **Step 6: Manual QA checklist (requires running UI against patched backend)**
+- [ ] **Step 6: Manual QA checklist (requires the full stack running locally against the patched backend)**
+
+Running the full stack locally is out of scope for this plan. If you cannot stand up the UI end-to-end, rely on the unit + integration tests as the gate and mark the manual QA items below as `[SKIPPED — no local env]` in the PR description, leaving them for the reviewer or downstream QA.
 
 - [ ] Identity detail opens; the `Source` column is visible.
 - [ ] An identity that has never been synced → all rows show the yellow `Custom` badge.
@@ -1170,6 +1295,7 @@ Expected: no output (clean).
 - [ ] **Step 7: Commit**
 
 ```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git add of1-platform/webui/platform/src/module/platform/security/identity/UIIdentityAppFeatureList.tsx \
         of1-platform/webui/platform/src/module/platform/security/identity/UIIdentity.tsx
 git commit -m "feat(security): UIIdentityAppFeatureList reads sourceRoleTypeLabel directly
@@ -1188,23 +1314,26 @@ directly from the record. Sort options now include Source."
 
 - [ ] **Step 1: Run the full backend test suite for the module**
 
-```
-mvn -pl module/platform-federation test
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-core
+gradle :datatp-core-module-platform-federation:test
 ```
 
 Expected: all tests pass, including the new `UserAppFeatureTemplateLogicTest` and `IdentityEventLogicSyncTest`.
 
 - [ ] **Step 2: Run frontend type-check on the whole project**
 
-```
-cd of1-platform/webui/platform && npx tsc --noEmit -p tsconfig.json
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform/of1-platform/webui/platform
+npx tsc --noEmit -p tsconfig.json
 ```
 
-Expected: zero errors.
+Expected: exit code 0, zero errors.
 
 - [ ] **Step 3: Review the full diff**
 
-```
+```bash
+cd /Users/nqcdan/OF1/forgejo/of1-platform
 git log --oneline origin/develop..HEAD
 git diff origin/develop...HEAD --stat
 ```
