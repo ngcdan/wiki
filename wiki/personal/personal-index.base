@@ -1,0 +1,47 @@
+filters:
+  and:
+    - file.inFolder("personal")
+    - file.ext == "md"
+formulas:
+  section: file.basename.split("-")[0]
+  days_old: (now() - file.mtime).days
+properties:
+  file.name:
+    displayName: Note
+  formula.section:
+    displayName: Section
+  file.mtime:
+    displayName: Updated
+views:
+  - type: table
+    name: All personal notes
+    groupBy:
+      property: formula.section
+      direction: ASC
+    order:
+      - file.name
+      - formula.section
+      - file.mtime
+  - type: cards
+    name: Books
+    filters:
+      and:
+        - file.basename.startsWith("books")
+    order:
+      - file.name
+      - file.mtime
+  - type: table
+    name: English
+    filters:
+      and:
+        - file.basename.startsWith("english")
+    order:
+      - file.name
+      - file.mtime
+  - type: list
+    name: Top-level topics
+    filters:
+      and:
+        - '!file.basename.includes("-")'
+    order:
+      - file.name

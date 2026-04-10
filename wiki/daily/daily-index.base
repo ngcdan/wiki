@@ -1,0 +1,34 @@
+filters:
+  and:
+    - file.inFolder("daily")
+    - file.ext == "md"
+formulas:
+  days_old: (now() - file.mtime).days
+  topic: file.basename.split("-").slice(1).join("-")
+properties:
+  file.name:
+    displayName: Note
+  file.mtime:
+    displayName: Updated
+  formula.days_old:
+    displayName: Days ago
+  formula.topic:
+    displayName: Topic
+views:
+  - type: table
+    name: All daily notes
+    order:
+      - file.name
+      - formula.topic
+      - file.mtime
+      - formula.days_old
+    limit: 50
+  - type: cards
+    name: Recent (7 days)
+    filters:
+      and:
+        - formula.days_old <= 7
+    order:
+      - file.name
+      - formula.topic
+      - file.mtime

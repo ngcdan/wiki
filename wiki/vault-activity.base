@@ -1,0 +1,43 @@
+filters:
+  and:
+    - file.ext == "md"
+formulas:
+  top_folder: file.folder.split("/")[0]
+  days_old: (now() - file.mtime).days
+properties:
+  file.name:
+    displayName: Note
+  formula.top_folder:
+    displayName: Area
+  file.mtime:
+    displayName: Updated
+  formula.days_old:
+    displayName: Days ago
+views:
+  - type: table
+    name: Recently edited (all)
+    order:
+      - file.name
+      - formula.top_folder
+      - file.mtime
+      - formula.days_old
+    limit: 50
+  - type: cards
+    name: Last 7 days
+    filters:
+      and:
+        - formula.days_old <= 7
+    order:
+      - file.name
+      - formula.top_folder
+      - file.mtime
+  - type: table
+    name: By area
+    groupBy:
+      property: formula.top_folder
+      direction: ASC
+    order:
+      - file.name
+      - formula.top_folder
+      - file.mtime
+    limit: 100

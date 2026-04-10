@@ -7,10 +7,6 @@ tags: [health, travel, personal]
 
 Ghi chú về vận động, sức đề kháng và thể thao.
 
-Xem thêm: [[rules]] | [[habits]] | [[skill-practice]]
-
----
-
 ### Vận động & Sức đề kháng
 
 *Về bản chất, con người chúng ta luôn lẳng tránh bất cứ thứ gì có vẻ đau đớn hay hiển nhiên khó khăn. Chúng ta mang xu hướng tự nhiên này vào quá trình thực hành bất cứ kỹ năng nào. Sau khi trở nên thành thạo một vài khía cạnh của kỹ năng, thường là những khía cạnh chúng ta tiếp thu dễ dàng hơn, chúng ta thường thích thực hành lặp đi lặp lại yếu tố đó. Kỹ năng của chúng ta trở nên mất cân đối vì chúng ta né tránh điểm yếu của chính mình. Nên biết, trong quá trình thực hành chúng ta có thể mất cảnh giác, vì chúng ta không hề bị theo dõi hay chịu áp lực phải thể hiện năng lực, chúng ta đi tới chỗ phân tâm. Nhìn chung, chúng ta hay làm những gì người khác đã làm, thực hành những bài tập đã được chấp nhận cho những kỹ năng đang rèn luyện.*
@@ -49,17 +45,9 @@ Việc tập trung sâu vào các bài tập khó là cách để vượt qua nh
 
 ---
 
-### Liên kết
-
-- [[su-ky-luat]] - Kỷ luật trong thực hành
-- [[rules]] - Quy tắc sống
-- [[habits]] - Thói quen tích cực
-
 ---
 
 ## Du lịch Thái Lan
-
-Xem thêm: [[checklist-travel]]
 
 Ăn uống:
 
@@ -70,8 +58,6 @@ Xem thêm: [[checklist-travel]]
 ---
 
 ## Checklist Travel
-
-Xem thêm: [[thailands]]
 
 ---
 

@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"g000000000000001","type":"group","x":-900,"y":-600,"width":2000,"height":1400,"color":"6","label":"Wiki Home — Bộ não thứ hai"},
+		{"id":"h000000000000001","type":"text","text":"# Wiki\n\nObsidian vault — Bộ não thứ hai của **nqcdan**\n\n- Dọn suy nghĩ lộn xộn → notes chuẩn\n- Externalize thinking\n- One pipeline → vault","x":-200,"y":-540,"width":440,"height":200,"color":"6"},
+		{"id":"p000000000000001","type":"file","file":"projects/README.md","x":-820,"y":-260,"width":360,"height":220,"color":"1"},
+		{"id":"p000000000000002","type":"file","file":"personal/work.md","x":-400,"y":-260,"width":360,"height":220,"color":"2"},
+		{"id":"p000000000000006","type":"file","file":"quick-notes.md","x":-400,"y":20,"width":360,"height":220,"color":"3"},
+		{"id":"b000000000000002","type":"file","file":"projects/projects-index.base","x":-820,"y":320,"width":360,"height":240,"color":"1"},
+		{"id":"b000000000000003","type":"file","file":"personal/personal-index.base","x":-400,"y":320,"width":360,"height":240,"color":"2"},
+		{"id":"b000000000000004","type":"file","file":"daily/daily-index.base","x":20,"y":320,"width":360,"height":240,"color":"4"},
+		{"id":"n000000000000001","type":"text","text":"## Project hubs\n\n- [[bf1-readme|BF1 — BFS One → OF1]]\n- [[datatp-datatp-overview|DataTP]]\n- [[egov-readme|Egov]]\n- [[mr-henry-mr-henry-jan2026-plan|Mr Henry]]\n- [[of1-identity|OF1]]","x":440,"y":20,"width":360,"height":280,"color":"1"},
+		{"id":"n000000000000002","type":"text","text":"## Personal areas\n\n- [[work|Work & career]]\n- [[mindset|Mindset]]\n- [[skills|Skills]]\n- [[finance|Finance]]\n- [[life|Life]]\n- [[rulebooks|Rulebooks]]","x":440,"y":320,"width":360,"height":280,"color":"2"},
+		{"id":"p000000000000003","type":"file","file":"setup-env.md","x":20,"y":-260,"width":360,"height":220,"color":"3"},
+		{"id":"p000000000000004","type":"file","file":"cheatsheet-cli.md","x":440,"y":-260,"width":360,"height":220,"color":"4"},
+		{"id":"b000000000000001","type":"file","file":"vault-activity.base","x":20,"y":20,"width":360,"height":240,"color":"6"}
+	],
+	"edges":[
+		{"id":"e100000000000001","fromNode":"h000000000000001","fromSide":"bottom","toNode":"p000000000000001","toSide":"top","label":"projects"},
+		{"id":"e100000000000002","fromNode":"h000000000000001","fromSide":"bottom","toNode":"p000000000000002","toSide":"top","label":"personal"},
+		{"id":"e100000000000003","fromNode":"h000000000000001","fromSide":"bottom","toNode":"p000000000000003","toSide":"top","label":"setup"},
+		{"id":"e100000000000004","fromNode":"h000000000000001","fromSide":"bottom","toNode":"p000000000000004","toSide":"top","label":"cheatsheets"},
+		{"id":"e200000000000001","fromNode":"p000000000000001","fromSide":"bottom","toNode":"b000000000000002","toSide":"top","label":"index"},
+		{"id":"e200000000000002","fromNode":"p000000000000002","fromSide":"bottom","toNode":"b000000000000003","toSide":"top","label":"index"},
+		{"id":"e200000000000003","fromNode":"p000000000000001","fromSide":"right","toNode":"n000000000000001","toSide":"left","label":"hubs"},
+		{"id":"e200000000000004","fromNode":"p000000000000002","fromSide":"right","toNode":"n000000000000002","toSide":"left","label":"areas"},
+		{"id":"e200000000000005","fromNode":"p000000000000006","fromSide":"bottom","toNode":"b000000000000004","toSide":"top","label":"daily log"},
+		{"id":"e200000000000006","fromNode":"h000000000000001","fromSide":"right","toNode":"b000000000000001","toSide":"top","label":"activity"}
+	]
+}

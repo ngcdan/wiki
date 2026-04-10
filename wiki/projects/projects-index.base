@@ -1,0 +1,60 @@
+filters:
+  and:
+    - file.inFolder("projects")
+    - file.ext == "md"
+formulas:
+  project: file.basename.split("-")[0]
+  days_old: (now() - file.mtime).days
+properties:
+  file.name:
+    displayName: Note
+  formula.project:
+    displayName: Project
+  file.mtime:
+    displayName: Updated
+  formula.days_old:
+    displayName: Days ago
+views:
+  - type: table
+    name: All project notes
+    order:
+      - file.name
+      - formula.project
+      - file.mtime
+      - formula.days_old
+    groupBy:
+      property: formula.project
+      direction: ASC
+  - type: cards
+    name: Recently updated
+    filters:
+      and:
+        - formula.days_old <= 14
+    order:
+      - file.name
+      - formula.project
+      - file.mtime
+  - type: table
+    name: BF1 only
+    filters:
+      and:
+        - 'file.basename.startsWith("bf1")'
+    order:
+      - file.name
+      - file.mtime
+  - type: table
+    name: DataTP only
+    filters:
+      and:
+        - 'file.basename.startsWith("datatp")'
+    order:
+      - file.name
+      - file.mtime
+  - type: table
+    name: Egov only
+    filters:
+      and:
+        - 'file.basename.startsWith("egov")'
+    order:
+      - file.name
+      - file.mtime
