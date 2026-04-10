@@ -23,7 +23,7 @@ The field exists and `UserAppFeatureTemplateLogic.syncUserPermissions` has a fir
 5. **`AppLogic.saveAppPermission(s)`** — the admin-add path does not explicitly set `sourceRoleTypeId = null`. It works by field default, but is implicit and allows a malicious/broken client to set a non-null value that violates the CUSTOM/ROLE invariant. The admin-edit path also risks overwriting a ROLE row's source and then having it silently reset on the next sync.
 6. **`syncUserPermissions` latent bugs**:
    - **CUSTOM collision**: if an account has a CUSTOM row for app X and a new template also targets app X, the current code would insert a "fresh" role-sourced row and violate the unique constraint `(company_id, account_id, app_id)`.
-   - **Multi-role conflict resolution**: "last template iterated wins" — depends on DB return order, non-deterministic, not a standard RBAC rule.
+   - **Multi-role conflict resolution**: the current `for (UserAppFeatureTemplate template : templates)` loop behaves differently for update vs insert paths. For update-in-place on an existing ROLE row, the last template iterated wins non-deterministically (depends on DB return order). For the insert path, multiple templates targeting the same `appFeatureId` produce duplicate fresh rows and trigger a unique constraint violation on `(company_id, account_id, app_id)` — a latent crash, not just indeterminism.
 
 ## Goals
 
@@ -138,7 +138,7 @@ ${MAX_RETURN(sqlParams)}
 
 **File**: `of1-core/module/platform-federation/src/main/java/datatp/platform/identity/queue/IdentityEventLogic.java`
 
-- Inject `UserAppFeatureTemplateLogic`.
+- Inject `UserAppFeatureTemplateLogic`. Prefer constructor injection (see Testing section note on mockability).
 - Inside `syncRoles(ctx, identityId, roleIds)`, after persisting role change-request acks and before publishing the async event, insert:
   ```java
   Long accountId = identity.getAccountId();
@@ -150,8 +150,28 @@ ${MAX_RETURN(sqlParams)}
     templateLogic.syncUserPermissions(ctx, ctx.getCompanyId(), accountId, roleTypeIds);
   }
   ```
-- The enclosing transaction (at `IdentityEventService.syncRoles` or an `@Transactional` on `IdentityEventLogic.syncRoles`) must span the full flow so that a permission-sync failure rolls back the ack update.
+- **Transaction boundary is already in place**: `IdentityEventService.syncRoles` is annotated `@Transactional` at the service layer (`IdentityEventService.java:30`). No new annotation needed — the injected `syncUserPermissions` call runs inside the same Spring-managed transaction, so any failure rolls back the ack update automatically. Caveat: during implementation, verify that nothing in the injected call chain overrides propagation to `REQUIRES_NEW`.
 - The async event is still published afterwards; other consumers (Keycloak sync, audit, etc.) remain untouched.
+
+### BE-2b. `IdentityEventLogic.syncIdentities` also materializes permissions
+
+**File**: same `IdentityEventLogic.java`
+
+`IdentityEventLogic.syncIdentities(ctx, identityIds)` (lines 60-94) is a second entry point that acks change-requests for a list of identities and emits `Sync` events. If left untouched, any caller of `IdentityEventService.syncIdentities` will ack role change-requests without materializing `security_user_app_feature`, leaving permissions stale.
+
+Patch the per-identity loop: after loading `roles` for the identity and persisting `changeRequest` acks, add the same sync call:
+
+```java
+Long accountId = identity.getAccountId();
+if (accountId != null) {
+  List<Long> roleTypeIds = roles == null
+      ? java.util.Collections.emptyList()
+      : roles.stream().map(IdentityRole::getRoleTypeId).distinct().collect(Collectors.toList());
+  templateLogic.syncUserPermissions(ctx, ctx.getCompanyId(), accountId, roleTypeIds);
+}
+```
+
+`IdentityEventService.syncIdentities` is already `@Transactional` (line 20), so the sync runs inside the enclosing transaction — one identity failing rolls back its own updates. If partial success per identity is desired instead of all-or-nothing, that is an intentional design choice to make at implementation time; default to all-or-nothing because it matches the current behavior of `syncRoles`.
 
 ### BE-3. `UserAppFeatureTemplateLogic.syncUserPermissions` — bug fixes + max-capability rule
 
@@ -258,31 +278,23 @@ public void deleteUserAppFeatureTemplatesByIds(ClientContext ctx, List<Long> ids
 }
 ```
 
-### BE-5. `AppLogic.saveAppPermission(s)` — explicit CUSTOM assignment
+### BE-5. `AppLogic.saveAppPermission` — explicit CUSTOM assignment (single edit)
 
 **File**: `of1-core/module/platform-federation/src/main/java/datatp/platform/resource/logic/AppLogic.java`
 
-Both the single and list variants of the save path (called by admin UI Add App Feature and Edit App Feature) must force `sourceRoleTypeId = null` before persisting:
+Only one method needs to change. `saveAppPermissions` (list variant), `updateAppPermissionCapabilities`, and `updateAppPermissionDataScopes` all delegate to `saveAppPermission(client, permission)` per row (verified in `AppLogic.java:91-128`), so a single edit propagates the rule to every Add / Edit / bulk-update path automatically.
 
 ```java
 public UserAppFeature saveAppPermission(ClientContext client, UserAppFeature permission) {
-  permission.setSourceRoleTypeId(null);   // BE-5: admin edit/add is always CUSTOM
+  permission.setSourceRoleTypeId(null);   // BE-5: admin Add/Edit/Update is always CUSTOM
   permission.set(client);
-  return appPermissionRepo.save(permission);
-}
-
-public List<UserAppFeature> saveAppPermissions(ClientContext client, ICompany company, List<UserAppFeature> permissions) {
-  for (UserAppFeature p : permissions) {
-    p.setSourceRoleTypeId(null);          // BE-5
-    p.set(client, company.getId());
-  }
-  return appPermissionRepo.saveAll(permissions);
+  return permissionRepo.save(permission);
 }
 ```
 
-Decision (option ii from brainstorming): editing a ROLE row through the admin UI **converts it to CUSTOM**. The next `syncUserPermissions` call will then leave it alone. This matches the mental model "admin edit = intentional override".
+Decision (option ii from brainstorming): editing a ROLE row through any admin UI path (detail editor, capability popover, data-scope popover) **converts it to CUSTOM**. The next `syncUserPermissions` call then leaves it alone. This matches the mental model "admin edit = intentional override".
 
-Verify the other save paths (`updateAppPermissionCapabilities`, `updateAppPermissionDataScopes`) also convert to CUSTOM by setting `sourceRoleTypeId = null`. If that is not desired for bulk updates, document the decision here; otherwise apply the same rule for consistency.
+Consequence: `updateAppPermissionCapabilities` and `updateAppPermissionDataScopes` inherit CUSTOM conversion for free — no additional edits, no separate decision to make. This is the desired behavior.
 
 ## Frontend Changes
 
@@ -293,7 +305,7 @@ Verify the other save paths (`updateAppPermissionCapabilities`, `updateAppPermis
 Remove:
 - Instance field `templateAppMap: Map<string, string[]>`.
 - Method `loadTemplates()`.
-- Override `componentDidMount()`.
+- The entire `componentDidMount` override — **delete the whole method, do not leave an empty stub**. An empty override without `super.componentDidMount()` would silently break the base class lifecycle.
 
 Replace the current `In Role Template` column with:
 
@@ -339,6 +351,8 @@ onRolesChanged = () => {
 ```
 
 After BE-2, a reload of the App Features list is sufficient — the freshly synced data already carries `sourceRoleTypeLabel`.
+
+**FE-1 and FE-2 must ship together as one atomic change.** Shipping FE-1 without FE-2 leaves a `loadTemplates` call referencing a deleted method → TypeScript compile error. Shipping FE-2 without FE-1 leaves the stale `templateAppMap` code wired to a method that no longer runs.
 
 ### FE-3. Add App Feature payload — verify
 
@@ -386,6 +400,13 @@ Add to `IdentityIntegrationTest` (or create `IdentityEventLogicIntegrationTest`)
 |---|---|---|
 | 9 | `syncRoles_materializesPermissionsInSameTransaction` | Identity with `accountId`, 2 role types each with a template. Call `IdentityEventLogic.syncRoles`. Assert: `IdentityRole.changeRequest.ackStatus == PROCESSED`, `security_user_app_feature` populated per templates, event published. |
 | 10 | `syncRoles_rollbackOnPermissionSyncFailure` | Mock `syncUserPermissions` to throw. Call `syncRoles`. Assert: `IdentityRole.changeRequest` not updated (full rollback). |
+| 11 | `syncIdentities_materializesPermissionsPerIdentity` | Two identities with distinct role types and templates. Call `IdentityEventLogic.syncIdentities`. Assert: each identity's `security_user_app_feature` rows match their respective templates; each `changeRequest` acked; event published per identity. |
+
+**Mocking technique**: `IdentityEventLogic` currently uses field injection (`@Autowired`). To make test #10 feasible, either:
+- Use `@MockBean UserAppFeatureTemplateLogic` in a `@SpringBootTest` slice, or
+- Convert `IdentityEventLogic` to constructor injection for the new `UserAppFeatureTemplateLogic` dependency and pass a Mockito mock in a plain `@ExtendWith(MockitoExtension.class)` unit test.
+
+Prefer constructor injection — it's more testable, documents dependencies, and matches modern Spring guidance.
 
 ### Frontend — manual QA checklist
 
@@ -417,11 +438,11 @@ Add to `IdentityIntegrationTest` (or create `IdentityEventLogicIntegrationTest`)
 | R4 | Switching from "last wins" to max-capability may grant some accounts higher capabilities than before. | Low | "Last wins" was non-deterministic and largely unused; max-capability matches RBAC intent. Document and spot-check after deploy. |
 | R5 | Bug in the CUSTOM collision filter → unique constraint violation on sync. | Low | Tests #1 and #5 cover exactly this scenario. CI gate required before deploy. |
 | R6 | BE-4 stub → template save does not auto-propagate to existing users. | Medium | Admin communication + manual Sync workflow. Will be resolved by follow-up work on the async consumer. |
+| R7 | Orphaned ROLE rows: if an identity previously had an `accountId` that materialized ROLE rows and the account link was later removed (identity.accountId set to NULL), those rows persist and are never touched by sync (the null-guard in BE-2/BE-2b skips them entirely). | Low | Out of scope for this refactor. Cascade cleanup on account unlink is handled by `IdentityLogic` deletion paths today. Flag as a known limitation; consider a follow-up cleanup job if it becomes material. |
 
 ## Open Questions
 
-- Should `updateAppPermissionCapabilities` / `updateAppPermissionDataScopes` (bulk update paths) also convert ROLE rows to CUSTOM? Current spec says yes for consistency with BE-5 path (ii). Confirm before implementation if a different decision is needed.
-- Where exactly should `@Transactional` sit for `syncRoles`? At `IdentityEventService.syncRoles`, at `IdentityEventLogic.syncRoles`, or propagated from the RPC layer? Confirm during implementation by checking existing conventions in the codebase.
+_(None. Both prior open questions were resolved during the spec review: bulk update paths delegate through `saveAppPermission` and inherit the CUSTOM rule automatically; `@Transactional` already lives at `IdentityEventService` for both `syncRoles` and `syncIdentities`.)_
 
 ## References
 
