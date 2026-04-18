@@ -581,3 +581,9 @@ curl --location 'https://beelogistics.cloud/rest/v1.0.0/rpc/internal/call' \
 |-------|-------------|
 | `WAITING` | Pending acknowledgment |
 | `PROCESSED` | Already processed |
+
+## Liên quan
+
+- [[datatp-index|DataTP - Tổng quan]]
+- [[bf1-index|BF1 — Index]]
+- [[namespace-ip-cloud|Namespace & IP Cloud]]

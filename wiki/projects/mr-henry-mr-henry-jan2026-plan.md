@@ -134,5 +134,5 @@ Vấn đề của Bee đơn thuần không nằm ở kỹ thuật mà ở:
 
 ## Liên quan
 
-- [[bf1-project-overview|BF1 Upgrade - Tổng quan]]
-- [[datatp-datatp-overview|DataTP - Tổng quan]]
+- [[bf1-index|BF1 Upgrade - Tổng quan]]
+- [[datatp-index|DataTP - Tổng quan]]

@@ -812,3 +812,7 @@ appContext.createHttpRemoteBackendCall('<plugin-name>', 'XxxService', 'findByCod
 | Unique key | `util.IDTracker.next()` cho các component ref/lookup |
 | Permissions | `pageContext.hasUserWriteCapability()` — WRITE; `app.READ`, `app.WRITE`, `app.MODERATOR`, `app.ADMIN` |
 | Hooks (React) | **KHÔNG DÙNG** — project dùng class component toàn bộ |
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

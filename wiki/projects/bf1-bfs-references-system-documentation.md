@@ -76,31 +76,31 @@ Nơi chứa các đơn hàng xuất đường không trong vòng 1 tháng.
 
 Cách tạo 1 đơn hàng xuất hàng không bao gồm các thông tin cần thiết:
 
-| Trường | Mô tả |
-|--------|-------|
-| Job ID | Mã số lô hàng |
-| Create | Ngày tạo files |
-| ETD/ETA | Ngày dự kiến đi / Ngày dự kiến đến |
-| Commodity | Loại hàng gì |
-| MAWB No. | Mã số master airway bill |
-| Mode | Copy (bản sao chép) / Original (bản gốc) / Surrendered (bản để làm surrendered bill) |
-| Flight No. | Mã số chuyến bay, ngày bay |
-| Shipment | 2 loại: Nominated (hàng chỉ định) và Free-hand |
-| B/K No. | Mã số booking |
-| A.O.L (Airport Of Loading) | Cảng đi |
-| P.Transit | Cảng chuyển tải (nếu có) |
-| Q'ty/Unit | Số lượng / kiện hàng (có 2 loại đơn vị) |
-| Term | Điều kiện của lô hàng |
-| Agent | Đại lý |
-| Airlines | Hãng hàng không phải chỉ trả chi phí |
-| A.O.D (Airport Of Discharge) | Cảng đến |
-| O.P IC | Nhân viên OP chịu trách nhiệm lô hàng |
-| G.W (Gross Weight) | Khối lượng thực tế |
-| C.W (Charge Weight) | Khối lượng tính phí |
-| CBM (Cubic Meter) | Thể tích lô hàng |
-| L*W*H*Q | Nhập (Dài * Rộng * Cao * Số lượng), click vào link bên cạnh để hệ thống tự động tính toán G.W, C.W, CBM |
-| P.O | Số đơn đặt hàng |
-| O.Airlines | Chi nhánh của hãng hàng không, gửi MBL |
+| Trường                       | Mô tả                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Job ID                       | Mã số lô hàng                                                                                           |
+| Create                       | Ngày tạo files                                                                                          |
+| ETD/ETA                      | Ngày dự kiến đi / Ngày dự kiến đến                                                                      |
+| Commodity                    | Loại hàng gì                                                                                            |
+| MAWB No.                     | Mã số master airway bill                                                                                |
+| Mode                         | Copy (bản sao chép) / Original (bản gốc) / Surrendered (bản để làm surrendered bill)                    |
+| Flight No.                   | Mã số chuyến bay, ngày bay                                                                              |
+| Shipment                     | 2 loại: Nominated (hàng chỉ định) và Free-hand                                                          |
+| B/K No.                      | Mã số booking                                                                                           |
+| A.O.L (Airport Of Loading)   | Cảng đi                                                                                                 |
+| P.Transit                    | Cảng chuyển tải (nếu có)                                                                                |
+| Q'ty/Unit                    | Số lượng / kiện hàng (có 2 loại đơn vị)                                                                 |
+| Term                         | Điều kiện của lô hàng                                                                                   |
+| Agent                        | Đại lý                                                                                                  |
+| Airlines                     | Hãng hàng không phải chỉ trả chi phí                                                                    |
+| A.O.D (Airport Of Discharge) | Cảng đến                                                                                                |
+| O.P IC                       | Nhân viên OP chịu trách nhiệm lô hàng                                                                   |
+| G.W (Gross Weight)           | Khối lượng thực tế                                                                                      |
+| C.W (Charge Weight)          | Khối lượng tính phí                                                                                     |
+| CBM (Cubic Meter)            | Thể tích lô hàng                                                                                        |
+| L*W*H*Q                      | Nhập (Dài * Rộng * Cao * Số lượng), click vào link bên cạnh để hệ thống tự động tính toán G.W, C.W, CBM |
+| P.O                          | Số đơn đặt hàng                                                                                         |
+| O.Airlines                   | Chi nhánh của hãng hàng không, gửi MBL                                                                  |
 
 ![Documentation page 6](../attachments/bf1-bfs/documentation/docs_006.png)
 
@@ -108,11 +108,11 @@ Click vào job cần xem để hiển thị thông tin chi tiết của lô hàn
 
 **Chi tiết HAWB (House Air Way Bill):**
 
-| Trường | Mô tả |
-|--------|-------|
-| No. | Số thứ tự |
+| Trường                   | Mô tả                                                  |
+| ------------------------ | ------------------------------------------------------ |
+| No.                      | Số thứ tự                                              |
 | Customer (Payer/Shipper) | Khách hàng (Người trả chi phí / Người vận chuyển hàng) |
-| HAWB | Vận đơn của công ty |
+| HAWB                     | Vận đơn của công ty                                    |
 
 Ta có thể kiểm tra vận đơn bằng cách click chọn vào HAWB.
 

@@ -1,7 +1,9 @@
 ---
 title: "Egov — README"
-tags: [egov, index]
+tags: [bf1, egov, index]
 ---
+
+> Nhánh của [[bf1-index|BF1 — Migration BFS One → OF1 FMS]]
 
 # DataTP eGov - Customs Clearance
 
@@ -154,6 +156,28 @@ This project implements a customs declaration management system that integrates 
 - Authentication & authorization using datatp SSO
 - Audit logging
 
+## Design & Specs
+
+- [[egov-declaration-entity-design|Declaration Entity Design]]
+- [[egov-ecus-batch-sync|eCUS Batch Sync]]
+- [[egov-first-setup-accounts|First Setup Accounts]]
+
+### Plans
+- [[egov-plans-2026-03-29-company-mapper-batch-single-split|Company Mapper Batch/Single Split]]
+- [[egov-plans-2026-03-29-ecus-entity-mapping-refactor|eCUS Entity Mapping Refactor]]
+- [[egov-plans-2026-03-29-ecus-thaison-gaps|eCUS Thaison Gaps]]
+- [[egov-plans-2026-03-29-remove-getSyncSourceConfigurationId|Remove getSyncSourceConfigurationId]]
+- [[egov-plans-2026-03-30-move-mapping-back-to-mapper|Move Mapping Back to Mapper]]
+
+### Specs
+- [[egov-specs#company-mapper-batchsingle-split-design-2026-03-29|Company Mapper Design]]
+- [[egov-specs#ecus-entity-mapping-design-2026-03-29|eCUS Entity Mapping Design]]
+- [[egov-specs#ecus-thaison-architecture-design-2026-03-29|eCUS Thaison Architecture Design]]
+- [[egov-specs#remove-getsyncsourceconfigurationid-design-2026-03-29|Remove getSyncSourceConfigurationId Design]]
+
+### Developer
+- [[egov-devlog|Developer Log]]
+
 ## Risk Management
 
 ### Technical Risks
@@ -180,6 +204,12 @@ Database (PostgreSQL/MySQL)
 ```bash
 # Clone the repository
 git clone http://gitlab/tuan/datatp-egov.git
+
+## Liên quan
+
+- [[bf1-index|BF1 - Migration BFS One → OF1 FMS]]
+- [[datatp-index|DataTP - Tổng quan]]
+- [[datatp-cdc-debezium|CDC với Debezium]]
 
 ## License
 

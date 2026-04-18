@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "e77c21ede06c7744",
+        "id": "45011580cd482c54",
         "type": "tabs",
         "children": [
           {
-            "id": "ef46d6ac9ed84d6d",
+            "id": "a387f7163f49c7c7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "raw/260410-identity-permissions.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "260410-identity-permissions"
             }
           }
         ]
@@ -74,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 342.5004348754883
   },
   "right": {
     "id": "d30aa0bffd8e89d4",
@@ -164,7 +168,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -179,39 +184,41 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "ef46d6ac9ed84d6d",
+  "active": "a387f7163f49c7c7",
   "lastOpenFiles": [
-    "daily/260410-source-role-type-team-update.md",
-    "daily/260410-identity-erd.md",
-    "daily/260410-user-app-feature-source-role-type-sql.md",
-    "daily/260410-user-app-feature-source-role-type-refactor-plan.md",
-    "daily/260410-kafka-consumer-group-conflict.md",
-    "daily/260407-daily.md",
-    "daily/260406-cdc-handler-refactor.md",
-    "projects/bf1-ai-webui-boilerplate.md",
-    "daily/260410-user-app-feature-source-role-type-refactor.md",
-    "projects/bf1-ai-ui-list-guide.md",
-    "projects/bf1-ai-multi-datasource-rules.md",
-    "projects/bf1-ai-kafka-rules.md",
-    "projects/bf1-ai-frontend-rules.md",
-    "projects/bf1-ai-docs-rules.md",
-    "projects/bf1-ai-devops-rules.md",
-    "projects/bf1-ai-backend-rules.md",
-    "quick-notes-archive-260407.md",
-    "daily/260409-cdc-kafka-scaling-plan.md",
-    "daily/260409-cdc-kafka-scaling-design.md",
+    "projects/bf1-reorganization-design.md",
+    "projects/bf1-bfs-references-system-documentation.md",
+    "raw/260414-egov-upload-s3.md",
+    "daily/260415-egov-upload-s3-plan.md",
+    "daily",
+    "raw/260415-cdc-clientcontext-refactor-plan.md",
+    "raw/260415-cdc-clientcontext-refactor.md",
+    "projects/bf1-fms-schema.md",
+    "projects/egov-specs.md",
+    "projects/bf1-fms-mapping.md",
+    "personal/books.md",
+    "raw/260410-identity-permissions.md",
+    "raw/260409-devops.md",
+    "raw/260408-fms-designs.md",
     "setup-env.md",
     "vault-activity.base",
-    "setup-projects.md",
-    "daily/260409-cicd-forgejo-setup.md",
-    "daily/260408-fms-cdc-housebill.md",
-    "daily/260408-fms-transaction-type.md",
-    "daily/260408-fms-transaction-type-plan.md",
-    "daily/daily-index.base",
+    "Untitled.canvas",
     "wiki-home.canvas",
-    "personal/english.md",
-    "personal/personal-index.base",
+    "raw/260413-fms-cron-master-data-design.md",
     "projects/projects-map.canvas",
+    "projects/bf1-fms-mapping-index.md",
+    "projects/bf1-index.md",
+    "projects/bf1-ai-index.md",
+    "projects/egov-index.md",
+    "projects/datatp-index.md",
+    "projects/datatp-readme.md",
+    "projects/of1-readme.md",
+    "projects/bf1-ai-readme.md",
+    "projects/bf1-fms-readme.md",
+    "projects/bf1-readme.md",
+    "projects/bf1-ai-backend-rules.md",
+    "raw/daily-index.base",
+    "personal/personal-index.base",
     "attachments/bf1-bfs/overview-report.pdf",
     "attachments/bf1-fms/domain-model.drawio",
     "attachments/bf1-fms/UITransactionForm.png",
@@ -227,7 +234,6 @@
     "attachments/bf1-bfs/documentation/docs_224.png",
     "attachments/bf1-bfs/sale-executive",
     "attachments/bf1-bfs/documentation",
-    "attachments/bf1-bfs/catalogue",
-    "attachments/bf1-bfs/accounting"
+    "attachments/bf1-bfs/catalogue"
   ]
 }

@@ -172,8 +172,8 @@ Giả sử bạn có một bảng `users` và thực hiện một lệnh cập n
 
 ## Liên quan
 
-- [[bf1-fms-cdc-architecture|CDC Architecture - BF1 Pipeline]]
-- [[datatp-datatp-overview|DataTP - Tổng quan dự án]]
+- [[bf1-fms-04-integration|CDC Architecture - BF1 Pipeline]]
+- [[datatp-index|DataTP - Tổng quan]]
 - [[bf1-dev-devlog|Developer Log (BF1)]]
 
 

@@ -133,4 +133,4 @@ Nguyên tắc:
 
 ## Xem thêm
 
-- [[datatp-datatp-overview]]
+- [[datatp-index]]

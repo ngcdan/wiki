@@ -42,30 +42,38 @@ Tài liệu phân tích và thiết kế cho dự án migrate từ hệ thống 
 3. [[bf1-fms-03-data-model|03 - Data Model — Entities, enums, schema, legacy tables]]
 4. [[bf1-fms-04-integration|04 - Integration — CDC + Batch Sync pipeline]]
 
-### CDC Field Mappings (by target entity)
-- [[bf1-fms-mapping-readme|Mapping Index]]
-- [[bf1-fms-mapping-transaction|Transaction]]
-- [[bf1-fms-mapping-house-bill|House Bill + Rates]]
-- [[bf1-fms-mapping-cargo|Cargo (auto-upsert from HAWB CDC)]]
-- [[bf1-fms-mapping-container|Container (dual source: parse text + CDC line items)]]
-- [[bf1-fms-mapping-transport-plan|Transport Plan (rebuild per event)]]
-- [[bf1-fms-mapping-purchase-order|Purchase Order (FMS-only)]]
+### CDC Field Mappings
+
+→ [[bf1-fms-mapping|Mapping Index — Source MSSQL → FMS PostgreSQL]]
 
 ### DB Schema
-- [[bf1-fms-schema-db-schema|BEE_DB Schema Survey]]
-- [[bf1-fms-schema-db-schema-cloud|DB Schema Cloud]]
+- [[bf1-fms-03-data-model#9-bee_db-schema-survey|BEE_DB Schema Survey]]
+- [[bf1-fms-03-data-model#10-db-schema-cloud|DB Schema Cloud]]
 
 ## Kỹ thuật — `dev/`
 
 - [[bf1-dev-query-reference|Query Reference]]
 - [[bf1-dev-devlog|Developer Log]]
 - [[bf1-dev-mssql-windows-setup|MSSQL Windows Setup]]
+- [[bf1-fms-api-api-bfs-storage|API BFS Storage]]
+- [[bf1-reorganization-design|Reorganization Design]]
 
-## Sandbox — `sandbox/`
+## eGov — Khai quan
 
-Docker-compose + scripts để chạy môi trường thử nghiệm local.
+→ [[egov-index|eGov — Customs Clearance]]
+
+Hệ thống khai quan hải quan, tích hợp eCUS + đấu nối dữ liệu BFS One.
+- [[egov-devlog|Developer Log]]
+- [[egov-declaration-entity-design|Declaration Entity Design]]
+- [[egov-ecus-batch-sync|eCUS Batch Sync]]
+
+## AI Rules — Quy tắc cho AI assistants
+
+→ [[bf1-ai-index|BF1 AI — Rules & Guides Index]]
 
 ## Liên quan
 
-- [[datatp-datatp-overview|DataTP - Tổng quan dự án]]
+- [[datatp-index|DataTP - Tổng quan]]
 - [[datatp-cdc-debezium|CDC với Debezium (DataTP)]]
+- [[of1-identity|OF1 Identity Service]]
+- [[namespace-ip-cloud|Namespace & IP Cloud]]

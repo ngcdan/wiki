@@ -1,0 +1,33 @@
+filters:
+  and:
+    - file.inFolder("people")
+    - file.ext == "md"
+    - '!file.basename.includes("mapping")'
+    - '!file.basename.includes("how-to")'
+    - '!file.basename.includes("template")'
+formulas:
+  days_since_update: (now() - file.mtime).days
+properties:
+  file.name:
+    displayName: Person
+  file.mtime:
+    displayName: Updated
+  formula.days_since_update:
+    displayName: Days since update
+views:
+  - type: table
+    name: All people
+    order:
+      - file.name
+      - file.mtime
+  - type: list
+    name: Recently updated
+    order:
+      - file.mtime
+  - type: list
+    name: Stale (>30 days)
+    filters:
+      and:
+        - formula.days_since_update > 30
+    order:
+      - file.mtime

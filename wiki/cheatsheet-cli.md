@@ -133,4 +133,5 @@ ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud # Test kết nối 
 http://tools-server.of1-prod-platform.svc.cluster.local/admin
 
 ssh -p 30222 clouddev@14.225.17.105       # Of1Clo!@#
+ssh of1@nginx-waf.of1-apps.svc.cluster.local # of1/of1@
 

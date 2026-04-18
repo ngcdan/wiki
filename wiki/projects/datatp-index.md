@@ -1,10 +1,9 @@
 ---
-title: DataTP - Tổng quan dự án
+title: "DataTP - Tổng quan dự án"
 tags:
   - datatp
   - overview
-  - release
-  - infrastructure
+  - index
 ---
 
 # Hướng Dẫn
@@ -16,25 +15,24 @@ Trang này đóng vai trò như menu tổng quan, giúp bạn điều hướng n
 ## Mục lục
 
 ### Nghiệp vụ
-- [[odoo|Odoo — ERP & Kế toán]]
-- [[script-bia-2025|Script BIA 2025]]
+- [[datatp-odoo|Odoo — ERP & Kế toán]]
+- [[datatp-script-bia-2025|Script BIA 2025]]
 
 ### Kỹ thuật
 - [[datatp-cdc-debezium|CDC với Debezium]]
-- [[mail|Mail — Email Solutions]]
-- [[mobile|Mobile App]]
-- [[setup-macos-env|Setup macOS]]
+- [[datatp-mail|Mail — Email Solutions]]
+- [[datatp-mobile|Mobile App]]
+- [[of1-identity|OF1 Identity Service — Platform API]]
+- [[namespace-ip-cloud|Namespace & IP Cloud]]
 
 ### Pricing
-- [[pricing|Pricing — Features & Enhancement]]
+- [[datatp-pricing|Pricing — Features & Enhancement]]
 
 ### Tasks
 - [[datatp-crm-tasks|CRM Tasks — Bug fixes & Enhancements]]
 
 ### Liên quan
-- [[bf1-project-overview|BF1 Upgrade - Tổng quan]]
-- [[bf1-fms-cdc-architecture|CDC Architecture (BF1)]]
-- [[datatp-ideas|DataTP Ideas]]
+- [[bf1-index|BF1 Upgrade - Tổng quan]]
 
 
 # Changelog
@@ -273,9 +271,9 @@ Tổng điện tháng 4: 1573
 
 ### Lien quan
 
-- [[bf1-project-overview|BF1 Upgrade - Tổng quan]]
-- [[datatp-datatp-overview|DataTP - Tổng quan]]
-- [[bf1-fms-cdc-architecture|CDC Architecture]]
+- [[bf1-index|BF1 Upgrade - Tổng quan]]
+- [[datatp-index|DataTP - Tổng quan]]
+- [[bf1-fms-04-integration|CDC Architecture]]
 
 ---
 
@@ -356,4 +354,4 @@ Vướng nhiều ở data nguồn, hiện tại đang dùng bee legacy report, k
 
 ---
 
-Xem thêm: [[datatp-datatp-overview]]
+Xem thêm: [[datatp-index]] | [[bf1-index|BF1]] | [[of1-identity|OF1 Identity]]

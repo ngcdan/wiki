@@ -7,7 +7,7 @@ tags: [bf1, fms]
 
 Sync data from BF1 (MSSQL) to FMS (PostgreSQL) via Kafka. Two pipelines run concurrently — CDC for realtime changes, Batch Sync for periodic reference data.
 
-See also: [[bf1-fms-03-data-model]] · [[bf1-fms-mapping-readme]]
+See also: [[bf1-fms-03-data-model]] · [[bf1-fms-mapping]]
 
 ---
 
@@ -104,7 +104,7 @@ Retry 3x with 1000ms backoff → publish to `{topic}.DLQ`.
 | `BuyingRateWithHBLCDCHandler` | `dbo.BuyingRateWithHBL` | `of1_fms_house_bill_invoice` + `_item` (Credit) |
 | `OtherChargeDetailCDCHandler` | `dbo.OtherChargeDetail` | `of1_fms_house_bill_invoice` + `_item` (On_Behalf) |
 
-Field-level mapping: see [[bf1-fms-mapping-readme]].
+Field-level mapping: see [[bf1-fms-mapping]].
 
 ---
 

@@ -38,13 +38,13 @@ Original business requirements and functional specifications from the legacy BF1
 
 | Target | File | Notes |
 |--------|------|-------|
-| Index | [[bf1-fms-mapping-readme]] | Mapping coverage legend and overview |
-| Transaction | [[bf1-fms-mapping-transaction]] | Master bill + ContainerSize parse + TransportPlan rebuild |
-| House Bill + Rates | [[bf1-fms-mapping-house-bill]] | Skeleton + details + selling/buying/OBH rates |
-| Cargo | [[bf1-fms-mapping-cargo]] | Auto-upsert from HAWB CDC |
-| Container | [[bf1-fms-mapping-container]] | Dual source: parsed text + CDC line items |
-| Transport Plan | [[bf1-fms-mapping-transport-plan]] | Delete + recreate per Transaction event |
-| Purchase Order | [[bf1-fms-mapping-purchase-order]] | FMS-only (no CDC) |
+| Index | [[bf1-fms-mapping]] | Mapping coverage legend and overview |
+| Transaction | [[bf1-fms-mapping#mapping--transaction]] | Master bill + ContainerSize parse + TransportPlan rebuild |
+| House Bill + Rates | [[bf1-fms-mapping#mapping--house-bill]] | Skeleton + details + selling/buying/OBH rates |
+| Cargo | [[bf1-fms-mapping#mapping--cargo]] | Auto-upsert from HAWB CDC |
+| Container | [[bf1-fms-mapping#mapping--container]] | Dual source: parsed text + CDC line items |
+| Transport Plan | [[bf1-fms-mapping#mapping--transport-plan--route]] | Delete + recreate per Transaction event |
+| Purchase Order | [[bf1-fms-mapping#mapping--purchase-order--booking-process]] | FMS-only (no CDC) |
 
 ---
 
@@ -52,5 +52,5 @@ Original business requirements and functional specifications from the legacy BF1
 
 | File | Description |
 |------|-------------|
-| [[bf1-fms-schema-db-schema]] | BEE_DB Schema Survey |
-| [[bf1-fms-schema-db-schema-cloud]] | DB Schema Cloud |
+| [[bf1-fms-03-data-model#9-bee_db-schema-survey]] | BEE_DB Schema Survey |
+| [[bf1-fms-03-data-model#10-db-schema-cloud]] | DB Schema Cloud |

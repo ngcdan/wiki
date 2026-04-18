@@ -197,3 +197,7 @@ datatp:
         topic:
           events: "your_domain_events_topic" # Thêm config topic phục vụ retry, acks nếu có
 ```
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

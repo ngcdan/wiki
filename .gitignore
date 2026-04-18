@@ -80,6 +80,10 @@ dev-kit/scripts/
 # AI assistant config dirs
 .claude/
 .familiar/
+.mcp.json
 
 # Cheatsheets (may contain sensitive info)
 cheatsheets/
+
+# People mapping (codename <-> real name). SENSITIVE - do NOT commit.
+wiki/people/people-mapping.md

@@ -932,3 +932,7 @@ render() {
 | onModify → onModifyBean callback | B | B4 |
 | Add / clear records | B | B4 |
 | Render with custom toolbar | B | B5 |
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]
