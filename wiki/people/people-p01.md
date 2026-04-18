@@ -83,6 +83,21 @@ Hiểu chuỗi quyền lực để không vô tình đứng vào phe nào:
 
 <!-- Newest on top. Format: ### YYYY-MM-DD rồi bullet. -->
 
+### 2026-03-24 → 2026-04-17 — Mail thread BIA 2025 / CRM BD Sales
+
+Thread 7 emails về "Triển khai BIA 2025 & Trích xuất Agent Inactive & Bổ sung tính năng CRM BD Sales". Chi tiết: [[raw/260418-mail-p01-bia-thread]].
+
+**Tóm tắt:** P01 drive BIA plan; tôi là IT builder. 3 hạng mục BIA: Agent Meeting (priority, xong cuối 4), SPM (Report MNG xong 3/27), Agent Hub (sau tháng 9).
+
+**Hành vi đáng chú ý của P01 trong thread:**
+
+- **CC pattern drop:** mail 1-3 (cuối 3) CC rộng ~10 người (Sandy, Brad, Tony, Quý, Jesse, Hanah, Tessie, Tess, Richard). Mail 5 (04/14) P01 **drop 6-7 người**, chỉ giữ tôi + [[people-p09]] + [[people-p10]]. Có thể **exclude stakeholders khác khỏi technical change request** — political hoặc để direct-line với [[people-p10]] (approver).
+- **Reference "[[people-p10]] Jonnie approve":** P01 dùng Jonnie như gate chính thức, và yêu cầu auto email CRM tới Jonnie khi assign agent → Jonnie là **strategic figure** cần identify. **Hypothesis:** có thể là [[people-exec-02]] (RS) — cần confirm.
+
+**Defensive asset:** mail 7 (04/17) chứng minh tôi hoàn thành request của P01 trong 3 ngày. Nếu P01 tố chậm/sai → reference thread này phản bác.
+
+**Link với chat 17/04:** "báo cáo sai" mà P01 feedback "IT làm sai" không rõ cụ thể là hạng mục nào trong BIA (Agent List mới release? SPM MNG?) — cần ép P01 specify trong meeting/email.
+
 ### 2026-04-18 — Chat challenge "báo cáo sai"
 
 - **Context:** mình challenge P01 qua chat (hôm qua 16:57): "a bảo báo cáo nào sai, sai chỗ nào?", và tố: "a đi feedback là IT làm sai, chờ IT sửa".
@@ -125,6 +140,8 @@ Hiểu chuỗi quyền lực để không vô tình đứng vào phe nào:
 - **Counter tactic "meeting mở + verbal":** khi P01 request "set up meeting để trao đổi" → yêu cầu agenda bằng văn bản trước, list cụ thể "báo cáo nào, sai số liệu nào, expected vs actual là gì". Không đồng ý meeting open-ended. Rationale: meeting không agenda = trap verbal, dễ bị quote sai.
 - **Counter tactic "vague allies":** khi P01 invoke "chị X / anh Y cũng góp ý" → hỏi lại bằng văn bản "anh có thể nhờ chị X / anh Y CC em vào email feedback không? Em cần detail để xử lý" → buộc P01 phải materialize vague claim thành người thực / email thực, hoặc rút lại.
 - **Khi P01 nói "A ko tiện nt":** trả lời lịch sự nhưng kiên quyết "Vâng anh, vậy anh gửi email ạ, em cần document để plan sprint với team." → đẩy về text trail, không thỏa hiệp verbal.
+- **Leverage thread BIA 2025 làm defensive asset.** Mọi claim P01 "IT chậm / làm sai" → reply email reference lại timeline từ mail 03/24, 03/27, và delivery mail 04/17. Mail thread là evidence công khai, P01 không thể bóp méo khi nhiều người đã có trong inbox.
+- **Mỗi lần release feature cho P01:** reply lên thread mail chính (giữ subject gốc để email clients group lại) và **re-include đầy đủ original CC list từ mail 1-3** (Sandy, Brad, Tony, Quý, Hanah...). Điều này đảo ngược tactic P01 drop CC ở mail 5 — đưa thông tin delivery ra public thay vì để P01 "độc quyền" frame narrative với ít người nhất.
 
 ### Không nên
 
