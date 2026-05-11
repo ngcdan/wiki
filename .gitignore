@@ -87,3 +87,6 @@ cheatsheets/
 
 # People mapping (codename <-> real name). SENSITIVE - do NOT commit.
 wiki/people/people-mapping.md
+
+# Mail automation: raw mail thread files (full content, private)
+wiki/raw/mail/

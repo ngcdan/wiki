@@ -520,6 +520,19 @@ Mục tiêu: duy trì nhịp học/đào sâu kỹ thuật ổn định, không 
 
 ---
 
+## Lập trường chính trị nội bộ
+
+Section này ghi lập trường mình với các nhân vật cụ thể — để các phiên Claude sau giữ context, **không bị xói mòn bởi mood tạm thời** hay 1-2 interaction có vẻ tích cực đơn lẻ. Mỗi entry có ngày declared.
+
+### Đối với [[people-p01]] (BD Sales / Bee) — declared 2026-04-18
+
+- **Stance:** Không thích tính cách, không muốn làm việc với P01.
+- **Rationale (data-backed):** Pattern chính trị có hệ thống — 5 tactic thao túng đã profile (status card, vague allies, deflect source, demand meeting + escalation, refuse document trail), drop CC manipulation trong mail 04/14, escalation pattern lặp lại, leverage gián tiếp qua [[people-p02]] (bạn gái trong team P01), leak Warehouse info. Không phải reactive emotion.
+- **Strategy hiện tại:** structural minimization — buffer qua process (email/ticket, bỏ chat/phone), buffer qua người ([[people-p03]] primary contact, delegate xuống team).
+- **Chi tiết + hướng dẫn cho Claude sau:** xem [[people-p01]] → section "Thái độ của mình đối với P01". Phần đó có rule cụ thể về khi nào Claude được quyền gợi ý revisit, khi nào KHÔNG được auto-infer "P01 đã khá hơn".
+
+---
+
 ## Xem thêm
 
-[[mindset]] | [[skills]] | [[finance]]
+[[mindset]] | [[skills]] | [[finance]] | [[people-p01]]

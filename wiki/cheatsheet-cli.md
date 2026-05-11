@@ -32,7 +32,7 @@ kns-ctl of1-prod-platform exec -it server -- su - datatp
 kns-ctl of1-dev-crm exec -it server -- su - datatp
 
 ssh of1@nginx-waf.of1-apps.svc.cluster.local  # nginx server (prod)
-ssh datatp@server.of1-prod-platform.svc.cluster.local       #server@prod
+ssh datatp@server.of1-prod-platform.svc.cluster.local       # platform@prod
 ssh datatp@crm-server.of1-prod-platform.svc.cluster.local   #crm@prod
 
 scp /Users/nqcdan/OF1/forgejo/of1-platform/working/release-platform/server.tar datatp@server.of1-prod-platform.svc.cluster.local:/home/datatp/release-platform/
