@@ -5,9 +5,9 @@
 		{"id":"d000000000000001","type":"text","text":"## Daily notes\n\n![[daily-index.base]]\n\nIndex của tất cả notes trong `daily/`.","x":600,"y":-140,"width":340,"height":280,"color":"5"},
 		{"id":"c000000000000005","type":"file","file":"projects/of1-identity.md","x":-40,"y":280,"width":340,"height":220,"color":"1"},
 		{"id":"c000000000000004","type":"file","file":"projects/mr-henry-mr-henry-jan2026-plan.md","x":-580,"y":280,"width":340,"height":220,"color":"4"},
-		{"id":"c000000000000001","type":"file","file":"projects/bf1-readme.md","x":-580,"y":-80,"width":340,"height":220,"color":"1"},
-		{"id":"c000000000000002","type":"file","file":"projects/datatp-datatp-overview.md","x":-50,"y":-20,"width":340,"height":220,"color":"2"},
-		{"id":"c000000000000003","type":"file","file":"projects/egov-readme.md","x":500,"y":280,"width":340,"height":220,"color":"3"}
+		{"id":"c000000000000001","type":"file","file":"projects/bf1-index.md","x":-580,"y":-80,"width":340,"height":220,"color":"1"},
+		{"id":"c000000000000002","type":"file","file":"projects/datatp-index.md","x":-50,"y":-20,"width":340,"height":220,"color":"2"},
+		{"id":"c000000000000003","type":"file","file":"projects/egov-index.md","x":500,"y":280,"width":340,"height":220,"color":"3"}
 	],
 	"edges":[
 		{"id":"e000000000000001","fromNode":"b000000000000001","fromSide":"bottom","toNode":"c000000000000001","toSide":"top","label":"BFS One → OF1"},

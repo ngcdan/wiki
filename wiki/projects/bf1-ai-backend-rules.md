@@ -277,7 +277,11 @@ public class YourEntityService extends BaseComponent {
         return logic.deleteEntities(client, targetIds);
     }
 
-    // TODO: Add custom methods ví dụ fetchList, search... 
+    // TODO: Add custom methods ví dụ fetchList, search...
     // Object trả về hoặc nhận vào có thể dùng SqlMapRecord hoặc POJO
 }
 ```
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

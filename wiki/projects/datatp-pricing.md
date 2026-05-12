@@ -75,4 +75,4 @@ Query route trong db, Fix search UI ở cột Dest (rename to Route) để searc
 ![[Screenshot_2025-12-08_at_08.54.43.png]]
 ---
 
-Xem thêm: [[datatp-datatp-overview]]
+Xem thêm: [[datatp-index]]

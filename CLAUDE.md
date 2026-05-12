@@ -42,8 +42,8 @@ Tối giản folders. Notes phẳng trong mỗi folder, phân loại bằng pref
 
 - `personal/` — flat: `work.md`, `books-*.md`, `english-*.md`, `finance.md`, etc.
 - `projects/` — flat: `bf1-*.md`, `datatp-*.md`, `egov-*.md`, `mr-henry-*.md`, `of1-*.md`
-- `daily/` — daily notes format `YYMMDD-topic.md`
-- `research/` — nghiên cứu, deep dives
+- `people/` — flat: `people-<codename>.md`. Hồ sơ đồng nghiệp + bản đồ quan hệ + playbook hành xử. **Codename only**, tên thật chỉ ở `people-mapping.md` (gitignored).
+- `raw/` — raw format `YYMMDD-topic.md`
 - `attachments/` — images, binary files (subfolder level 2 theo project: `bf1-fms/`, `bf1-bfs/`)
 - Root level: `setup-*.md`, `cheatsheet-*.md`, `quick-notes.md`
 
@@ -76,13 +76,6 @@ Tối giản folders. Notes phẳng trong mỗi folder, phân loại bằng pref
 
 ### Note skeleton
 
-```markdown
----
-title: "Tiêu đề"
-tags: [tag1, tag2]
-created: YYYY-MM-DD
----
-
 # Tiêu đề
 
 Nội dung chính.
@@ -101,6 +94,18 @@ Khi nhận raw notes hoặc cleanup:
 3. Thêm `[[wikilinks]]` dày đặc — kể cả unresolved links
 4. Hỏi cụ thể thông tin thiếu — không đoán, không tự tổng hợp thay
 
+### People workflow (office politics)
+
+Thư mục `people/` ghi hồ sơ đồng nghiệp, bản đồ quan hệ và playbook hành xử. Rules:
+
+- **Codename only.** Tên thật chỉ tồn tại trong `people/people-mapping.md` (gitignored). Mọi note/reference/raw khác dùng codename (`P01`, `P02`, `EXEC-01`, ...).
+- **Một người = một file:** `people-<codename>.md`.
+- **Không đoán tính cách / quan hệ.** Claude chỉ tổng hợp từ observation đã có. Thiếu data → hỏi, không suy diễn.
+- **Flow update:** raw chat / email / meeting note → extract → thêm entry vào `## Lịch sử tương tác` (newest on top) của file tương ứng. Playbook section chỉ update khi có đủ observation tích lũy — **luôn hỏi xác nhận** trước khi viết guideline mới.
+- **Dùng [[wikilinks]]** cho mọi tham chiếu chéo giữa người với người (kể cả unresolved) để graph + backlinks hoạt động.
+- Khi user paste raw có tên thật → thay codename trước khi lưu vào `raw/`, hoặc xóa raw sau khi đã extract.
+- Xem `people/people-how-to.md` cho quy trình chi tiết.
+
 ### Fractal journaling
 
 Luồng ghi chú theo thời gian:
@@ -109,19 +114,3 @@ Luồng ghi chú theo thời gian:
 3. **Consolidate** — theo tháng/quý, xem lại để phát hiện patterns, tạo liên kết
 4. **Random revisit** — dùng random note + local graph để tìm lại cảm hứng, bổ sung links còn thiếu
 
-## Automation (`automation/`)
-
-```bash
-cd automation && source .venv/bin/activate
-
-python daily_briefing_generator.py          # Generate daily briefing
-python forgejo_issue_collector.py --days-back 7  # Sync Forgejo issues
-python daemon.py start | stop | status      # Daemon lifecycle
-bash quickstart.sh                          # Interactive menu
-```
-
-**Kiến trúc:** `daemon.py` điều phối (briefing 7AM, issue sync 8AM/11AM/4PM). `forgejo_issue_collector.py` → `team_issues_summary.md` + `BACKLOG.md`. `daily_briefing_generator.py` → tổng hợp wiki + AI classify. Notification qua Telegram.
-
-**Config** (`automation/.env`, không commit): `FORGEJO_URL`, `FORGEJO_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `AI_PROVIDER`, `OPENAI_API_KEY`
-
-Không có build/test commands — edits trực tiếp Markdown hoặc Python scripts.

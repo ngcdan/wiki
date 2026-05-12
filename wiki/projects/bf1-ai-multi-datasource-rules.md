@@ -256,3 +256,7 @@ If a use case needs to write to multiple datasources:
 | Data not rolled back on exception | `@Transactional` placed on a logic/private method | Move `@Transactional` to a public service method |
 | `LazyInitializationException` | Accessing lazy collection outside transaction | Set `hibernate.enable_lazy_load_no_trans=true`; if still failing use `JOIN FETCH` |
 | Data written to wrong database | `@EnableJpaRepositories` missing `entityManagerFactoryRef` | Add both `entityManagerFactoryRef` and `transactionManagerRef` |
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

@@ -23,3 +23,7 @@ tags: [bf1, ai, rules, docs]
 - Omit filler words, "Great question", or "Here is the code". Just output the requested content.
 - Use Markdown lists and code blocks properly.
 - If providing a bash command, wrap it in a `bash` code block. If writing Java, use `java`.
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

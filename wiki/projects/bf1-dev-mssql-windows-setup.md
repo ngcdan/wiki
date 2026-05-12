@@ -500,9 +500,9 @@ Khi chạy connector (xem `sandbox/`), dùng config:
 
 ## Xem thêm
 
-- [[bf1-fms-cdc-architecture|CDC Architecture]]
+- [[bf1-fms-04-integration|CDC Architecture]]
 - [[bf1-dev-devlog|Developer Log]]
 - [[bf1-dev-query-reference|Query Reference]]
-- [[bf1-fms-schema-db-schema|BEE_DB Schema]]
+- [[bf1-fms-03-data-model#9-bee_db-schema-survey|BEE_DB Schema]]
 - Sandbox Docker setup: `../sandbox/`
 - Credentials: `../env.sh` (gitignored)

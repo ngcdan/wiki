@@ -80,3 +80,7 @@ Committed trong `gradle.properties` (root repo). Workflow copy file này vào `~
 ## 5. Local Debugging Notes
 - When running locally, you must open `http://localhost:7080` first.
 - After `7080` is up and has finished loading, you can then open `http://localhost:8080`.
+
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

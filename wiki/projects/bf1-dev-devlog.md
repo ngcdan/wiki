@@ -748,8 +748,8 @@ Dự án hiện đã build thành công 100% qua lệnh `gradle clean build`.
 
 ## Liên quan
 
-- [[bf1-project-overview|BF1 Upgrade - Tổng quan]]
-- [[bf1-fms-cdc-architecture|CDC Architecture]]
+- [[bf1-index|BF1 Upgrade - Tổng quan]]
+- [[bf1-fms-04-integration|CDC Architecture]]
 - [[bf1-fms-entity-relationship-diagram|Entity Relationship Diagram]]
 - [[bf1-fms-master-data|Master Data]]
 - [[bf1-dev-mssql-windows-setup|MSSQL Windows Setup]]

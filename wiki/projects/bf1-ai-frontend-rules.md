@@ -219,3 +219,6 @@ export class UIYourNewEntityEditor extends entity.AppDbComplexEntityEditor<UIYou
 }
 ```
 
+## Liên quan
+
+- [[bf1-ai-index|BF1 AI — Index]]

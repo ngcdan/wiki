@@ -24,3 +24,9 @@ NAME                                             READY   STATUS    RESTARTS   AG
 pod/virt-launcher-win-server-2022-bfsone-2lwjj   2/2     Running   0          16h
 pod/virt-launcher-win-server-2022-mssql-dh55k    2/2     Running   0          11h
 pod/virt-launcher-win-server-bfs1-db-b98rq       2/2     Running   0          32m
+
+## Liên quan
+
+- [[datatp-index|DataTP - Tổng quan]]
+- [[bf1-index|BF1 — Index]]
+- [[of1-identity|OF1 Identity Service]]

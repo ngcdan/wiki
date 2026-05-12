@@ -32,7 +32,7 @@ kns-ctl of1-prod-platform exec -it server -- su - datatp
 kns-ctl of1-dev-crm exec -it server -- su - datatp
 
 ssh of1@nginx-waf.of1-apps.svc.cluster.local  # nginx server (prod)
-ssh datatp@server.of1-prod-platform.svc.cluster.local       #server@prod
+ssh datatp@server.of1-prod-platform.svc.cluster.local       # platform@prod
 ssh datatp@crm-server.of1-prod-platform.svc.cluster.local   #crm@prod
 
 scp /Users/nqcdan/OF1/forgejo/of1-platform/working/release-platform/server.tar datatp@server.of1-prod-platform.svc.cluster.local:/home/datatp/release-platform/
@@ -133,4 +133,5 @@ ssh -T -i ~/.ssh/id_rsa_hieuht -p 52222 git@git.datatp.cloud # Test kết nối 
 http://tools-server.of1-prod-platform.svc.cluster.local/admin
 
 ssh -p 30222 clouddev@14.225.17.105       # Of1Clo!@#
+ssh of1@nginx-waf.of1-apps.svc.cluster.local # of1/of1@
 

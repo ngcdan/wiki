@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e77c21ede06c7744",
+        "id": "3eb45f999702d2fb",
         "type": "tabs",
         "children": [
           {
-            "id": "ef46d6ac9ed84d6d",
+            "id": "4a404240b94ec425",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 342.5004348754883
   },
   "right": {
     "id": "d30aa0bffd8e89d4",
@@ -164,7 +164,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -179,39 +180,41 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "ef46d6ac9ed84d6d",
+  "active": "4a404240b94ec425",
   "lastOpenFiles": [
-    "daily/260410-source-role-type-team-update.md",
-    "daily/260410-identity-erd.md",
-    "daily/260410-user-app-feature-source-role-type-sql.md",
-    "daily/260410-user-app-feature-source-role-type-refactor-plan.md",
-    "daily/260410-kafka-consumer-group-conflict.md",
-    "daily/260407-daily.md",
-    "daily/260406-cdc-handler-refactor.md",
-    "projects/bf1-ai-webui-boilerplate.md",
-    "daily/260410-user-app-feature-source-role-type-refactor.md",
-    "projects/bf1-ai-ui-list-guide.md",
-    "projects/bf1-ai-multi-datasource-rules.md",
-    "projects/bf1-ai-kafka-rules.md",
-    "projects/bf1-ai-frontend-rules.md",
-    "projects/bf1-ai-docs-rules.md",
-    "projects/bf1-ai-devops-rules.md",
-    "projects/bf1-ai-backend-rules.md",
-    "quick-notes-archive-260407.md",
-    "daily/260409-cdc-kafka-scaling-plan.md",
-    "daily/260409-cdc-kafka-scaling-design.md",
-    "setup-env.md",
-    "vault-activity.base",
-    "setup-projects.md",
-    "daily/260409-cicd-forgejo-setup.md",
-    "daily/260408-fms-cdc-housebill.md",
-    "daily/260408-fms-transaction-type.md",
-    "daily/260408-fms-transaction-type-plan.md",
-    "daily/daily-index.base",
-    "wiki-home.canvas",
-    "personal/english.md",
-    "personal/personal-index.base",
+    "raw/mail/260507-enquirer-from-shanghai-office.md",
+    "raw/260507-document-upload-kafka-phase2.md",
+    "raw/260506-build-release-updates.md",
+    "raw/mail/260506-bee-cloud-account-support-tera.md",
+    "raw/mail/260506-crm-task-calendar-notification.md",
+    "raw/mail/260506-claude-ai-ho-tro-dev.md",
+    "raw/mail/260506-phan-quyen-su-dung-cac-chuc-nang-tren-crm-group-email-new-as.md",
+    "raw/mail/260506-new-project-from-hq-update-and-using-new-crm-pricing-tower.md",
+    "raw/mail/260506-crm-alert-pricing-sla-reminder-1-requests-over-24h.md",
+    "raw/mail/260506-crm-alert-pricing-sla-reminder-2-requests-over-24h.md",
+    "raw/260505-bbref-entity-name-plan.md",
+    "raw/260505-bbref-entity-name.md",
+    "raw/260505-fe-validators-declaration-form.md",
+    "raw/mail/260505-trien-khai-y-tuong-bia-2025-trich-xuat-agent-inactive-bo-sun.md",
+    "raw/mail/260505-blhph023059-26-hue-anh-pslshahpg07554-import-fcl-caau4502201.md",
+    "raw/mail/260504-crm-task-calendar-notification-5.md",
+    "raw/mail/260504-crm-task-calendar-notification-4.md",
+    "raw/mail/260504-crm-task-calendar-notification-3.md",
+    "projects/egov-specs.md",
     "projects/projects-map.canvas",
+    "projects/bf1-index.md",
+    "wiki-home.canvas",
+    "vault-activity.base",
+    "raw/260410-identity-permissions.md",
+    "projects/bf1-reorganization-design.md",
+    "projects/bf1-bfs-references-system-documentation.md",
+    "raw/260414-egov-upload-s3.md",
+    "daily/260415-egov-upload-s3-plan.md",
+    "daily",
+    "raw/260415-cdc-clientcontext-refactor-plan.md",
+    "Untitled.canvas",
+    "raw/daily-index.base",
+    "personal/personal-index.base",
     "attachments/bf1-bfs/overview-report.pdf",
     "attachments/bf1-fms/domain-model.drawio",
     "attachments/bf1-fms/UITransactionForm.png",
@@ -227,7 +230,6 @@
     "attachments/bf1-bfs/documentation/docs_224.png",
     "attachments/bf1-bfs/sale-executive",
     "attachments/bf1-bfs/documentation",
-    "attachments/bf1-bfs/catalogue",
-    "attachments/bf1-bfs/accounting"
+    "attachments/bf1-bfs/catalogue"
   ]
 }
